@@ -3123,11 +3123,14 @@ const BK_DEC={
 };
 const BK_SLOT={0:{x:30,y:30,w:40,h:36},1:{x:40,y:72,w:32,h:20}};
 const BK_PER_PAGE=2;
+const bkCap=pi=>pi%2===0?2:1;                      /* página da esquerda: 2 fotos; da direita: 1 foto grande */
+const bkStart=pi=>Math.floor(pi/2)*3+(pi%2?2:0);
+const bkPageOf=i=>{ const sp=Math.floor(i/3), r=i%3; return sp*2+(r<2?0:1); };
 function renderAlbumDetail(al){
   const list=(al.photoIds||[]).map(id=>photos.find(x=>x.id===id)).filter(Boolean);
   const f=db.families.find(x=>x.id===al.familyId);
   const np=(al.personIds||[]).map(byId).filter(Boolean).length;
-  const pagesNeeded=Math.ceil((list.length+1)/BK_PER_PAGE);
+  const pagesNeeded=bkPageOf(list.length)+1;
   const spreads=Math.max(1,Math.ceil(pagesNeeded/2));
   if(albSpreadFor!==al.id){ albSpreadFor=al.id; albSpread=0; albMenu=null; }
   albSpread=Math.min(Math.max(0,albSpread),spreads-1);
@@ -3135,14 +3138,14 @@ function renderAlbumDetail(al){
   const look=coverLook(al), src=albumCoverSrc(al), usePhoto=al.coverStyle!=='color'&&src;
   const thumbBg=usePhoto?`background:${look.bg} url('${src}') center/cover`:`background-color:${look.bg};background-image:${look.img};background-size:${look.size==='auto'?'auto':'12px 12px'}`;
   const ICO=(d,sz)=>`<svg width="${sz||16}" height="${sz||16}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
-  const firstSlotPage=list.length; // índice global da foto que receberia o espaço vazio
+  const slotPage=bkPageOf(list.length);
   const page=(pi,side)=>{
-    const items=list.slice(pi*BK_PER_PAGE,pi*BK_PER_PAGE+BK_PER_PAGE);
+    const st0=bkStart(pi), items=list.slice(st0,st0+bkCap(pi));
     const tpl=items.length?BK_T[items.length][side]:[];
-    const pols=items.map((ph,k)=>{ const t=tpl[k], gi=pi*BK_PER_PAGE+k; return `<div class="bk-pol" style="left:${t.x}%;top:${t.y}%;width:${t.w}%;height:${t.h}%;transform:rotate(${t.r}deg)"><span class="tp" style="background:${BK_TAPES[gi%BK_TAPES.length]}"></span><div class="img" style="background-image:url('${photoSrc(ph)}')"></div><div class="cap">${esc(ph.title||'')}</div><div class="acts"><button type="button" data-phed="${ph.id}" aria-label="Editar legenda" title="Editar legenda">${ICO('M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z',14)}</button><button type="button" data-albrm="${ph.id}" aria-label="Remover foto do álbum" title="Remover do álbum">${ICO('M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',14)}</button></div></div>`; }).join('');
+    const pols=items.map((ph,k)=>{ const t=tpl[k], gi=st0+k; return `<div class="bk-pol" style="left:${t.x}%;top:${t.y}%;width:${t.w}%;height:${t.h}%;transform:rotate(${t.r}deg)"><span class="tp" style="background:${BK_TAPES[gi%BK_TAPES.length]}"></span><div class="img" style="background-image:url('${photoSrc(ph)}')"></div><div class="cap">${esc(ph.title||'')}</div><div class="acts"><button type="button" data-phed="${ph.id}" aria-label="Editar legenda" title="Editar legenda">${ICO('M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z',14)}</button><button type="button" data-albrm="${ph.id}" aria-label="Remover foto do álbum" title="Remover do álbum">${ICO('M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',14)}</button></div></div>`; }).join('');
     const decs=items.length?(BK_DEC[items.length+side]||[]).map(d=>`<svg class="bk-dec" style="left:${d.x}%;top:${d.y}%;color:${d.c};transform:rotate(${d.r}deg)" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${d.p}"/></svg>`).join(''):'';
-    const hasSlot=pi===Math.floor(firstSlotPage/BK_PER_PAGE)&&items.length<BK_PER_PAGE;
-    const sl=hasSlot?BK_SLOT[items.length]:null;
+    const hasSlot=pi===slotPage&&items.length<bkCap(pi);
+    const sl=hasSlot?(side==='r'?{x:18,y:16,w:64,h:56}:BK_SLOT[items.length]):null;
     const slot=sl?`<button type="button" class="bk-slot" data-abadd="1" style="left:${sl.x}%;top:${sl.y}%;width:${sl.w}%;height:${sl.h}%"><span class="pl">${ICO('M12 5v14M5 12h14',18)}</span>Adicionar foto</button>`:'';
     const note=pi===0&&al.desc&&items.length===2?`<div class="bk-note" style="left:7%;top:64%;transform:rotate(-6deg)">${esc(al.desc)}</div>`:'';
     return `<div class="bk-page ${side}">${pols}${note}${decs}${slot}<span class="pnum">${pi+1}</span></div>`;
