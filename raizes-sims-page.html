@@ -776,6 +776,9 @@ select.mm-inp{appearance:auto}
 #addPersonBtn svg{flex:none;display:block;width:16px;height:16px;stroke-width:2}
 #addPersonBtn .tlbl{display:block;line-height:20px}
 #addPersonBtn:hover{filter:brightness(.92);background:var(--lime);border-color:var(--lime)}
+.mm-type{border-color:transparent;background:#fff}
+.mm-type:hover{border-color:transparent;background:var(--soft)}
+.mm-type.on{border-color:var(--lime);background:#F7FCF1}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -1717,7 +1720,9 @@ const REL_GROUPS=[
   {title:'Já foi',labels:['Ex','Divorciado','Viúvo(a)'],tile:['#F1F0F6','#4A4766']},
   {title:'Outros laços',labels:null,tile:['#F3ECFF','#3A2D8F']}
 ];
+const REL_HIDDEN=new Set(['Sócio(a)']);
 function relGroups(idxs){
+  idxs=idxs.filter(i=>!REL_HIDDEN.has(REL_TYPES[i].label));
   const named=new Set(REL_GROUPS.flatMap(g=>g.labels||[]));
   return REL_GROUPS.map(g=>({title:g.title,tile:g.tile,items:g.labels
     ?g.labels.map(l=>REL_TYPES.findIndex((t,i)=>t.label===l&&idxs.includes(i))).filter(i=>i>=0)
