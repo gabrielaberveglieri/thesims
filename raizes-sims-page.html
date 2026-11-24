@@ -1,5 +1,5 @@
 <title>Raízes Sims</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#1f1f1f;--muted:#8a8a86;--green:#2f8a5c;--green-dark:#2c5e47;--cream:#fff4e6;--border:#e6e6e3;--alive:#3fa46f;--gone:#6b6b6b}
 *{box-sizing:border-box}
@@ -28,7 +28,7 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .sidebar{border-right:1px solid #efefed;display:flex;flex-direction:column;padding:18px 14px 14px;min-height:0}
 .brand{display:flex;align-items:center;justify-content:center;padding:2px 8px 22px}
 .brand{gap:10px;padding:2px 8px 22px}
-.brand img{display:block;width:32px;height:32px;object-fit:contain;flex:none}
+.brand img{display:block;width:36px;height:36px;object-fit:contain;flex:none;border-radius:9px}
 .brand-name{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:.01em;white-space:nowrap}
 .app.sb-collapsed .brand-name{display:none}
 .nav-item{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;background:none;border-radius:8px;text-align:left;color:#2a2a2a}
@@ -134,6 +134,8 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .node .tomb{position:absolute;left:calc(50% + 24px);top:66px;width:26px;height:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
 .node-more{position:absolute;width:22px;height:22px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);font-size:13px;line-height:1;color:#333;z-index:3;display:grid;place-items:center;letter-spacing:-1px}
 .node-more:hover{background:#f3f3f1}
+.node-del{font-size:17px;letter-spacing:0;padding-bottom:2px}
+.node-del:hover{background:#ffe9e6;color:#c0392b}
 .node-menu{position:absolute;background:#fff;border-radius:12px;box-shadow:0 18px 40px -14px rgba(0,0,0,.45);padding:6px;display:grid;min-width:190px;z-index:4}
 .node-menu button{text-align:left;border:0;background:none;padding:8px 10px;border-radius:8px}
 .node-menu button:hover{background:#f3f3f1}
@@ -167,6 +169,15 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding-bottom:12px}
 .fcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 10px 24px -14px rgba(0,0,0,.45);display:flex;flex-direction:column}
 .fcard.on{outline:2px solid #8BD83D}
+.fcard{position:relative}
+.fcard.sel{outline:3px solid #8BD83D;outline-offset:-3px}
+.fcard .gal-chk{top:10px;right:10px}
+.fgrid.selmode .factions,.fgrid.selmode .fbadge{display:none}
+.fam-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.fam-top .grow{flex:1}
+.fam-pencil{width:34px;height:34px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.18);display:grid;place-items:center;cursor:pointer}
+.fam-pencil:hover{background:#f3f3f1}
+.fam-selbar{flex:1;margin:0}
 .fcard{cursor:pointer}
 .fprev-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .fprev-p{display:flex;gap:10px;align-items:center}
@@ -181,9 +192,24 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .fmeta{margin:0;color:var(--muted);font-size:12px}
 .factions{display:flex;gap:8px;margin-top:auto;padding-top:8px}
 
+.nav-import{margin-top:6px;border:1.5px dashed #8BD83D;background:rgba(139,216,61,.08);font-weight:600}
+.nav-import:hover{background:rgba(139,216,61,.18)}
+.imp-tools{display:flex;gap:6px;flex-wrap:wrap}
+.form .imp-tools input[type=search]{flex:1;min-width:180px;width:auto;padding:9px 12px;border:1px solid #e0e0dc;border-radius:10px;font:inherit}
+.imp-fam.on{border-color:#8BD83D;background:rgba(139,216,61,.07)}
+.imp-mem{margin:2px 0 0 28px;font-size:12px;color:#777}
+.imp-sec{margin-top:6px;font-weight:600;font-size:13px;display:flex;justify-content:space-between}.imp-sec span{font-weight:400;color:#888;font-size:12px}
+.imp-loose{gap:6px}
+.form .imp-lchip{display:inline-flex;flex-direction:row;align-items:center;gap:6px;background:#f2f2ef;border-radius:999px;padding:4px 10px 4px 8px;font-size:12px;font-weight:400;cursor:pointer;color:#222}
+.imp-lchip.on{background:rgba(139,216,61,.25)}
+.form .imp-lchip .imp-chk{width:15px;height:15px}
+.imp-list{max-height:340px}
+.form .imp-opt{display:flex;flex-direction:row;align-items:flex-start;gap:10px;font-size:13px;font-weight:400;color:#444;cursor:pointer}
+.form .imp-opt .imp-chk{margin-top:2px}
 .imp-box{width:min(680px,100%)}
 .imp-note{font-size:13px;line-height:1.5;color:#555;margin:0}
 .imp-note code{background:#f2f2ef;padding:1px 5px;border-radius:5px}
+.form .imp-drop{color:#6aa82a;font-size:15px}
 .imp-drop{display:block;border:1.5px dashed #8BD83D;border-radius:14px;padding:34px 16px;text-align:center;font-weight:600;color:#6aa82a;cursor:pointer;background:rgba(139,216,61,.06)}
 .imp-drop.on{background:rgba(139,216,61,.18)}
 .imp-err{color:#c0392b;font-size:13px;margin:0}
@@ -447,7 +473,7 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .bio{color:#3d4c44;background:#faf8f3;border-radius:10px;padding:10px;margin:8px 0 0;white-space:pre-wrap;line-height:1.45;font-size:13px}
 .rel{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .rel li{display:flex;align-items:center;gap:6px}
-.rel .lk{flex:1;text-align:left;border:0;background:#f6f6f4;border-radius:8px;padding:7px 10px}
+.rel .lk{flex:1;text-align:left;border:0;background:none;border-radius:8px;padding:7px 4px}
 .rel .lk:hover{background:#eef6f1}
 .rel .lk small{display:block;color:var(--muted);font-size:11px}
 .rel .unlink{border:0;background:none;color:var(--muted);font-size:18px;width:26px;height:26px;border-radius:50%}
@@ -490,44 +516,314 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .form .ms-opt input{width:auto;padding:0;margin:0}
 .tip{position:fixed;background:#fff;color:var(--ink);padding:6px 10px;border-radius:8px;box-shadow:0 8px 20px -8px rgba(0,0,0,.35);font-size:12px;font-weight:600;pointer-events:none;z-index:70;white-space:nowrap;transform:translate(-50%,calc(-100% - 12px))}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1f1f1f;color:#fff;padding:10px 16px;border-radius:10px;z-index:60;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+
+/* ===== LhamaTree design system (fundo branco) ===== */
+:root{--ink:#080032;--muted:#4a4766;--border:#e6e3f2;--green:#3f8f12;--green-dark:#3f8f12;
+--surface:#fff;--surface-soft:#f6f4ff;--line:#e6e3f2;--tree-line:#cfcbdd;--ink-muted:#4a4766;
+--lime:#8bd83d;--lime-deep:#3f8f12;--lime-soft:#eaf7da;--lilac:#9b7bea;--lilac-soft:#f3ecff;--lilac-deep:#3a2d8f;
+--sh-card:0 2px 8px rgba(8,0,50,.04);--sh-hover:0 16px 40px rgba(8,0,50,.10);--sh-win:0 30px 70px rgba(8,0,50,.16)}
+body{background:#fff;color:var(--ink)}
+h1,h2,h3,h4,.brand-name,.modal-box h2,.node .nm,.initials{font-family:Outfit,Inter,sans-serif;letter-spacing:-.01em;text-wrap:balance}
+h1,h2,h3,h4,.brand-name{font-weight:700;color:var(--ink)}
+.app{margin:0;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:none}
+.sidebar{border-right:1px solid var(--line);background:#fff}
+.nav-item{border-radius:12px;color:var(--ink)}
+.nav-item svg.i{color:var(--ink-muted)}
+.nav-item:hover{background:var(--surface-soft)}
+.nav-item.active{background:var(--lilac-soft);color:var(--lilac-deep);font-weight:600}
+.nav-item.nav-import{background:var(--lime-soft);color:var(--lime-deep);font-weight:600}
+.fam-list li.active button{background:var(--lilac-soft);color:var(--lilac-deep)}
+.btn{border-radius:12px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);padding:8px 14px}
+.btn:hover{background:var(--surface-soft)}
+.btn.dark,#addPersonBtn,#emptyAdd,#renameFamily,#sForm .btn.dark,#lForm .btn.dark,#rmOk{background:var(--lime);border-color:var(--lime);color:#fff;font-weight:700}
+.btn.dark:hover,#addPersonBtn:hover,#emptyAdd:hover,#renameFamily:hover,#sForm .btn.dark:hover,#lForm .btn.dark:hover,#rmOk:hover{background:#7cc934;border-color:#7cc934}
+.btn.ghost[data-fedit],.btn.ghost[data-fopen]{background:#fff;border:1.5px solid var(--ink);color:var(--ink)}
+.btn.ghost[data-fedit]:hover,.btn.ghost[data-fopen]:hover{background:var(--surface-soft);border-color:var(--ink)}
+.btn.danger{color:#b84a36;border-color:#b84a36}
+.btn.danger.armed{background:#b84a36;color:#fff}
+.fcard{border-radius:16px;border:1px solid var(--line);box-shadow:var(--sh-card);transition:transform .25s,box-shadow .25s}
+.fcard:hover{transform:translateY(-4px);box-shadow:var(--sh-hover)}
+.fcard.on{outline:2px solid var(--lime)}
+.fbadge{background:var(--lilac-soft);color:var(--lilac-deep);border:1px solid var(--line)}
+.modal{background:rgba(8,0,50,.4)}
+.modal-box{border-radius:20px;box-shadow:var(--sh-win)}
+input,select,textarea{border-radius:12px;border-color:var(--line)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--lilac);outline-offset:0;border-color:var(--lilac)}
+/* Sims (polaroid DS) */
+.node .frame{border:1px solid var(--line);box-shadow:0 3px 6px rgba(8,0,50,.16);background:var(--surface-soft)}
+#stage.polaroid .node .frame{border:1px solid var(--line);border-radius:3px;background:#fff;box-shadow:0 3px 6px rgba(8,0,50,.16)}
+#stage.polaroid .node .frame .initials{background:var(--surface-soft);color:var(--ink)}
+.node .nm{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.25);font-weight:700}
+.node .sub{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);opacity:.92}
+.node-more,.node-del{background:#fff;border:1px solid var(--line);color:var(--ink);box-shadow:none}
+.gen-label{color:#fff;opacity:.85;font-weight:600;letter-spacing:.14em}
+@media (prefers-reduced-motion:reduce){.fcard,.node{transition:none}.fcard:hover,.node:hover{transform:none}}
+
+/* ===== Layout v2: sidebar, header, ficha, modais ===== */
+:root{--soft:#F6F4FF;--lilac-soft:#F3ECFF}
+.app{grid-template-columns:272px 1fr 0;height:100vh;margin:0;border:0;border-radius:0}
+.app.with-ficha{grid-template-columns:272px 1fr 400px}
+.app.sb-collapsed{grid-template-columns:0 1fr 0}
+.app.sb-collapsed.with-ficha{grid-template-columns:0 1fr 400px}
+.sidebar{gap:20px;padding:20px 16px;border-right:1px solid var(--line);background:#fff;overflow:hidden}
+.brand{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:0;margin:0}
+.brand img{width:40px;height:40px;border-radius:22%;object-fit:contain}
+.brand-name{font-size:20px}
+#sbToggle{top:20px;left:220px;transform:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);color:var(--ink-muted);background:#fff}
+#sbToggle:hover{background:var(--soft);color:var(--ink)}
+.app.sb-collapsed #sbToggle{left:12px;top:20px}
+.app.sb-collapsed .hdr{padding-left:64px}
+.sb-search{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:12px;background:var(--soft);color:var(--ink-muted);flex:none}
+.sb-search input{border:0;background:transparent;font:inherit;color:var(--ink);width:100%;outline:none;min-width:0;padding:0;border-radius:0}
+.sb-search input:focus{outline:none;border:0}
+.sb-search:focus-within{box-shadow:0 0 0 2px var(--lilac)}
+.sb-search kbd{font:600 11px Inter,sans-serif;color:var(--ink-muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px;background:#fff}
+.nav{display:flex;flex-direction:column;gap:2px;flex:none}
+.nav-item{gap:12px;height:40px;padding:0 12px;border-radius:12px;font-size:14px;font-weight:500;color:var(--ink-muted)}
+.nav-item:hover{background:var(--soft);color:var(--ink)}
+.nav-item.active{background:var(--lilac-soft);color:var(--lilac-deep);font-weight:600}
+.nav-item svg.nv{flex:none;color:currentColor}
+.nav-item .count{margin-left:auto;font-size:12px;font-weight:600;color:var(--ink-muted)}
+.fam-sec{display:flex;flex-direction:column;gap:6px;min-height:0;flex:1}
+.cap{display:flex;align-items:center;justify-content:space-between;padding:0 4px 0 12px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.cap .ibtn{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);color:var(--ink-muted);background:#fff}
+.cap .ibtn:hover{background:var(--soft);color:var(--ink)}
+.fam-list button{gap:12px;padding:8px 12px;border-radius:12px}
+.fam-list button:hover{background:var(--soft)}
+.fam-list li.active button{background:var(--lilac-soft);color:var(--ink)}
+.fam-list .ic{flex:none;width:32px;height:32px;display:grid;place-items:center;font-size:22px}
+.fam-list .ico-img{width:32px;height:32px}
+.fam-list .fn{font-weight:600;font-size:14px;min-width:0}
+.fam-list small{font-weight:400;font-size:12px;color:var(--ink-muted)}
+.import-card{display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;background:var(--lime-soft);flex:none}
+.import-card strong{font:700 15px Outfit,Inter,sans-serif;color:var(--ink)}
+.import-card p{margin:0;font-size:13px;line-height:1.45;color:var(--ink-muted)}
+.import-card .btn{width:100%;justify-content:center;height:40px}
+/* cabeçalho */
+.right{background:#fff}
+.hdr{flex-wrap:nowrap;height:76px;padding:0 24px;gap:24px;background:#fff;border-bottom:1px solid var(--line);align-items:center}
+.hdr-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.crumb{font-size:12px;color:var(--ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title-row{display:flex;align-items:center;gap:10px;min-width:0}
+.hdr h1{font-size:22px;line-height:1.2;font-weight:700;margin:0}
+.fam-av{width:36px;height:36px;background:none;border-radius:0}
+.fam-av.bare img{height:36px;width:auto;max-width:44px;object-fit:contain}
+.fam-av .ico-img{width:30px;height:30px}
+.pill{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--lilac-soft);color:var(--lilac-deep);font-size:12px;font-weight:600;white-space:nowrap}
+#renameFamily{width:32px;height:32px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink-muted);margin-left:0!important}
+#renameFamily:hover{background:var(--soft);color:var(--ink);border-color:var(--line)}
+.hdr-r{flex:none}
+.hdr-r .toolbar{display:flex;align-items:center;gap:12px;padding:0}
+.seg{display:flex;align-items:center;height:40px;border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.seg button{height:100%;display:inline-flex;align-items:center;gap:6px;padding:0 12px;border:0;background:transparent;color:var(--ink);font:500 13px Inter,sans-serif;cursor:pointer;border-radius:0}
+.seg button:hover{background:var(--soft)}
+.seg .zv{min-width:56px;justify-content:center;font-weight:600;font-variant-numeric:tabular-nums;border-left:1px solid var(--line);border-right:1px solid var(--line);color:var(--ink-muted)}
+.seg .sep{width:1px;height:20px;background:var(--line)}
+#addPersonBtn{height:40px;padding:0 16px;gap:8px}
+/* área da árvore */
+#treeView{background:var(--soft)}
+#treeView .main{margin:16px!important;border-radius:20px;background:#EDE3D3}
+.app:has(#treeView:not(.hidden)) .ftr{background:var(--soft)}
+#treeView .main.def-bg .gen-label{color:#8C7E68;text-shadow:none;opacity:1;font-weight:600;letter-spacing:.08em}
+.bg-pencil{top:16px;right:16px;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);box-shadow:none;opacity:1;background:#fff}
+.bg-pencil:hover{background:var(--soft)}
+.node .frame{border:3px solid #fff;box-shadow:0 4px 12px rgba(8,0,50,.15);background:var(--frame-bg,#F6F4FF)}
+.node.sel .frame{outline:0;border-color:var(--lime);box-shadow:0 0 0 4px rgba(139,216,61,.35),0 8px 20px rgba(8,0,50,.18)}
+.node .nm{font-size:15px;font-weight:700;text-shadow:0 1px 3px rgba(8,0,50,.35)}
+.node-more,.node-del{width:24px;height:24px;border:0;box-shadow:0 2px 6px rgba(8,0,50,.15);background:#fff;color:var(--ink)}
+.node-del:hover{background:#FDF1F0;color:#B3261E}
+.ftr{padding:6px 24px 10px}
+/* ficha (drawer) */
+.ficha{background:#fff;border-left:1px solid var(--line);box-shadow:-24px 0 60px rgba(8,0,50,.08)}
+.sc-head{height:64px;padding:0 20px;border-bottom:1px solid var(--line)}
+.sc-head span{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+.sc-head .ibtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);color:var(--ink-muted);background:#fff;font-size:inherit}
+.sc-head .ibtn:hover{background:var(--soft);color:var(--ink)}
+.ficha-body{padding:24px 20px;display:flex;flex-direction:column;gap:16px;overflow:auto;flex:1;min-height:0}
+.sc-id{padding:0 0 8px;gap:10px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ficha-av{width:120px;height:120px;border-radius:20px;border:4px solid #fff;box-shadow:0 10px 30px rgba(8,0,50,.16);background:var(--soft)}
+.sc-id h2{margin:4px 0 0;font:700 22px/1.2 Outfit,Inter,sans-serif}
+.sc-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.tag-green,.tag-gray{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:600}
+.tag-green{background:var(--lime-soft);color:var(--lime-deep)}
+.tag-gray{background:#F1F0F6;color:var(--ink-muted)}
+.tag-green::before,.tag-gray::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.sc-cause{margin:0;font-size:12px;color:var(--ink-muted)}
+.sc-sec{padding:0;display:flex;flex-direction:column;gap:12px}
+.box-h{display:flex;align-items:center;justify-content:space-between}
+.box-h h3{margin:0;font:600 15px Outfit,Inter,sans-serif}
+.link-add{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;color:var(--lime-deep);font:600 13px Inter,sans-serif;cursor:pointer;padding:4px 6px;border-radius:8px}
+.link-add:hover{background:var(--lime-soft)}
+.empty-gal{display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px;background:var(--soft);border-radius:12px;color:var(--ink-muted);font-size:13px;text-align:center}
+.info{display:grid;grid-template-columns:96px 1fr;row-gap:10px;margin:0;font-size:14px}
+.info dt{color:var(--ink-muted)}
+.info dd{margin:0;color:var(--ink)}
+.info dd.na{color:var(--ink-muted);font-style:italic}
+.ficha .bio{margin:0;font-size:13px;line-height:1.5;color:var(--ink-muted)}
+.rel-block{display:flex;flex-direction:column;gap:8px}
+.rel-row{display:flex;align-items:center;justify-content:space-between}
+.rel-label{font-size:12px;font-weight:600;color:var(--ink-muted)}
+.rel-empty{font-size:13px;color:var(--ink-muted)}
+.divider{height:1px;background:var(--line)}
+.chip{display:flex;align-items:center;gap:10px;padding:6px 8px 6px 6px;border-radius:12px;background:var(--soft)}
+.chip .chip-go{flex:1;display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;text-align:left;min-width:0;color:var(--ink);font:600 14px Inter,sans-serif;cursor:pointer}
+.chip-av{flex:none;width:32px;height:32px;border-radius:8px;overflow:hidden;background:#fff;display:grid;place-items:center}
+.chip-av img{width:100%;height:100%;object-fit:cover}
+.chip-av .initials{font-size:12px}
+.chip-av .emo{font-size:18px}
+.chip-nm{min-width:0;display:flex;flex-direction:column}
+.chip-nm small{font-weight:400;font-size:11px;color:var(--ink-muted)}
+.chip-ic{width:16px;height:16px;object-fit:contain;margin-left:auto}
+.chip .unlink{width:28px;height:28px;border:0;border-radius:8px;background:transparent;color:var(--ink-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;font-size:inherit}
+.chip .unlink:hover{background:#fff;color:#B3261E}
+.sc-foot{display:flex;align-items:center;gap:8px;padding:16px 20px;border-top:1px solid var(--line);background:#fff}
+.sc-foot .btn{height:40px}
+.btn.danger{background:#fff;border:1.5px solid #F2C4C0;color:#B3261E;font-weight:600}
+.btn.danger:hover{background:#FDF1F0}
+.btn.danger.armed{background:#B3261E;border-color:#B3261E;color:#fff}
+/* modais novos (.mm) */
+.modal{background:rgba(8,0,50,.45)}
+.modal-box:has(.mm){width:min(560px,100%);border-radius:24px;overflow:hidden;box-shadow:0 24px 64px rgba(8,0,50,.28)}
+.mm{display:flex;flex-direction:column;max-height:92vh;color:var(--ink)}
+.mm-head{display:flex;align-items:flex-start;gap:14px;padding:24px 24px 16px}
+.mm-ava{width:48px;height:48px;border-radius:14px;overflow:hidden;flex:none;box-shadow:0 0 0 3px var(--lilac-soft);background:var(--soft);display:grid;place-items:center}
+.mm-ava img{width:100%;height:100%;object-fit:cover}
+.mm-ava .initials{font-size:16px}
+.mm-ava .emo{font-size:26px}
+.mm-head h2{margin:0;font:700 20px/1.2 Outfit,Inter,sans-serif;letter-spacing:-.01em}
+.mm-head p{margin:4px 0 0;color:var(--ink-muted);font-size:14px}
+.mm-head p b{color:var(--ink);font-weight:600}
+.mm-x{margin-left:auto;width:36px;height:36px;border:0;border-radius:10px;background:transparent;color:var(--ink-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none;padding:0}
+.mm-x:hover{background:var(--soft);color:var(--ink)}
+.mm-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 24px;padding:4px;border-radius:14px;background:var(--soft);flex:none}
+.mm-seg button{height:40px;border:0;border-radius:10px;background:transparent;font:600 14px Inter,sans-serif;color:var(--ink-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mm-seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(8,0,50,.12)}
+.mm-tabs{display:flex;gap:24px;margin:8px 24px 0;border-bottom:1px solid var(--line);flex:none}
+.mm-tabs button{height:40px;border:0;background:transparent;font:600 14px Inter,sans-serif;color:var(--ink-muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;padding:0}
+.mm-tabs button.on{color:var(--ink);border-bottom-color:var(--lime)}
+.mm-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;overflow:auto;min-height:220px;max-height:min(440px,calc(92vh - 270px));box-sizing:border-box}
+.mm-body>*{flex:none}
+.mm-search{display:flex;align-items:center;gap:8px;height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);color:var(--ink-muted)}
+.mm-search:focus-within{border-color:var(--lilac)}
+.mm-search input{border:0;outline:0;flex:1;font:400 14px Inter,sans-serif;color:var(--ink);background:transparent;padding:0;min-width:0;border-radius:0}
+.mm-search input:focus{outline:0;border:0}
+.mm-lbl{font-size:12px;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.06em;margin:0}
+.mm-list{display:flex;flex-direction:column;gap:8px}
+.mm-opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.mm-opt:hover{border-color:#CFC9EA}
+.mm-opt.on{border-color:var(--lime);background:#F7FCF1}
+.mm-ini{width:40px;height:40px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font:700 15px Outfit,sans-serif;flex:none;overflow:hidden}
+.mm-ini img{width:100%;height:100%;object-fit:cover}
+.mm-t{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.mm-t b{font-size:14px;font-weight:600}
+.mm-t span{font-size:12px;color:var(--ink-muted)}
+.mm-radio{width:20px;height:20px;border-radius:50%;border:2px solid #CFC9EA;box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center}
+.mm-opt.on .mm-radio{border-color:var(--lime);background:var(--lime)}
+.mm-opt.on .mm-radio::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.mm-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:32px 16px;border-radius:16px;background:var(--soft);text-align:center;color:var(--ink-muted)}
+.mm-empty b{color:var(--ink);font:600 15px Outfit,Inter,sans-serif}
+.mm-link{border:0;background:transparent;color:var(--lime-deep);font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0}
+.mm-note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:12px;background:var(--lilac-soft);color:var(--lilac-deep);font-size:13px;line-height:1.45}
+.mm-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mm-field{display:flex;flex-direction:column;gap:6px}
+.mm-field>label,.mm-field>.mm-fl{font-size:13px;font-weight:600;color:var(--ink)}
+.mm-inp{height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);font:400 14px Inter,sans-serif;color:var(--ink);box-sizing:border-box;width:100%;background:#fff;outline:0}
+.mm-inp:focus{border-color:var(--lilac);outline:0}
+.mm-chips{display:flex;flex-wrap:wrap;gap:8px}
+.mm-chips button{height:34px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:600 13px Inter,sans-serif;color:var(--ink-muted);cursor:pointer}
+.mm-chips button.on{border-color:var(--lime);background:var(--lime-soft);color:var(--lime-deep)}
+.mm-foot{display:flex;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--line);flex:none}
+.mm-foot .mm-hint{font-size:13px;color:var(--ink-muted);margin-right:auto;min-width:0}
+.mm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:12px;font:700 14px Inter,sans-serif;cursor:pointer;border:1.5px solid transparent;white-space:nowrap}
+.mm-btn.out{background:#fff;border-color:var(--ink);color:var(--ink);font-weight:600}
+.mm-btn.out:hover{background:var(--soft)}
+.mm-btn.lime{background:var(--lime);border-color:var(--lime);color:#fff}
+.mm-btn.lime:hover{filter:brightness(.92)}
+.mm-btn.lime.off{background:#D9DCE3;border-color:#D9DCE3;cursor:not-allowed;filter:none}
+.mm-btn.danger{background:#fff;border-color:#F2C4C0;color:#B3261E;font-weight:600}
+.mm-btn.danger:hover{background:#FDF1F0}
+.mm-btn.danger.armed{background:#B3261E;border-color:#B3261E;color:#fff}
+.mm-types{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mm-type{display:flex;align-items:center;gap:12px;padding:8px 12px 8px 8px;border-radius:14px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font:600 14px Inter,sans-serif;color:var(--ink);text-align:left;width:100%;min-width:0}
+.mm-type:hover{border-color:#CFC9EA}
+.mm-type.on{border-color:var(--lime);background:#F7FCF1}
+.mm-ico{width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.mm-ico img{width:24px;height:24px;object-fit:contain}
+.mm-type .mm-chk{margin-left:auto;width:20px;height:20px;border-radius:50%;background:var(--lime);color:#fff;display:none;align-items:center;justify-content:center;flex:none}
+.mm-type.on .mm-chk{display:inline-flex}
+.mm-grp{display:flex;flex-direction:column;gap:8px}
+.mm-sum{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--soft)}
+.mm-sum span.s{font-size:13px;color:var(--ink-muted)}
+.mm-sum b{font-size:14px}
+.mm-sum .mm-link{margin-left:auto;font-size:13px}
+.mm-newtype{display:flex;gap:8px}
+.mm-newtype .mm-inp{flex:1}
+.mm-btn-add{height:44px;padding:0 16px;border-radius:12px;border:1.5px solid var(--lime);background:#fff;color:var(--lime-deep);font:700 14px Inter,sans-serif;cursor:pointer}
+.mm-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);font-weight:500}
+.mm-check input{width:auto;height:auto}
+.mm-addwrap{padding:0 24px 16px;flex:none}
+.mm-addnew{width:100%;height:48px;border-radius:14px;border:1.5px dashed var(--lime);background:#F7FCF1;color:var(--lime-deep);font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mm-addnew:hover{background:var(--lime-soft)}
+select.mm-inp{appearance:auto}
+@media (max-width:1300px){.seg .lbl{display:none}}
+.app.with-ficha .seg .lbl,.app.with-ficha #addPersonBtn .lbl{display:none}
+.app.with-ficha #addPersonBtn{padding:0 12px}
+.hdr h1{flex:0 1 auto;min-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr-t{flex:1}
+.node .nm{text-shadow:0 1px 2px rgba(8,0,50,.5),0 0 6px rgba(8,0,50,.25)}
+.seg .lbl,#addPersonBtn .lbl{line-height:1;display:block}
+/* ===== /Layout v2 ===== */
+/* ===== /LhamaTree DS ===== */
 </style>
 <div class="app" id="app">
   <button class="ibtn" id="sbToggle" title="Recolher barra lateral" aria-label="Recolher barra lateral" aria-expanded="true"><svg class="i" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
   <aside class="sidebar">
-    <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgMjggMjgiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJMaGFtYSBlbSBwaXhlbCBhcnQgY29tIHVtIGJyb3RvIG5hIGNhYmXDp2EiPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJiZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNDREI0RjAiLz4KPHN0b3Agb2Zmc2V0PSIwLjU1IiBzdG9wLWNvbG9yPSIjRjdCN0QyIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGRDdBOCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxyZWN0IHdpZHRoPSIyOCIgaGVpZ2h0PSIyOCIgcng9IjYiIGZpbGw9InVybCgjYmcpIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQgNCkiPgo8cGF0aCBmaWxsPSIjM0ZBMzREIiBkPSJNMTIgMGgxdjFoLTF6IE0xNiAwaDF2MWgtMXogTTEzIDFoMXYxaC0xeiBNMTUgMWgxdjFoLTF6IE0xNCAyaDF2MWgtMXoiLz4KPHBhdGggZmlsbD0iI0ZGRjZFNiIgZD0iTTEyIDJoMXYxaC0xeiBNMTYgMmgxdjFoLTF6IE0xMiAzaDZ2MWgtNnogTTEyIDRoM3YxaC0zeiBNMTYgNGgydjFoLTJ6IE0xMiA1aDF2MWgtMXogTTE0IDVoMnYxaC0yeiBNMTIgNmg0djFoLTR6IE0xMyA3aDJ2MWgtMnogTTEzIDhoMnYxaC0yeiBNNCAxNGgxMHYxaC0xMHogTTQgMTVoMnY0aC0yeiBNMTEgMTVoMnY0aC0yeiBNMiAxMWgxdjJoLTF6Ii8+CjxwYXRoIGZpbGw9IiNFOENEQjAiIGQ9Ik0xMiA3aDF2MmgtMXogTTIgMTNoMXYxaC0xeiBNNyAxNWgxdjRoLTF6IE0xMyAxNWgxdjRoLTF6Ii8+CjxwYXRoIGZpbGw9IiNGRjhGQjMiIGQ9Ik0xMyA1aDF2MWgtMXogTTExIDloNXYxaC01eiIvPgo8cGF0aCBmaWxsPSIjRTI2QTkzIiBkPSJNMTEgMTBoNXYxaC01eiIvPgo8cGF0aCBmaWxsPSIjRjdDNkEzIiBkPSJNMTYgNWgydjJoLTJ6Ii8+CjxwYXRoIGZpbGw9IiMzQTJBMkEiIGQ9Ik0xNSA0aDF2MWgtMXogTTE4IDVoMXYxaC0xeiIvPgo8cGF0aCBmaWxsPSIjOEJEODNEIiBkPSJNNCAxMGg3djFoLTd6IE0zIDExaDF2MWgtMXogTTUgMTFoMnYxaC0yeiBNOCAxMWgydjFoLTJ6IE0xMSAxMWgydjFoLTJ6IE0xNCAxMWgxdjFoLTF6IE0zIDEyaDJ2MWgtMnogTTYgMTJoMnYxaC0yeiBNOSAxMmgydjFoLTJ6IE0xMiAxMmgydjFoLTJ6Ii8+CjxwYXRoIGZpbGw9IiM1RkFFMkIiIGQ9Ik00IDExaDF2MWgtMXogTTcgMTFoMXYxaC0xeiBNMTAgMTFoMXYxaC0xeiBNMTMgMTFoMXYxaC0xeiBNNSAxMmgxdjFoLTF6IE04IDEyaDF2MWgtMXogTTExIDEyaDF2MWgtMXogTTE0IDEyaDF2MWgtMXogTTMgMTNoMTJ2MWgtMTJ6Ii8+CjxwYXRoIGZpbGw9IiM3QTRCM0EiIGQ9Ik00IDE5aDJ2MWgtMnogTTExIDE5aDJ2MWgtMnogTTcgMTloMXYxaC0xeiBNMTMgMTloMXYxaC0xeiIvPgo8L2c+Cjwvc3ZnPgo=" alt="Raízes Sims"><span class="brand-name">LhamaTree</span></div>
-    <button class="nav-item" data-view="families"><img class="nav-ico" src="data:image/png;base64,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" alt="">Minhas famílias</button>
-    
-    <button class="nav-item" data-view="people"><img class="nav-ico" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAACApSURBVHhe7Z1xbBTXncf5I3/kT+t0ijhVJyUS/0SqKiJVuUNCDXFpKS45iMFJatWHY+J0sbtkE9euuQVjguPEjWPXicFxssU1xSHlIG5cOVzJuUZwEK40kIqW6NJefFXaplV08h856f64P+Z+3zfvN/t7b9/szu7O2mvCkz4CeXdn37zvZ968mZ15s8rzPEVcpaYhfSexk5gg5olFwrPA36eJFLFGf/RWWaLCmavc4xKgZntPM3FRB1wsHxAjxC0ZlqDEKoAOfoHwFO6Ao7O95zBRoxd/q1SgxCIAhXQnMa9Cl+gg13Ue8loOP++Nnh01yFzIKJJHR7wv7e03wwf+chaJ9fqrbpWYS5kC3L3qi9vbm4lFwlvdlDZIn+zzTr835F36aFTx7h+PGVz9eMrgw09mvdHZCa/uwIC3anOHt5okEEzoL71VYixlCaDD9xgOvv/Nfm/ut4NB8IUEuPHJjPfh4jklAAMRLAHQG1wjbu0SYiwlC0BBGOGDrc/2quCZKAIg+I8/vaqQAoBLH0159X0DUoBbEsRcShIA4SMMGX7ixGkj/KgCcPhhAoDBn45JAcDruio3ZaH1W0ts0FRU9iIFqFl150Mda4lFwruLunsw/NOD3qWFPm/udwMGlz7K5MUO/C+fXjH4+H/nvEsfnlT0vdHnrf4G9QRZenWlVnAJ2rOL+Fca+LrOkzALX3go9RaRJNasuv1uvYzySikCXEb4QIZfKQGkBDuepd2BkABbiq7YiirYqond1IYL3JbAEboBBS95i5axUy+y5FKUAFTJfbLCMvwoAky8PeB1j3YFnJo/UpQAV2l3YAkwr6u2YgrVGec2cGgbtCPjCl1iCcC7Q5x32aAXX3SJLAB9SQ1VUnX94J6np4oSIPFsyqtP7jKo293opUe78wrA4bMAI7M0HsgKALboKlZ1oXpiv35e11nBbcntOUBjHcBjHwn+3nT8jEsAZoIoerxQjACPSxtHf572pq6kzYGfJQD/vXOkjQJv9BqebDFgEcbfPOTNXR/1bvxlmo4K5gLe+/MJ78ofJwMuLZBMxJZD+qSRv+LXdBWrtlAdMWhevP2BtCep7e7x+v6ZNpQFGiQTrkGyhNvlzK9Pee1HB4MsBBhDFLVbLEaAa/xFiVd9AU6/Zx72uQQYfyutws8nAIAAV/8waSDDlwIMvDnir3DW/qodC1Dd1BET4OA3pnu93h/3B8FHEeDDxbcDAZgb1GvWPzskBQBFSRBJAKo8TvUGX4LwowrAW38hAdALRBUAqLpkBRjWVa2qQvUKwgcIH8HPvU9tRUQVAOF//OklpwBg9GeTQTaayBJEFeBxtRK08PXdWQFmf+Of8csnAIdfSIDO4Y6iBFC7gWzjVt1ugOq0TdRPIcMvRgCEn0+AUAkijAmiCjCtVoIWnDhK4V/wmf11IQH6gvDBjidaDOqfpPA1nXRUENYAzKUFNJoPfme4Y2syYNVt1XNykNpqDdqLz5OAARow57aP326XaZCs1pEGe5IPF2lwLPjL/9DgWMBi3PjkJ+rzc7/VPSNDg05dpdASVQCcfs0R4PS7hXYBpgBb95gSlCPA6XcHDAGIkg+F4i7UVjhGN8N3HCXFJQB2Efg8BDj0hh4f+QKA3bpazhJVAH9htFAOP6oAnSMJQwApgRRg/MxAXgEuf/SKIQCoRgGonZLcXkb4EQUYe6Pfa96bUDR27vL6f9DjzVwajywA2HzQOErKuysoS4CpdwodBvbRUUBXjgCMFAAVdwmA4M8vDKtl2QLc1ZmRAlTFqWFqpw+4vRqe64kkwHna/wMOXgrAQILf/ve/OAXgjYQFAEIAcFhXL6cUL4AeACpIAgQTxuz7PskXEuqkT64APuNnLJEYCnnudzTOCDAbcF0nreSDAcsuwOpvpLfxSSqANpp8p4fWRbeJVX+5rjha2vHETgO5gbT0tgdBMxj8vffnUzRAPq6QJ946zPMEOCpw9gJlCzB9nQwXoUtYAJbAJUBo+MAIf0UIMM3h7xiILgCfK8knAMjQblIKwMG7BDj5yyNSAOAcC5QtwOQVsYIWIzNdKvhCPQDoHG3zBl7roM9FF+BvaR8rBHhcV3dZCrVPDYcPRs76bTT9K7GBWPXn9eRzJYUEaHsuGVkAcM8ePzON84ggqgDqxwuXAK7dQP/xPRTwIyp0ST4BQIMmEKGAACJ8sKyDQGofo/svRQBbgnIF6DjWJwXIDZZKVAHUeQBc7pWaTHsZCl1y4pd0NED769nrfd6hH+7x6il8YAdeCG4EkKFukRsoS1ay52lwpaTMsqyXkdP397KMiXE/fLTNqWs4UiJ5gSUA7x47vu8fKW3d8zAF3yTIHjIDDAZlwFIGycXfj/nLpzykAFTHnI0kqgDDaGQIsPFArgBg5jf96gs5/HIFaHumlRotXIDGQSN8p91LWagO5+MQwJTAFKBnvKugABy+Wn6uAB26ukGJKoA6rckXfdrhM3LrL1cAcGTW7gWyAtzdqlaIeUtXddkK1cEpACgkwOhP/UNlFiArQnECyPDV8kmATQeofbIC5AyUIwmAQh9eZAFcuwEgw49DgNRwGzVcJAGSuprLVtA+LIAaHxUhAHAJwO3CAsjwpQDBuRJ7+TELgPv71IJw+DVI+2heUWbT7h2KLcmHFXagMuwoNHY2+ucCGB1+/5sHlYg6/Eg/elS6qLro9uHgx853K7je52ggK5Hrlnk77W1N0kYjkANk1+EyToado6AZWwB85+aD8QmwNlgQ4RKgtrVewRLEIQAaRgrA4QsBQs9yLWXJJ8DJq/6hcj4BQM9ROnpyCIBDZDt8IMOvuAAotBDcyasWhl4gTABmS5spgSvkfECA9Mu08tQ4EAHhb302OxahFaqKrR+F6hG0TfKoKQD3ArYAWCesH9YTyPClAAHUhjhkxImj5RIAt3sHC2z6fmcQfveJ7hwBwKZvUW+gRXCFnA9uGDQUC8DhawGqYutHKSQAegEZft/R9mD9mCgCMBABY4dCAsi8qI4pXd2gFCUACi3kaQILUwttOezvDkDdk7sMbBnqdpvU00pL6mjFmJaBVq9ltJOW2xFwx0M9ksu6SlVRqD2GeRDYMuq3x5H5LBACgzIw8maXWkeX9MXQOZpQIQeQWJLT12I6D2AXWlBwfQBgAbg3SB/v8Fq+1+41Pb3ToOUZEw6+YzyhSL+WUvAZRhn+uqe6ZfiLRFVdB0jt0cICrHsqVwDAArDkrlCLAb1CPgG6XztoC5CzuyxVANzYEFwkCtATsADR6TLRwdsCIHw0rBDgIV2VqinUHneyAMAlALZ83vrjEsDoBSwBNu4X+/+GtPOyuZIEQFESNKQXxBeobt8ddBj5BcAuQDZqtYbPhep4jeuK3YBLgORwIlYBjF5AhI/xgcyGyNn/o5QsAErQE+gxwRe2tiqahnu9wWuY/MHf9zGj1AiSwbMmLEbreNq7Fz/18ljDByP+Zv3VVVlIzt1aUoUpuw92hTwmkoM6sNXGEbqEPzf+M/9Q+fS1dED3azntd6euplHKEgCFFgwJXseXsADMl/ZmR8RRBODgb6ctCOiKA9xRU/WzhFDoNQTGJ0oAPiUcJkDOYbKNI3QJf67zJf9QWQqwcb/RfqGTa5QtABf6km9S6AtSANkFQYb650xaXqYBU1f2PRy8JcCKmieIgj/MAmBXYAvA4TM4TI5bALX1o02zAji3fpTYBFClpm4VBd/MInCwAQhVYr1uCVDSvW7LWSh0YxeAdVxvnTCzBWDQG2yR4QNH6BIWAGA3YIQP/PCf0dVzlngFEIW+GL8gvkhkZw0rDK47eIz4G72YFVGovtgNzhLG+nz+682KR57t8fouZJQA9b0p755H2xW1j1L4Avs8yZa2RgMe9DFbD3Z4ncc6aPfq0/dOxvt8fWsA1QFtn3cjqpgAslAlcGvZV4legdFY+q0rrlDd1xFOyVkAlkD2BKB7ImlgnydJjbYZ9JxIKfgoiYNnZPgEBs3rdDVDy5II4Cp2Y+k/r6hC9W6x10PQRcFPSAmw9dsSFIUO3hYAvcDdj+YIEOmIaTkFsLeaqrmzp1ChuqLL92+XywXr5Z+lrKldJSXgrr9jIvsbSlE4BMBuAOFbAjSvWl2nqlCoLKcAwY8nmhUhAMLVIbvChxQ5+1z6m7qk7nPbkwF378+os4USZ+gCeU4lNWGcGfUHnf65kqJOlC2nAOOWAAf0S1VbqM5dCDKEFv02Z6HXt1Hwi1ICHCXgdwP+8cgVugShb9yXDq48tgTAuZKifx9ZTgH6V4oAVFfnKF+D3qDgYAuFQq8hDksBbHDYyNxLcjCYW0Bedi4EwImnkn8WX04Bmlc/mPLufKDVu3tzI1iovb92XjBdu6G2l+gglm33gHB1yK7wIUUR5yrw1ppABJcAEp5RhLEEUMETZZ0rWXIBar9cu4YYIT6o/UqtJ7nvvvsMSAKTDSTGhtq9RFkrHbXUbE+nCAqaMcLP2+VHKbQMgMk3ThLYf9vfYQMRp4htehFllyUTgALcqUL/MgXJFC+AJEN/q4gI1MC6y5fhBwJE7vKLLbRcnC/hGUIN9FtiLxUXgELaQKB7zwbvEKA10ep1dXUZtD7Wmk8A/vthIjYRqLFFl58jQJFdfvWXiglAAdVQMBM6JB8R/q7WXd7A8wPe6TdOh3Myy8CzA96uR3e5BACLRNm/FlK41okdQwDn7+krvVREAApjrQ5FhuTVN9R7HZ0d3ujhUW/2rVlvZmbGYHZ21uDMz84YHJs8pujq6PLqvlJnLFvztK5CUQVbNVH2KH8lltgFoBCc4Xd8xw+eww8T4OK/XfRuXL+huP7r6wZXr11VsAiJ3QnjOzSvE5G7aYSrQ3aFf9N1+XaJVQBq+IdEEIrGxkZvcGhQIcN3CSDDzycAM3t21hsaGTK+TxNp2jgKN++5fP22m7rEJgDtk3O2fBk+kOHbAsydnTPCjypAHglCnylA4UY7l/8ZKLEIQI19J2GE3/TNJm/0CHX5msxExggczM5QgJpLFy55169T0EUASS5fvuydnqGBIrGrhQaJog5f2NQwoqsYFISrQ3aF7zyXfzOXuAS4KBtehf9iNnxw/PXjFREAnJ07qwSYem3KFgB8TVcT4Zd8Lv9mLWULQA39lGz0IHxLAARUKQEACyAl0AJ8QKwh1OSNDm7qUX6hUpYA1Mjo+oMGB93f7c4RAN1/IQHOnjnrDDkfUgD0AixAX1+fFCDACh7c9KP8QqVcAaZl+B1PtnsDA/3Glg8mJiZUyLYANlf+/YoRqiv0MC5fuWwItatpl7fuK3UG/PQxzWeyy7dLyQJQ4Jtl+E1NTV7Pftr6rfCLEQBHBnEJMH54PEyABWLd7Xo9PuulHAGM07zde7tjEeDc/LlYBABtqZQtwCxRg/BvCeCXkgSgwHGe39j6IYCr+y9WACmBK+gw5i7M5QiQefWIIcBf/X19C4d/SwC/lCqAMfJP700rBr836BQATP9k2pv5CQUtsSUQr505c8a78gsaE7xPvQGjewabK5evOAXDD0p1m+sCqK7TehVuFV1KFQBX7KjwG7Y3BAIMDQ05wwfFCgAQ6rmfn8uKkCf8MAEGBwelAOAzPeq3S6kCcGN6iccTgQAjL444wweTP5rMCdgOzH6dg2XOzZ0zsF+3lxciwFa9GrcKlaIFoAbEBR6BABw+cAUvmZ62egErMOM1wg64EPbyQgSoygdMLVcpRYBeDr/ugTovvZ/C19iBHzl8xGDy2KQ3/cZ0gB1YuWA3I8m8klE0P9rsX3nk13vFPW20kqUUAcZLFQB/qwIBqv5Bk0tZShEgGAA2NjUWLQBYCgEw5mABevb3SAHyr+BnrMQqwNCweRQQJgCopAAIH9+x0gXA7xREzhXCRGzXK5QiQNCQyT1JQ4DnX3jeCDmfAEfGjngnXz9pDOLkFgxcIUvs92MZWKb8HoCTVLLeelWqrtQ8mK4hdhOYeTyYfDrAv4Mq4PP/kPiAGCHWrPrrWr2U4kqsAhx65pDR8PkEYHCWkEWwA3WFLrHfj2W5vqPaBaAtejORyQncJlcACZ5Wtpso6jxHrAIA2fBRBGAQnh2oK3QJv4+7/DCqVQAKCzeCZAj/52lX6JqtBweyT013C8A/ceMOo7wPi5SlFAGucUPu3LkzRwC5GyhGAAkCLSQAjvELBc9UowAUknqkvA7NEOCeb/eo5/0MzYwZTxKVz04GfRdmvUeeG7IFYHC3cMHeoBQBsoPAhxuM8Ht6exRB44+a2EIUAp/JvEoDOYuoy+MLU5r+samqzgPQ1quevWDd7Om1v9Lnnbg8ROHmf5g0c+k/TwX0zQwGj6pl6DsKPkW8FAFw3X1eAXDHT1wC5MP1GUmIAFN6VZalcPhSgK3P+A/dkk8SLyTAh4vnvI8/nTPAgySbBoekACxB6KQRpQiwjwWoo0Z1CRD0AkUGZmN/3sb1GQkLoMLPCjCoV2XJCwURhA8Qfv9Mvwq/GAH88K86BQDjb09KAVgCZ09QigDbogigJHipuMBs5GdduD4jQfjd3bT/NwVYlrkGaH88LAJRyPCLEcAPP1wAlsD6Pow3ciaMLEUAwI1p/BrY02NyqI8OC/VWqOCxgcYVWjnYy4eU8vaxz/3dFu+uBzt6iQ01t+kVWoJCDb+eCAZ5G/f1eKevY3Jn6wEP/zGiuPoxHgiV+1Qw+3Hyf/r0igGLceOTGfX+kTNjwW4GUB1ynh5atAAo1JgfcKPK6wFsARCAIYEVkCvEcpDLxjkJfH9DQ0MgAAVvQA2Cia4xgdMTREXuBqLl4myeP9oX4RcrwIn54aIFsCVQdbCeslKqAEluVJBPAEMCERBwhVgOvFwO37551CGAi3kCM5xiptPQOXajFloG5jr2l00CdJ84WFCAi/91hMLLqNB7X97rNT65S4HHx/a+2uNNXxyPLADY8dyAFAAy1ujqlSzAGtmwvBsIE4AJjg4qKACHD+TWDyIKYIMGw8mapwichw8ar1DBe4ngWF+GX0iA2euDQfBSAAYSYF9vC4ABogyfEQKAoBcoSQAUatCcq4Jl2MAWggeHtghxgGXK78bWfx/VS4AtcZDAzSBh9wYWAI2ooM+ryayVFLpJcgo1eoq7XzA2n/ZOvnvICx79ZgvwPkmhwVzA8kHS9sOkW3rbjZNE4MYnp70rf5wMkA+ZbH9l0BwQNqSVyOUIYFwZhCuDZQAgTIA4RcAyeHnyu7H1i/AXCWPLpeCwdaKbxxgAN4UGW2o4gQAa43XsOvYRDxFqPEGhL3D4bZnoAozPdhUUABw7O2gIIMO3BTjxiyNSAKBOF5csAAoFH5wVBG3tbUYIhQSQIEicRrZ/UbTh96Crt5fB38v7fiFApHn0EByBASGkCJ6EkoWDZ+zXDRY5fICJHqMK0PlSIpIAXSMdkQUA9+yhemUFUEcE5Qpg3BuI6+5KFQDIz6rPHzDJed3xeTnw0+HnbP3FFAoS+/29BHX5quuncCMJEIR//z8VJwBPB4/nAMQpAH5fEAIsYv3KEgCFGhqzdAWNjq43CMjGFqJM+HsC9nYE9VD4k0nFeuKHgsWuA8f1mPL+IhG+69CNnXjVFwBM/+oghU9Bq4c85RcAD4WQTw+vTzUZdL1EAoiBXhjnF0aVcHiOoHwoB9VtbdkCoFBjn5cNzxIstQAN2+ttAZbkCmAKGz/r4jd97DowFihLAN4FyKeDlCoAhx8iwLa4BMCtYsYMIZBgKQVwzBoWOkXMUhQpAIcPJt/xHyRdrADAFuDYHA0CHaGDy3/IGOGzAPele6QAvbEIgEINvp4wJNi6rb7iArS1tanwLQFwzULJ+/04SjkCgEICtBxIhAf/ewoevy+I8CsuAAo1unOKuD3fTnh9T5tbLMDdxAaOgPPR0tKS/aEn+2MPgAC4fwGzllXkFG+hEiYACASwET8M4SFQ+R4mPfWO/wRxA1soCzxM8n4IoCefjl0AFDQ4kSPBIw+Z1w6AUgVoaW1R9yQY4ZsC2KA+x4glmxQinwDGOCCPAD1H9zgFGDiZqmoBsNVdJnKDoJAaHm7wEm0JFWQpAnD4RQogwbzFg0RFdxEkAM62OQUwdgMChI5nAPKj4GT4UgCm8bvNiud/3EWfX0YBqDFxPmCYyNnyDXRQkABg2tjuvZ15Bejs6vRST6S89t3tKnwD2gUwHU92eO3J9gB1FZCrDlkW6CghtmnX7UICBI/EkUcBjN0LtPbRKF8HX6wAzOxv8Nxgd/gAAnD4WoANZQlAjYjgs78JyK2R4JsyQeM3Gr3W1lYDTBgtQchM667c13N4dJeX2pPyevb1KPqe7lPXDPJcw8enjivS6bRX/6B1iEisv289eJ2oWRXz9QEkwAT//p8Yo9DPmg+SxnN/5j6irZboHKOtngK1B33Fkh4TTxIHlgCjZ/t4mhxFfUPj2v+lvJnIAlDjgRHZmAoRvurm9c/EoG13W0EBELrEfl2CrZyDlwJw+MCeWXTiBxOqN+H6agHANSVBjIUEaGQB1n8nVwAwPufDW7Qr1GJo7BRPEncI0PbyQSnAnzBPStECUMN9LQjcQu7fFUIABf0t9WSqZAEQOnYbvHxbALn12+ErrvhABNRXCKAkoF1CbBKQAHewACBMAN764xLA6AUsAUT44NWiBEDjUKO9JQNnMCcwZgMPgmccAkgQZvKJpJIGyF2AQgcuQ5fI8DE9Td7wgRaAwb2NUgJax3gleDB9jQXAbsAlAIcflwBGLyDCx/UHlgA0/okoAIXsPLTDPnh8bDwbRE+F2W8iZcCNInyPIWYPcU0nY08sBSm6uruyRxX+emX0apdd7rAeJj1Cgz/J6NkOb9Pj9QE5g0BHyPlgkWYpbDB1JR3QNUUi4tDUR/0QhMKZq9xdAlCDOMMfGKBRpW7wQAJXaHESIgDClwIAzB0URQBgCQCe0qtfVsETvQg83UsJsOOF/ALgCeJxCDA605UjAH6VFAJEuyKIGiInfOy7XQ2uJHCFFicOATI/yDjrA+yeIEyAYz86ZguAdS77ekAUCh6PdlMCrG7KLwAeI7/pWzvKFqBjJGEIsOmAIUC0awIbGhpyfuCR4bsafOrYlDu4uBDhHzx40KiLqz4M9wZhArAEcl2Ji6ohYigU/nkWQErgEoCBCFva3UGHwQJwL4Dw0fXzdQlaAOPGUVOA/6P/ECgN2xuelg3C8//LhrVv2OS/Y7o4bJ04LJNwlx2GDBjYr/NycIWx6/vzgQkoc3YLYg5CLA+7sU1f3RRA6x3LtQTU6LjSyHiUfN+FjBKgbSzl3f+dpEIK4EvQYCADtkkMtnqJlzvVMpnEyRPeFxsSAVSHnHkS8wkQ3AUs5/+XkzrkNLL+O5j84aQRPrADtYkiwPFjx0O/vxD4jLFb0OFjHkJepiVAbPMJUeM3swAsgQxLQb1C9w+TAckXEwZtFDI4dCKl6CGMJ4pby5PhE0bXz8UpAIVfgxs+WIBgCnh9XV5YAPx3CQLDZ8sRAD0KhLKXbX9/IeRnIQKCl+ED2Qvo9Y/tiiIKPniUPMBWb4SG3UIe5NPDgRE+0MtBT4BT0DJ8IsK9gVkB7pUCqPCFANwT5GtgF5jLf+zlMcXA9wbUsXv/M/0q5N6DverIAvB3uEKX2N9fCNcyXFgCzOi2Kr/U1BoSrH6wXYHdQFwCrO/qVuELAXT4d+tKmMUUQP+HVjqFlefz+KOvUCBACADk9C6AZ+xgZKMCVyhLiV2fMEZeGLEvMInliIALdcUpjAnu2JoMuKszox4PbwRcQAA8cp7BI+g5+AD/yuZ79dc6S5gAB6QAaVyRS4Rdss0i3CwCAEuA2E4OcaFgNlDwi1ICHq1v3JdWMuQTIHnUD33dUxQ0n3I2BcCNMAXPahYlALpqeyIoG57epVoFgKiop+y5XCR306g8K0Bw5izOQqHXEIcJJQILwHCw6zt9vrTXCDgbPOP//RoRedwSJoC64QPhtzzWYggACt28weC8wMkT4UcNS409ixjmEMQg9dTJU0b4ALsBIQDYrNssvnIbbaAEi0ChGzeThAScxXwd1x98Uy85cskrAGhubvZ6DtConGABgrt9C0zYIBv7+I+OG7uHSvQQ9vLlSaLMUTruFvVxgfeA468dV5/ZuHGjZEK3WUULddu4XQ13J2cvL3eD+xtxS1snUfIYpSQBVC/wPPUCRQjAVHIXIcMHCBFhuuoRBdxlJASoyG4gSqGAeYbQr5YTtquULIDqBUoQgIEI9n7YFWoxyPALTSE39P0hNZ7JtzvD426FAGiPZbnCuJKlZAFAoTmAXI1qIw8lXaEWQ5TgGXk7eZgEDgF6dbvdNKUoAewfZ+yGKySA/bqN3P8C2TuEAXl4cOdapiQ4oaUxZLbqqqD3BFPMAWoX3W43TSlLAPuQMKfBxWuu123s9wOEG5Axsd/rWqZEhq8OcR/I/7wDvM+eZUy3201TyhLAbjS7wfmS7bDXbeSynIgAFdbrrmVK5GdbHvXvLygkAJACELHebbzcpaICBCeS9vnvs1+3kctyIgJUWK+7limRn2UBcH8BC5Dz1DP9XkuAZZtoshIlvwDra73EY3IewFwB5DjAbvDmlmbVyPgXAyr79aVGhptMJpWcuKCVBQg7y4npb1R7+PMNxHahSDWUJREAVKsAqocqIEAw27gvwLKdD6hEKVsA2Wh2g8srbqtNAPz8zALIuY3kexhLABDryZjlLGEC+I+GIwEatsmZQEsXAP+3X19qZKhhAoSdE7AEiP93gWUqpgDZC0IO4IKQjV/eqOg91KtwCSC3GrvBe3upkbUArY+35rxeaeRJKoUYBIL6bfUBEBwXqUhGx+h9Pm/Vfb0Ot8I1EzfN1o8SiwC81dgBrDABFin0eWKKGCQ2UPBrdDvdtCVMgA3EMIU/Dyj8xXIFAPbrlUaEv0DMU+hgmDhApCj4tUC3xWeyOAXgcvtttxugUPBriQ2Awt9G9JIAvSRALzU6GCTmQeaVzDwFH8B/j4Fxgr+PaSY2CG6qrrpSJSuAt+r/AXmtkiWB9cZvAAAAAElFTkSuQmCC" alt="">Meus Sims</button>
-    <button class="nav-item" data-view="gallery"><img class="nav-ico" src="data:image/png;base64,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" alt="">Minha galeria</button>
-    <button class="nav-item" data-view="albums"><img class="nav-ico" src="data:image/png;base64,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" alt="">Álbuns</button>
-    <div class="sb-title">Minhas famílias <button class="ibtn" id="newFamilyBtn" style="width:22px;height:22px;font-size:14px" title="Nova família">+</button> <button class="ibtn" id="importBtn" style="width:22px;height:22px;font-size:12px" title="Importar do The Sims 4">⇪</button></div>
-    <ul class="fam-list" id="famList"></ul>
-    
+    <div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iNDAgMTAzIDE5MiAxOTIiPjxkZWZzLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48Zy8+PGcgaWQ9ImRpdjEiIG1hc2s9InVybCgjbWFzay1mb3ItZGl2MTEpIj48Zz48bGluZWFyR3JhZGllbnQgeDE9IjE1JSIgeTE9IjE1JSIgeDI9Ijg1JSIgeTI9Ijg1JSIgaWQ9ImxpbmVhci1ncmFkaWVudDEiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9InJnYigyNDMsMjM2LDI1NSkiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0icmdiKDIyNywyMTQsMjUxKSIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgeD0iNDAiIHk9IjEwMyIgZmlsbD0idXJsKCNsaW5lYXItZ3JhZGllbnQxKSIgcng9IjQyLjI0IiByeT0iNDIuMjQiLz48L2c+PG1hc2sgaWQ9Im1hc2stZm9yLWRpdjExIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgeD0iNDAiIHk9IjEwMyIgZmlsbD0iI2ZmZmZmZiIvPjwvbWFzaz48ZyBpZD0ic3ZnMSIgcm9sZT0iaW1nIiBtYXNrPSJ1cmwoI21hc2stZm9yLXN2ZzExKSI+PGcvPjxnLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxtYXNrIGlkPSJtYXNrLWZvci1zdmcxMSI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHg9IjQwIiB5PSIxMDMiIGZpbGw9IiNmZmZmZmYiLz48L21hc2s+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC45NiAwIDAgMC45NiA0MCAxMDMpIj48ZWxsaXBzZSBjeD0iNzAiIGN5PSI3MiIgcng9IjEwIiByeT0iMjYiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTM5NjkzLCAtMC4zNDIwMiwgMC4zNDIwMiwgMC45Mzk2OTMsIC0yMC40MDM5LCAyOC4yODM1KSIgZmlsbD0icmdiKDI1NSwgMjQ2LCAyMzApIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48ZWxsaXBzZSBjeD0iMTMwIiBjeT0iNzIiIHJ4PSIxMCIgcnk9IjI2IiB0cmFuc2Zvcm09Im1hdHJpeCgwLjkzOTY5MywgMC4zNDIwMiwgLTAuMzQyMDIsIDAuOTM5NjkzLCAzMi40NjU0LCAtNDAuMTIwNSkiIGZpbGw9InJnYigyNTUsIDI0NiwgMjMwKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGVsbGlwc2UgY3g9IjcxIiBjeT0iNzQiIHJ4PSI0LjUiIHJ5PSIxNiIgdHJhbnNmb3JtPSJtYXRyaXgoMC45Mzk2OTMsIC0wLjM0MjAyLCAwLjM0MjAyLCAwLjkzOTY5MywgLTIxLjAyNzcsIDI4Ljc0NjIpIiBmaWxsPSJyZ2IoMjE3LCAyMDEsIDI1MCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMjkiIGN5PSI3NCIgcng9IjQuNSIgcnk9IjE2IiB0cmFuc2Zvcm09Im1hdHJpeCgwLjkzOTY5MywgMC4zNDIwMiwgLTAuMzQyMDIsIDAuOTM5NjkzLCAzMy4wODkxLCAtMzkuNjU3OSkiIGZpbGw9InJnYigyMTcsIDIwMSwgMjUwKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMC45MTM1NDUsIC0wLjQwNjczNywgMC40MDY3MzcsIDAuOTEzNTQ1LCAtMjEuNzYzNSwgNDEuNjEwOCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIGZpbGw9InJnYigwLCAwLCAwKSIgc3Ryb2tlPSJub25lIj48cG9seWdvbiBwb2ludHM9Ijc5LDQzLjIgODcsMzYgODcsNzIgNzksNzIiIGZpbGw9InJnYigyMTYsIDI0NSwgMTg0KSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PHBvbHlnb24gcG9pbnRzPSI4NywzNiA5NSw0My4yIDk1LDcyIDg3LDcyIiBmaWxsPSJyZ2IoMTY5LCAyMjYsIDEwNikiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxwb2x5Z29uIHBvaW50cz0iNzksNDMuMiA4NywzNiA4NC4yLDQ1LjIiIGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgb3BhY2l0eT0iMC41NSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGxpbmUgeDE9Ijg3IiB5MT0iMzYiIHgyPSI4NyIgeTI9IjcyIiBzdHJva2U9InJnYig5NSwgMTc0LCA0MykiIHN0cm9rZS13aWR0aD0iMS4ycHgiIG9wYWNpdHk9IjAuNSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgZmlsbD0icmdiKDAsIDAsIDApIi8+PC9nPjxnIHRyYW5zZm9ybT0ibWF0cml4KDAuOTI3MTg0LCAwLjM3NDYwNywgLTAuMzc0NjA3LCAwLjkyNzE4NCwgMzUuMTk5OSwgLTM3LjA4NzgpIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0ibm9uZSI+PHBvbHlnb24gcG9pbnRzPSIxMDUsNDEuMiAxMTMsMzQgMTEzLDcyIDEwNSw3MiIgZmlsbD0icmdiKDIzOSwgMjMwLCAyNTUpIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48cG9seWdvbiBwb2ludHM9IjExMywzNCAxMjEsNDEuMiAxMjEsNzIgMTEzLDcyIiBmaWxsPSJyZ2IoMjAxLCAxNzgsIDI0NSkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxwb2x5Z29uIHBvaW50cz0iMTA1LDQxLjIgMTEzLDM0IDExMC4yLDQzLjIiIGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgb3BhY2l0eT0iMC41NSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGxpbmUgeDE9IjExMyIgeTE9IjM0IiB4Mj0iMTEzIiB5Mj0iNzIiIHN0cm9rZT0icmdiKDE0MiwgMTExLCAyMTQpIiBzdHJva2Utd2lkdGg9IjEuMnB4IiBvcGFjaXR5PSIwLjUiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIGZpbGw9InJnYigwLCAwLCAwKSIvPjwvZz48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAwLCAwKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgZmlsbD0icmdiKDAsIDAsIDApIiBzdHJva2U9Im5vbmUiPjxwb2x5Z29uIHBvaW50cz0iODksMzMuOSAxMDAsMjQgMTAwLDcwIDg5LDcwIiBmaWxsPSJyZ2IoMjAwLCAyMzgsIDE1MikiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxwb2x5Z29uIHBvaW50cz0iMTAwLDI0IDExMSwzMy45IDExMSw3MCAxMDAsNzAiIGZpbGw9InJnYigxMzksIDIxNiwgNjEpIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48cG9seWdvbiBwb2ludHM9Ijg5LDMzLjkgMTAwLDI0IDk2LjE1LDM1LjkiIGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgb3BhY2l0eT0iMC41NSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGxpbmUgeDE9IjEwMCIgeTE9IjI0IiB4Mj0iMTAwIiB5Mj0iNzAiIHN0cm9rZT0icmdiKDc4LCAxNTQsIDM0KSIgc3Ryb2tlLXdpZHRoPSIxLjJweCIgb3BhY2l0eT0iMC41IiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBmaWxsPSJyZ2IoMCwgMCwgMCkiLz48L2c+PHBhdGggZD0iTTEzMyAzMCBsMi41IDYgNiAyLjUgLTYgMi41IC0yLjUgNiAtMi41IC02IC02IC0yLjUgNiAtMi41eiIgZmlsbD0icmdiKDE4MywgMTU0LCAyNDIpIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNNjYgNDQgbDEuNiA0IDQgMS42IC00IDEuNiAtMS42IDQgLTEuNiAtNCAtNCAtMS42IDQgLTEuNnoiIGZpbGw9InJnYigxMzksIDIxNiwgNjEpIiBvcGFjaXR5PSIwLjkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxyZWN0IHg9Ijc2IiB5PSIxMzIiIHdpZHRoPSI0OCIgaGVpZ2h0PSI4MCIgcng9IjIyIiBmaWxsPSJyZ2IoMjU1LCAyNDYsIDIzMCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMDAiIGN5PSIxMTIiIHJ4PSI0MCIgcnk9IjM2IiBmaWxsPSJyZ2IoMjU1LCAyNDYsIDIzMCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxjaXJjbGUgY3g9Ijg2IiBjeT0iODAiIHI9IjEzIiBmaWxsPSJyZ2IoMjU1LCAyNDYsIDIzMCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9Ijc0IiByPSIxNCIgZmlsbD0icmdiKDI1NSwgMjQ2LCAyMzApIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48Y2lyY2xlIGN4PSIxMTQiIGN5PSI4MCIgcj0iMTMiIGZpbGw9InJnYigyNTUsIDI0NiwgMjMwKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iOTMiIGN5PSI4NiIgcj0iMTAiIGZpbGw9InJnYigyNTUsIDI1MSwgMjQzKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iMTA3IiBjeT0iODUiIHI9IjEwIiBmaWxsPSJyZ2IoMjU1LCAyNTEsIDI0MykiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxlbGxpcHNlIGN4PSIxMDAiIGN5PSIxMzAiIHJ4PSIyNSIgcnk9IjE4IiBmaWxsPSJyZ2IoMjQzLCAyMjMsIDIwMCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxlbGxpcHNlIGN4PSI4MyIgY3k9IjEwOCIgcng9IjUuNSIgcnk9IjciIGZpbGw9InJnYig1OCwgNDIsIDQyKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGVsbGlwc2UgY3g9IjExNyIgY3k9IjEwOCIgcng9IjUuNSIgcnk9IjciIGZpbGw9InJnYig1OCwgNDIsIDQyKSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iODUiIGN5PSIxMDUiIHI9IjIiIGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iMTE5IiBjeT0iMTA1IiByPSIyIiBmaWxsPSJyZ2IoMjU1LCAyNTUsIDI1NSkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxjaXJjbGUgY3g9IjcxIiBjeT0iMTI0IiByPSI3IiBmaWxsPSJyZ2IoMjAxLCAxNzgsIDI0NSkiIG9wYWNpdHk9IjAuNiIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGNpcmNsZSBjeD0iMTI5IiBjeT0iMTI0IiByPSI3IiBmaWxsPSJyZ2IoMjAxLCAxNzgsIDI0NSkiIG9wYWNpdHk9IjAuNiIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGVsbGlwc2UgY3g9Ijk0IiBjeT0iMTI1IiByeD0iMi41IiByeT0iMiIgZmlsbD0icmdiKDEyMiwgNzUsIDU4KSIgY29sb3I9InJnYigxNCwgMjAsIDExKSIgc3Ryb2tlPSJub25lIi8+PGVsbGlwc2UgY3g9IjEwNiIgY3k9IjEyNSIgcng9IjIuNSIgcnk9IjIiIGZpbGw9InJnYigxMjIsIDc1LCA1OCkiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjxwYXRoIGQ9Ik05MiAxMzQgUTEwMCAxNDEgMTA4IDEzNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMTIyLCA3NSwgNTgpIiBzdHJva2Utd2lkdGg9IjIuNXB4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiLz48cGF0aCBkPSJNNzQgMTYyIFExMDAgMTcyIDEyNiAxNjIgTDEyOCAxODIgUTEwMCAxOTIgNzIgMTgyIFoiIGZpbGw9InJnYigxMzksIDIxNiwgNjEpIiBjb2xvcj0icmdiKDE0LCAyMCwgMTEpIiBzdHJva2U9Im5vbmUiLz48cGF0aCBkPSJNNzMgMTcxIFExMDAgMTgxIDEyNyAxNzEiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiKDk1LCAxNzQsIDQzKSIgc3Ryb2tlLXdpZHRoPSI0cHgiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiLz48cGF0aCBkPSJNMTA4IDE3OCBsNCAxOCBsOCAtMiBsLTQgLTE3IHoiIGZpbGw9InJnYig5NSwgMTc0LCA0MykiIGNvbG9yPSJyZ2IoMTQsIDIwLCAxMSkiIHN0cm9rZT0ibm9uZSIvPjwvZz48L2c+PC9nPjwvc3ZnPg==" alt="Raízes Sims"><span class="brand-name">LhamaTree</span></div>
+    <label class="sb-search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sbSearch" type="search" placeholder="Buscar Sim ou família" aria-label="Buscar Sim ou família" autocomplete="off"><kbd>/</kbd></label>
+    <nav class="nav">
+      <button class="nav-item" data-view="families"><svg class="nv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v4M12 11.5H5v5M12 11.5h7v5"/></svg>Minhas famílias<span class="count" id="cntFam"></span></button>
+      <button class="nav-item" data-view="people"><svg class="nv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.6.8 2.7 2.5 3 5.2"/></svg>Meus Sims<span class="count" id="cntPeople"></span></button>
+      <button class="nav-item" data-view="gallery"><svg class="nv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-9 9"/></svg>Minha galeria</button>
+      <button class="nav-item" data-view="albums"><svg class="nv" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2.5"/><path d="M7 3h11.5A2.5 2.5 0 0 1 21 5.5V17"/><path d="M3.5 18l4.5-4.5 3 3 2.5-2.5 3.5 3.5"/></svg>Álbuns</button>
+    </nav>
+    <div class="fam-sec">
+      <div class="cap">Minhas famílias<button class="ibtn" id="newFamilyBtn" title="Nova família" aria-label="Nova família"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <ul class="fam-list" id="famList"></ul>
+    </div>
+    <div class="import-card">
+      <strong>Importar do The Sims 4</strong>
+      <p>Traga as famílias do seu save em poucos cliques. O arquivo fica só no seu navegador.</p>
+      <button type="button" class="btn dark" id="navImport"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v2.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V16"/></svg>Importar save</button>
+    </div>
   </aside>
 
   <div class="right">
     <header class="hdr">
       <div class="hdr-l">
-        
-        <div class="fam-av" id="famIcon"></div>
-        <div style="min-width:0">
-          <h1 id="famName"></h1>
-          <small id="famMeta"></small>
+        <div class="hdr-t">
+          <span class="crumb" id="famCrumb"></span>
+          <div class="title-row">
+            <div class="fam-av" id="famIcon"></div>
+            <h1 id="famName"></h1>
+            <span class="pill" id="famMeta"></span>
+            <button class="ibtn" id="renameFamily" title="Editar família" aria-label="Editar família"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>
+          </div>
         </div>
-        <button class="ibtn" id="renameFamily" title="Editar família" style="margin-left:4px"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg></button>
       </div>
       <div class="hdr-r">
-<div class="toolbar" id="treeTools">
-      <div class="zoom">
-        <button id="zoomOut" title="Diminuir zoom">−</button>
-        <span id="zoomVal">100%</span>
-        <button id="zoomIn" title="Aumentar zoom">+</button>
-        <button id="zoomCenter" class="txt" title="Centralizar a árvore">Centralizar</button>
-        <button id="zoomFit" class="txt" title="Ajustar à tela">Ajustar</button>
-      </div>
-      <button class="btn dark" id="addPersonBtn">+ Personagem</button>
-    </div>
-        
+        <div class="toolbar" id="treeTools">
+          <div class="seg" role="group" aria-label="Zoom da árvore">
+            <button id="zoomOut" title="Diminuir zoom" aria-label="Diminuir zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+            <button id="zoomVal" class="zv" title="Voltar para 100%">100%</button>
+            <button id="zoomIn" title="Aumentar zoom" aria-label="Aumentar zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+          <div class="seg" role="group" aria-label="Visualização">
+            <button id="zoomCenter" title="Centralizar a árvore"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><circle cx="12" cy="12" r="2.5"/></svg><span class="lbl">Centralizar</span></button>
+            <span class="sep"></span>
+            <button id="zoomFit" title="Ajustar à tela"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="lbl">Ajustar</span></button>
+          </div>
+          <button class="btn dark" id="addPersonBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">Personagem</span></button>
+        </div>
       </div>
     </header>
 
@@ -626,7 +922,7 @@ const CAUSES_OF_DEATH=['Não informada','Velhice','Doença','Acidente','Afogamen
 const WORLDS=['Willow Creek','Oasis Springs','Newcrest','Strangerville','Magnolia Promenade','Brindleton Bay','Windenburg','San Myshuno','Del Sol Valley','Sulani','Tartosa','Evergreen Harbor','Glimmerbrook','Mt. Komorebi','Granite Falls','Henford-on-Bagley','Foxbury','Outro'];
 const OCCULTS=['Nenhum','Humano','Vampiro','Lobisomem','Feiticeiro','Sereia','Fantasma','Alienígena','Robô'];
 const ASPIRATIONS=['Amor verdadeiro','Família','Culinária','Pintura','Crime','Mestre do conhecimento','Atleta','Fama','Cavalheiro/Dama','Ciência'];
-const CAREERS=['Artista','Médico(a)','Cientista','Chef','Escritor(a)','Criminoso(a)','Empresário(a)','Jardineiro(a)','Músico(a)','Atleta','Sem carreira'];
+const CAREERS=['Astronauta','Atleta','Negócios','Criminoso','Culinária','Entretenimento','Pintor','Agente Secreto','Influenciador de Estilo','Guru da Tecnologia','Escritor','Crítico','Político','Mídias Sociais','Jardineiro','Militar','Conservacionista','Educação','Engenharia','Direito','Designer Civil','Assalariado','Consultor Romântico','Agente Funerário','Funcionário de Parque','Médico','Cientista','Detetive','Ator/Atriz','Ceifador','Decorador de Interiores','Naturopata','Nobre','Babá','Barista','Funcionário de Fast-Food','Trabalhador Manual','Funcionário de Loja','Mergulhador','Pescador','Salva-vidas','Simfluencer','Streamer de Jogos','Faz-Tudo','Artista Digital Freelancer','Programador Freelancer','Escritor Freelancer','Artesão Freelancer','Fotógrafo de Moda Freelancer','Investigador Paranormal','Escoteiro','Clube de Teatro','Líder de Torcida','Equipe de Xadrez','Equipe de Computação','Equipe de Futebol Americano','Competidor de eSports','Jogador do Time de Futebol'];
 const ICON_IMGS={marriage:'data:image/webp;base64,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',
   neighbor:'data:image/webp;base64,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',
   speech:'data:image/webp;base64,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',
@@ -643,7 +939,7 @@ const ICONS=Object.keys(ICON_IMGS);
 const iconHTML=v=>ICON_IMGS[v]?`<img class="ico-img" src="${ICON_IMGS[v]}" alt="">`:esc(v);
 const PALETTE=['#2c5e47','#b5653a','#6a5a9a','#3d6b8f','#a24f4f','#6b8a2f','#a8831f','#2f7a7a'];
 const CARD_W=118, FRAME=98, CARD_H=150, SP_GAP=54, GAP_X=26, ROW_H=CARD_H+84, PAD_X=120, PAD_Y=14;
-const LINE_DARK='#2c5e47', LINE_LIGHT='#fff4e6';
+const LINE_DARK='#2c5e47', LINE_LIGHT='#fff4e6', LINE_DEF='#F8F3EA';
 const PERSON_DEFAULTS={gender:'Não definido',status:'Vivo',birthDate:'',deathDate:'',causeOfDeath:'',stage:'Adulto',bio:'',traits:[],aspiration:'',career:'',skills:[],world:'',occult:'Nenhum',photo:null,avatar:''};
 const AVATARS=['','😀','😎','🤓','🥳','🧑‍🎨','👩‍🍳','🧑‍🔬','🧔','👵','👴','🧒','👶','🐶','🐱','🌳'];
 const TRAITS=['Atlético','Brincalhão','Gentil','Sociável','Ambicioso','Artista','Curioso','Organizado','Tímido','Criativo','Bom humor','Competitivo','Sábio','Músico'];
@@ -837,11 +1133,22 @@ function render(){
   applyBg(); renderSidebar(); renderTopbar(); renderTree(); renderPeople(); renderFicha(); renderFamilies(); renderGallery(); renderAlbums();
   if(ui.fitNext&&L){ui.fitNext=false; fit()} else applyZoom();
 }
+const genCountOf=fid=>{
+  const ids=new Set(db.people.filter(p=>p.familyId===fid).map(p=>p.id));
+  if(!ids.size) return 0;
+  const par={}; db.rels.forEach(r=>{ if(r.type==='parent'&&ids.has(r.a)&&ids.has(r.b)) (par[r.b]=par[r.b]||[]).push(r.a); });
+  const memo={}; const d=(id,seen)=>{ if(memo[id]!==undefined) return memo[id]; if(seen.has(id)) return 0; seen.add(id); const v=(par[id]||[]).reduce((m,x)=>Math.max(m,d(x,seen)+1),0); memo[id]=v; return v; };
+  let m=0; ids.forEach(id=>{ m=Math.max(m,d(id,new Set())); }); return m+1;
+};
 function renderSidebar(){
-  $('#famList').innerHTML=db.families.length?db.families.map(f=>{
-    const n=db.people.filter(p=>p.familyId===f.id).length;
-    return `<li class="${f.id===db.activeFamily?'active':''}"><button data-fam="${f.id}"><span class="ic">${iconHTML(f.icon)}</span><span>${esc(f.name)}<small>${n} personagens</small></span></button></li>`;
-  }).join(''):'<li class="none-li">Nenhuma família ainda</li>';
+  const q=(ui.sbQ||'').trim().toLowerCase();
+  const list=q?db.families.filter(f=>f.name.toLowerCase().includes(q)||db.people.some(p=>p.familyId===f.id&&fullName(p).toLowerCase().includes(q))):db.families;
+  $('#famList').innerHTML=list.length?list.map(f=>{
+    const n=db.people.filter(p=>p.familyId===f.id).length, g=genCountOf(f.id);
+    return `<li class="${f.id===db.activeFamily?'active':''}"><button data-fam="${f.id}"><span class="ic">${iconHTML(f.icon)}</span><span class="fn">${esc(f.name)}<small>${n} ${n===1?'personagem':'personagens'} · ${g} ${g===1?'geração':'gerações'}</small></span></button></li>`;
+  }).join(''):`<li class="none-li">${db.families.length?'Nada encontrado':'Nenhuma família ainda'}</li>`;
+  const cf=$('#cntFam'), cp=$('#cntPeople');
+  if(cf) cf.textContent=db.families.length||''; if(cp) cp.textContent=db.people.length||'';
 }
 const BGS=[
   {n:'Padrão',v:null},
@@ -858,11 +1165,11 @@ const BGS=[
 const bgCss=bg=>!bg?'':bg.kind==='img'?`url('${bg.value}') center/cover no-repeat`:bg.value;
 function applyBg(){
   const f=fam(), m=document.querySelector('#treeView .main');
-  if(m) m.style.background=f&&f.bg?bgCss(f.bg):'';
+  if(m){ m.style.background=f&&f.bg?bgCss(f.bg):''; m.classList.toggle('def-bg',!(f&&f.bg)); }
 }
 function bgModal(){
   const f=fam(); if(!f) return;
-  const look=Object.assign({lines:null,card:'#ecebe6',shape:'circle',surnames:true,status:true},f.look||{});
+  const look=Object.assign({lines:null,card:'#f6f4ff',shape:'rounded',surnames:true,status:true},f.look||{});
   const isOn=b=>(!f.bg&&!b.v)||(f.bg&&f.bg.kind==='css'&&f.bg.value===b.v);
   openModal(`<div class="form">
     <header><h2>Personalizar árvore</h2><button type="button" class="btn ghost" data-close>×</button></header>
@@ -909,8 +1216,9 @@ function renderTopbar(){
   const f=fam();
   const fv=ui.view==='families';
   $('#famName').textContent=fv?'Minhas famílias':(f?f.name:'Nenhuma família');
+  $('#famCrumb').textContent=fv?'Início':f?'Minhas famílias / '+f.name:'Minhas famílias';
   const fi=$('#famIcon'); fi.classList.toggle('bare',fv||!!(f&&ICON_IMGS[f.icon])); if(fv){ fi.innerHTML='<img src="data:image/webp;base64,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" alt="">'; } else { fi.innerHTML=iconHTML(f?f.icon:'🌱'); }
-  $('#famMeta').textContent=fv?`${db.families.length} famílias`:f?`Gerações · ${L?L.maxDepth+1:0}`:'Crie sua primeira família';
+  { const g=L?L.maxDepth+1:0; $('#famMeta').textContent=fv?`${db.families.length} ${db.families.length===1?'família':'famílias'}`:f?`${g} ${g===1?'geração':'gerações'}`:'Crie sua primeira família'; }
   $('#renameFamily').classList.toggle('hidden',!f||fv);
   $('#addPersonBtn').disabled=!f;
   $('#bgBtn').disabled=!f;
@@ -945,9 +1253,10 @@ function renderTree(){
     return;
   }
   empty.classList.add('hidden');
-  const LK=Object.assign({lines:null,card:'#ecebe6',shape:'circle',surnames:true,status:true},(fam()||{}).look||{});
+  const LK=Object.assign({lines:null,card:'#f6f4ff',shape:'rounded',surnames:true,status:true},(fam()||{}).look||{});
   const mid=L.W/2;
-  const colorOf=cx=>LK.lines||(cx<mid?LINE_DARK:LINE_LIGHT);
+  const hasBg=!!(fam()&&fam().bg);
+  const colorOf=cx=>LK.lines||(hasBg?(cx<mid?LINE_DARK:LINE_LIGHT):LINE_DEF);
   const par={}, spP={}; let barHits='';
   const add=(obj,col,d)=>{obj[col]=(obj[col]||'')+d};
   L.units.forEach(u=>{
@@ -975,7 +1284,7 @@ function renderTree(){
     for(let i=0;i<u.members.length-1;i++){
       const a=L.pos[u.members[i]], b=L.pos[u.members[i+1]];
       const x1=a.x+CARD_W-6, x2=b.x+6, y=a.y+FRAME/2+4;
-      add(spP,LK.lines||LINE_LIGHT,`M${x1} ${y}H${x2}`);
+      add(spP,LK.lines||(hasBg?LINE_LIGHT:LINE_DEF),`M${x1} ${y}H${x2}`);
       const sr=rls().find(r=>r.type==='spouse'&&((r.a===u.members[i]&&r.b===u.members[i+1])||(r.a===u.members[i+1]&&r.b===u.members[i])));
       const badge=`<img src="${(sr&&sr.icon)||CASADO_ICON}" alt="" style="width:26px;height:26px;object-fit:contain;mix-blend-mode:multiply;display:block">`;
       const tip=sr?` data-tip="${esc(sr.label||'Casado(a)')}" data-rel="${sr.id}"`:'';
@@ -1025,7 +1334,8 @@ function renderTree(){
       <div class="frame">${avatarInner(per)}</div>
       <div class="nm">${esc(per.first)}<br><span class="ln">${esc(per.last)}</span></div>
       </button>
-      <button class="node-more" data-more="${id}" style="left:${p.x+CARD_W-18}px;top:${p.y+2}px" title="Ações">⋮</button>`;
+      <button class="node-more" data-more="${id}" style="left:${p.x+CARD_W-18}px;top:${p.y+2}px" title="Ações">⋮</button>
+      <button class="node-more node-del" data-delnode="${id}" style="left:${p.x+2}px;top:${p.y+2}px" title="Excluir personagem" aria-label="Excluir personagem">×</button>`;
     if(ui.menu===id){
       menuHTML=`<div class="node-menu" style="left:${p.x+CARD_W+10}px;top:${p.y}px">
         <button data-mact="view" data-mid="${id}">Ver ficha</button>
@@ -1046,7 +1356,7 @@ function renderTree(){
     ${bandsLabels}${spouseBadges.join('')}${nodeHTML}${menuHTML}`;
   stage.classList.toggle('polaroid',LK.shape==='polaroid');
   stage.style.setProperty('--frame-bg',LK.card);
-  stage.style.setProperty('--frame-radius',LK.shape==='square'?'0':LK.shape==='rounded'?'16px':'50%');
+  stage.style.setProperty('--frame-radius',LK.shape==='square'?'0':LK.shape==='rounded'?'12px':'50%');
   $('#app').classList.toggle('hide-surnames',!LK.surnames);
   $('#app').classList.toggle('hide-status',!LK.status);
   spouseBadges.length=0;
@@ -1080,54 +1390,54 @@ function renderFicha(){
   if(!valid){ f.innerHTML=''; return; }
   const gen=L&&L.pos[p.id]?L.pos[p.id].depth+1:'—';
   const dead=isDead(p);
-  const item=(q,unlinkId,label,icon)=>`<li><button class="lk" data-go="${q.id}">${icon?`<img src="${icon}" alt="" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;margin-right:6px">`:''}${esc(fullName(q))}<small>${label?esc(label)+' · ':''}${esc(q.stage)}${isDead(q)?' · falecido':''}</small></button>${unlinkId?`<button class="unlink" data-unlink="${unlinkId}" title="Remover vínculo">×</button>`:''}</li>`;
+  const X='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const PLUS='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  const chip=(q,unlinkId,label,icon)=>`<div class="chip"><button class="chip-go" data-go="${q.id}"><span class="chip-av">${avatarInner(q)}</span><span class="chip-nm">${esc(fullName(q))}${label?`<small>${esc(label)}</small>`:''}</span>${icon?`<img class="chip-ic" src="${icon}" alt="">`:''}</button>${unlinkId?`<button class="unlink" data-unlink="${unlinkId}" title="Remover vínculo" aria-label="Remover vínculo com ${esc(fullName(q))}">${X}</button>`:''}</div>`;
   const parentRels=rls().filter(r=>r.type==='parent'&&r.b===p.id);
   const kidRels=rls().filter(r=>r.type==='parent'&&r.a===p.id);
   const spouseRels=rls().filter(r=>r.type==='spouse'&&(r.a===p.id||r.b===p.id));
   const linkRels=rls().filter(r=>r.type==='link'&&(r.a===p.id||r.b===p.id));
   const sibLinks=linkRels.filter(r=>r.label==='Irmão/irmã');
   const otherLinks=linkRels.filter(r=>r.label!=='Irmão/irmã');
-  const sec=(title,items,addType)=>`<section class="fsec"><div class="fsec-h"><h4>${title}</h4>${addType?`<button class="link-add" data-add="${addType}">+ Adicionar</button>`:''}</div>${items.length?`<ul class="rel">${items.join('')}</ul>`:'<p class="none">Nenhum</p>'}</section>`;
+  const blk=(title,items,addType)=>`<div class="rel-block"><div class="rel-row"><span class="rel-label">${title}</span>${addType?`<button class="link-add" data-add="${addType}">${PLUS}Adicionar</button>`:''}</div>${items.length?items.join(''):'<span class="rel-empty">Nenhum ainda</span>'}</div>`;
   const gal=photosFor(p.id);
-  const lines=(icon,arr)=>arr.length?arr.map(v=>`<div class="iv"><span class="ic">${icon}</span>${esc(v)}</div>`).join(''):'<div class="iv none">—</div>';
-  const irow=(k,v)=>`<div class="irow"><div class="ik">${k}</div><div class="ivs">${v}</div></div>`;
+  const dd=v=>v?`<dd>${esc(v)}</dd>`:'<dd class="na">Não informado</dd>';
   f.innerHTML=`
-    <div class="sc-head"><h3>Sim Card</h3><button class="ficha-close" data-act="close" title="Fechar">×</button></div>
+    <div class="sc-head"><span>Ficha do Sim</span><button class="ibtn ficha-close" data-act="close" title="Fechar" aria-label="Fechar ficha">${X.replace('width="14" height="14"','width="18" height="18"')}</button></div>
     <div class="ficha-body">
       <div class="sc-id">
         <div class="ficha-av${dead?' dead':''}">${avatarInner(p)}</div>
         <h2>${esc(fullName(p))}</h2>
-        <p class="sc-state">${dead?'Falecido':'Vivo'}${dead&&p.causeOfDeath?' · '+esc(p.causeOfDeath):''}</p>
+        <div class="sc-tags"><span class="${dead?'tag-gray':'tag-green'}">${dead?'Falecido':'Vivo'}</span><span class="pill">Geração ${gen}</span></div>
+        ${dead&&p.causeOfDeath?`<p class="sc-cause">${esc(p.causeOfDeath)}</p>`:''}
       </div>
       <section class="sc-sec">
-        <div class="sc-h"><h4>Galeria</h4><button class="sc-add" data-act="gal-add">Adicionar foto</button><input type="file" accept="image/*" id="galIn" hidden></div>
+        <div class="box-h"><h3>Galeria</h3><button class="link-add" data-act="gal-add">${PLUS}Adicionar foto</button><input type="file" accept="image/*" id="galIn" hidden></div>
         ${gal.length?`<div class="gal"><button class="gal-nav" data-act="gal-prev" aria-label="Anterior">‹</button>
           <div class="gal-track" id="galTrack">${gal.map((g,i)=>`<div class="gal-it"><img src="${photoSrc(g)}" alt=""><button class="gal-rm" data-act="gal-rm" data-i="${i}" title="Remover foto">×</button><button class="gal-ed" data-act="gal-ed" data-i="${i}" title="Trocar foto">✎</button></div>`).join('')}</div>
-          <button class="gal-nav" data-act="gal-next" aria-label="Próxima">›</button></div>`:'<p class="none" style="margin:12px 0 4px">Nenhuma foto ainda.</p>'}
+          <button class="gal-nav" data-act="gal-next" aria-label="Próxima">›</button></div>`:`<div class="empty-gal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-9 9"/></svg>Nenhuma foto de ${esc(p.first)} ainda.</div>`}
       </section>
       <section class="sc-sec">
-        <div class="sc-h"><h4>Informações</h4></div>
-        <div class="irows">
-          ${irow('Aspiração',lines('🌟',p.aspiration?[p.aspiration]:[]))}
-          ${irow('Carreira',lines('💼',p.career?[p.career]:[]))}
-          ${irow('Mundo',lines('🌍',p.world?[p.world]:[]))}
-          ${irow('Ocultismo',lines('🔮',p.occult&&p.occult!=='Nenhum'?[p.occult]:[]))}
-          ${irow('Traços de personalidade',lines('✨',p.traits||[]))}
-          ${irow('Habilidades',lines('🎯',p.skills||[]))}
-        </div>
+        <div class="box-h"><h3>Informações</h3></div>
+        <dl class="info"><dt>Carreira</dt>${dd(p.career)}<dt>Mundo</dt>${dd(p.world)}<dt>Ocultismo</dt>${dd(p.occult&&p.occult!=='Nenhum'?p.occult:'')}</dl>
         ${p.bio?`<p class="bio">${esc(p.bio)}</p>`:''}
       </section>
-      ${sec('Pais',parentRels.map(r=>item(byId(r.a),r.id)),'parent')}
-      ${sec('Cônjuges e parceiros',spouseRels.map(r=>item(byId(r.a===p.id?r.b:r.a),r.id,r.label||'Cônjuge',r.icon||CASADO_ICON)),'spouse')}
-      ${sec('Outros vínculos',otherLinks.map(r=>item(byId(r.a===p.id?r.b:r.a),r.id,r.label||'Vínculo',r.icon)),null)}
-      ${sec('Filhos',kidRels.map(r=>item(byId(r.b),r.id)),'child')}
-      ${sec('Irmãos',[...siblingsOf(p.id).map(id=>item(byId(id))),...sibLinks.map(r=>item(byId(r.a===p.id?r.b:r.a),r.id,'Irmão/irmã',SIB_ICON))],'sibling')}
+      <section class="sc-sec">
+        <div class="box-h"><h3>Família</h3></div>
+        ${blk('Pais',parentRels.map(r=>chip(byId(r.a),r.id)),'parent')}
+        <div class="divider"></div>
+        ${blk('Cônjuges e parceiros',spouseRels.map(r=>chip(byId(r.a===p.id?r.b:r.a),r.id,'',r.icon||CASADO_ICON)),'spouse')}
+        ${otherLinks.length?`<div class="divider"></div>${blk('Outros vínculos',otherLinks.map(r=>chip(byId(r.a===p.id?r.b:r.a),r.id,r.label||'Vínculo',r.icon)),null)}`:''}
+        <div class="divider"></div>
+        ${blk('Irmãos',[...siblingsOf(p.id).map(id=>chip(byId(id))),...sibLinks.map(r=>chip(byId(r.a===p.id?r.b:r.a),r.id,'',SIB_ICON))],'sibling')}
+        <div class="divider"></div>
+        ${blk('Filhos',kidRels.map(r=>chip(byId(r.b),r.id)),'child')}
+      </section>
     </div>
     <div class="sc-foot">
       <button class="btn danger" data-act="delete" data-label="Excluir">Excluir</button>
       <span class="grow"></span>
-      <button class="btn sc-close" data-act="close">Fechar</button>
-      <button class="btn sc-edit" data-act="edit">Editar</button>
+      <button class="btn dark sc-edit" data-act="edit">Editar</button>
     </div>`;
 }
 
@@ -1162,7 +1472,7 @@ const wrap=$('#canvasWrap');
 let pan=null, panMoved=false;
 wrap.addEventListener('pointerdown',e=>{
   panMoved=false;
-  if(e.button!==0||e.target.closest('.node,.node-more,.node-menu,.spouse-badge')) return;
+  if(e.button!==0||e.target.closest('.node,.node-more,.node-del,.node-menu,.spouse-badge')) return;
   pan={x:e.clientX,y:e.clientY,l:wrap.scrollLeft,t:wrap.scrollTop};
 });
 window.addEventListener('pointermove',e=>{
@@ -1198,6 +1508,16 @@ function deletePerson(id){
   db.rels=db.rels.filter(r=>r.a!==id&&r.b!==id);
   if(ui.selected===id) ui.selected=null;
   commit(); toast('Personagem excluído.');
+}
+function confirmDeleteNode(id){
+  const per=byId(id); if(!per) return;
+  const nr=db.rels.filter(r=>r.a===id||r.b===id).length;
+  openModal(`<form class="form" onsubmit="return false">
+    <header><h2>Excluir personagem?</h2><button type="button" class="btn ghost" data-close>×</button></header>
+    <p class="imp-note"><b>${esc(fullName(per))}</b> será removido(a) da árvore${nr?`, junto com ${nr} vínculo${nr>1?'s':''} (pais, filhos, cônjuge). Os outros personagens continuam`:''}. Essa ação não pode ser desfeita.</p>
+    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn dark" id="delNodeOk" style="background:#c0392b">Excluir</button></footer></form>`,box=>{
+    box.querySelector('#delNodeOk').onclick=()=>{ closeModal(); deletePerson(id); };
+  });
 }
 function deleteFamily(id){
   closeModal();
@@ -1336,13 +1656,25 @@ function familyPreview(f){
     <ul class="fprev-list">${list}</ul>
   </div>`,()=>{});
 }
+let famSelecting=false, famSel=new Set();
+function deleteFamilies(ids){
+  const set=new Set(ids);
+  db.families=db.families.filter(f=>!set.has(f.id));
+  db.people=db.people.filter(p=>!set.has(p.familyId));
+  db.rels=db.rels.filter(r=>!set.has(r.familyId));
+  if(!db.families.some(f=>f.id===db.activeFamily)) db.activeFamily=db.families[0]?.id||null;
+  ui.selected=null; ui.fitNext=true;
+  famSelecting=false; famSel=new Set();
+  commit(); toast(ids.length===1?'Família excluída.':ids.length+' famílias excluídas.');
+}
 function renderFamilies(){
   const body=$('#familiesBody'); if(!body) return;
   const cards=db.families.map(f=>{
     const ps=db.people.filter(p=>p.familyId===f.id);
     const dead=ps.filter(isDead).length;
     const on=f.id===db.activeFamily;
-    return `<article class="fcard${on?' on':''}" data-fprev="${f.id}">
+    const sl=famSelecting&&famSel.has(f.id);
+    return `<article class="fcard${on?' on':''}${sl?' sel':''}" data-fprev="${f.id}">${famSelecting?`<span class="gal-chk${sl?' on':''}">✓</span>`:''}
       <div class="fcover" style="${coverStyle(f.cover)}"><span class="fcover-ic">${iconHTML(f.icon)}</span>${on?'<span class="fbadge">Ativa</span>':''}</div>
       <div class="fbody">
         <h3>${esc(f.name)}</h3>
@@ -1351,70 +1683,133 @@ function renderFamilies(){
         <div class="factions"><button class="btn ghost" data-fopen="${f.id}">Abrir árvore</button><button class="btn ghost" data-fedit="${f.id}">Editar</button></div>
       </div></article>`;
   }).join('');
-  body.innerHTML=`<div class="fgrid">${cards}<button class="fnew" data-fnew>+ Nova família</button><button class="fnew" data-fimport>⇪ Importar do The Sims 4</button></div>`;
+  famSel=new Set([...famSel].filter(id=>db.families.some(f=>f.id===id)));
+  const all=db.families.length>0&&famSel.size===db.families.length;
+  const n=famSel.size;
+  const head=db.families.length?`<div class="fam-top">${famSelecting
+    ?`<div class="gal-selbar fam-selbar"><span>${n===1?'1 selecionada':n+' selecionadas'}</span><span class="grow"></span><button class="btn ghost" data-fsall>${all?'Desmarcar todas':'Selecionar todas'}</button><button class="btn ghost" data-fscancel>Cancelar</button><button class="btn danger" data-fsdel ${n?'':'disabled'}>Excluir selecionadas</button></div>`
+    :`<span class="grow"></span><button class="fam-pencil" data-fpencil title="Editar famílias" aria-label="Editar famílias"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button>`}</div>`:'';
+  body.innerHTML=`${head}<div class="fgrid${famSelecting?' selmode':''}">${cards}${famSelecting?'':'<button class="fnew" data-fnew>+ Nova família</button><button class="fnew" data-fimport>⇪ Importar do The Sims 4</button>'}</div>`;
 }
+/* ============ modais v2 (layout novo) ============ */
+const MM_X='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const MM_SEARCH='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
+const MM_INFO='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>';
+const MM_CHECK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
+const MM_TAG='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12zM7.5 7.5h.01"/></svg>';
+const MM_TILES=[['#EAF7DA','#3F8F12'],['#F3ECFF','#3A2D8F'],['#FFE9F1','#A3345C'],['#FFF1DC','#8A5A00']];
+const MM_GOLD=['#FFF1DC','#8A5A00'];
+const mmTile=p=>{ let h=0; for(const c of String(p.id)) h=(h*31+c.charCodeAt(0))>>>0; return MM_TILES[h%MM_TILES.length]; };
+const mmHead=(title,subHtml,person)=>`<div class="mm-head"><span class="mm-ava">${avatarInner(person)}</span><div><h2 id="mmT">${title}</h2><p>${subHtml}</p></div><button type="button" class="mm-x" data-close aria-label="Fechar">${MM_X}</button></div>`;
+const mmSimRow=(p,on,meta)=>{ const t=mmTile(p); return `<button type="button" class="mm-opt${on?' on':''}" data-sim="${p.id}" aria-pressed="${on}"><span class="mm-ini" style="background:${t[0]};color:${t[1]}">${p.photo?`<img src="${p.photo}" alt="">`:esc(initials(p))}</span><span class="mm-t"><b>${esc(fullName(p))}</b><span>${esc(meta)}</span></span><span class="mm-radio"></span></button>`; };
+const mmMeta=p=>{ const f=db.families.find(x=>x.id===p.familyId); return `${f?f.name:'Sem família'} · ${p.stage}`; };
+const mmNote=html=>`<div class="mm-note">${MM_INFO}<span>${html}</span></div>`;
+function quickPerson(first,last,stage){
+  const np={id:uid(),familyId:db.activeFamily,...PERSON_DEFAULTS,traits:[],skills:[],first:String(first).trim(),last:String(last||'').trim(),stage:stage||PERSON_DEFAULTS.stage};
+  db.people.push(np); return np;
+}
+const REL_GROUPS=[
+  {title:'Amor',labels:['Parceiro','Namorado(a)','Companheiro(a)','Noivado','Casado(a)','Flerte'],tile:['#FFE9F1','#A3345C']},
+  {title:'Já foi',labels:['Ex','Divorciado','Viúvo(a)'],tile:['#F1F0F6','#4A4766']},
+  {title:'Outros laços',labels:null,tile:['#F3ECFF','#3A2D8F']}
+];
+function relGroups(idxs){
+  const named=new Set(REL_GROUPS.flatMap(g=>g.labels||[]));
+  return REL_GROUPS.map(g=>({title:g.title,tile:g.tile,items:g.labels
+    ?g.labels.map(l=>REL_TYPES.findIndex((t,i)=>t.label===l&&idxs.includes(i))).filter(i=>i>=0)
+    :idxs.filter(i=>!named.has(REL_TYPES[i].label))})).filter(g=>g.items.length);
+}
+const relTile=i=>{ const g=relGroups(REL_TYPES.map((_,k)=>k)).find(g=>g.items.includes(i)); return g?g.tile:REL_GROUPS[2].tile; };
+const mmTypeBtn=(label,iconHtml,tile,on,attr)=>`<button type="button" class="mm-type${on?' on':''}" ${attr} aria-pressed="${on}"><span class="mm-ico" style="background:${tile[0]};color:${tile[1]}">${iconHtml}</span><span style="flex:1;min-width:0">${esc(label)}</span><span class="mm-chk">${MM_CHECK}</span></button>`;
+const mmTypeGroups=(idxs,sel)=>relGroups(idxs).map(g=>`<div class="mm-grp"><p class="mm-lbl">${g.title}</p><div class="mm-types">${g.items.map(i=>mmTypeBtn(REL_TYPES[i].label,`<img src="${REL_TYPES[i].icon}" alt="">`,g.tile,sel===i,`data-opt="${i}"`)).join('')}</div></div>`).join('');
+
 function relModal(baseId){
   const base=byId(baseId);
   const taken=new Set(rls().filter(r=>r.a===baseId||r.b===baseId).map(r=>r.a===baseId?r.b:r.a));
-  const st={tab:'pre',type:-1,sim:null,q:'',custom:'',couple:true};
+  db.relCustom=db.relCustom||[];
+  const st={step:1,tab:'pre',type:null,who:'ex',q:'',sim:null,first:'',last:'',newName:'',newCouple:false};
+  const allIdx=REL_TYPES.map((_,i)=>i);
   const cur=()=>{
-    if(st.tab==='pre') return st.type>=0?{label:REL_TYPES[st.type].label,icon:REL_TYPES[st.type].icon,couple:REL_TYPES[st.type].couple}:null;
-    return st.custom.trim()?{label:st.custom.trim(),icon:'',couple:st.couple}:null;
+    if(!st.type) return null;
+    if(st.type.kind==='pre'){ const t=REL_TYPES[st.type.i]; return {label:t.label,icon:t.icon,couple:!!t.couple,tile:relTile(st.type.i),ico:`<img src="${t.icon}" alt="">`}; }
+    const c=db.relCustom.find(x=>x.id===st.type.id); return c?{label:c.label,icon:'',couple:!!c.couple,tile:MM_GOLD,ico:MM_TAG}:null;
   };
-  openModal(`<div class="rel-modal">
-    <header class="rm-h"><h2>Selecionar tipo de relacionamento</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="hint rm-sub">Para <strong>${esc(fullName(base))}</strong></p>
-    <div class="rm-tabs"><button type="button" data-tab="pre">Predefinidos</button><button type="button" data-tab="cus">Personalizados</button></div>
-    <div id="rmBody"></div>
-    <div class="rm-search"><input id="rmQ" type="search" placeholder="Buscar personagens pelo nome…"></div>
-    <div class="rm-list" id="rmList"></div>
-    <button type="button" class="rm-new" id="rmNew">+ Adicionar novo personagem</button>
-    <footer class="rm-footer"><span class="grow"></span>
-      <button type="button" class="btn ghost" data-close>Cancelar</button>
-      <button type="button" class="btn dark" id="rmOk" disabled>Confirmar</button></footer>
-  </div>`,box=>{
+  openModal(`<div class="mm" role="dialog" aria-modal="true" aria-labelledby="mmT">
+    ${mmHead('Adicionar relacionamento',`de <b>${esc(fullName(base))}</b>`,base)}
+    <div id="mmTop"></div><div class="mm-body" id="mmBody"></div><div id="mmAdd"></div><div class="mm-foot" id="mmFoot"></div></div>`,box=>{
     const $b=s=>box.querySelector(s);
-    const refreshOk=()=>{ $b('#rmOk').disabled=!(cur()&&st.sim); };
+    const paintTop=()=>{ $b('#mmTop').innerHTML=st.step===1?`<div class="mm-tabs" role="tablist"><button type="button" role="tab" data-tab="pre" class="${st.tab==='pre'?'on':''}">Predefinidos</button><button type="button" role="tab" data-tab="cus" class="${st.tab==='cus'?'on':''}">Personalizados</button></div>`:''; };
     const paintList=()=>{
       const q=st.q.trim().toLowerCase();
-      const list=ppl().filter(p=>p.id!==baseId&&!taken.has(p.id)&&fullName(p).toLowerCase().includes(q));
-      $b('#rmList').innerHTML=list.map(p=>`<button type="button" class="rm-sim${st.sim===p.id?' on':''}" data-sim="${p.id}"><span class="pav-s">${avatarInner(p)}</span><span>${esc(fullName(p))}<small>${esc(p.stage)}</small></span></button>`).join('')||'<p class="none">Nenhum personagem disponível.</p>';
+      const list=ppl().filter(p=>p.id!==baseId&&!taken.has(p.id)&&(fullName(p)+' '+mmMeta(p)).toLowerCase().includes(q));
+      $b('#mmList').innerHTML=list.length?list.map(p=>mmSimRow(p,st.sim===p.id,mmMeta(p))).join(''):`<div class="mm-empty"><b>Nenhum Sim encontrado</b><span>Não achamos ninguém disponível com esse nome.</span><button type="button" class="mm-link" data-who="nv">+ Criar novo personagem</button></div>`;
     };
     const paintBody=()=>{
-      box.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===st.tab));
-      $b('#rmBody').innerHTML = st.tab==='pre'
-        ? `<div class="rm-grid">${REL_TYPES.map((t,i)=>`<button type="button" class="rm-opt${st.type===i?' on':''}" data-opt="${i}"><img src="${t.icon}" alt=""><span>${esc(t.label)}</span></button>`).join('')}</div>`
-        : `<div class="rm-custom"><label>Nome do relacionamento<input id="rmCustom" value="${esc(st.custom)}" placeholder="Ex.: Mentor"></label>
-             <label class="rm-chk"><input type="checkbox" id="rmCouple" ${st.couple?'checked':''}> Mostrar como casal na árvore</label></div>`;
-      refreshOk();
-    };
-    paintBody(); paintList();
-    box.addEventListener('click',e=>{
-      const t=e.target.closest('[data-tab],[data-opt],[data-sim],#rmNew,#rmOk');
-      if(!t) return;
-      if(t.dataset.tab){ st.tab=t.dataset.tab; paintBody(); return; }
-      if(t.dataset.opt!==undefined){ st.type=+t.dataset.opt; paintBody(); return; }
-      if(t.dataset.sim){ st.sim=t.dataset.sim; paintList(); refreshOk(); return; }
-      if(t.id==='rmNew'){
-        const c=cur();
-        if(!c){ toast('Escolha o tipo de relacionamento primeiro.'); return; }
-        closeModal();
-        personForm(null,{type:c.couple?'spouse':'link',baseId,label:c.label,icon:c.icon});
-        return;
+      const body=$b('#mmBody'); body.style.paddingTop=st.step===2?'12px':'';
+      if(st.step===1){
+        if(st.tab==='pre') body.innerHTML=mmTypeGroups(allIdx,st.type&&st.type.kind==='pre'?st.type.i:-1);
+        else body.innerHTML=`<div class="mm-field"><label for="mmNT">Criar um tipo novo</label><div class="mm-newtype"><input id="mmNT" class="mm-inp" type="text" placeholder="Ex.: Melhores inimigos, Colegas de quarto" value="${esc(st.newName)}"><button type="button" class="mm-btn-add" id="mmAddType">Criar</button></div>
+          <label class="mm-check"><input type="checkbox" id="mmNC" ${st.newCouple?'checked':''}> Mostrar como casal na árvore</label></div>
+          <p class="mm-lbl">Seus tipos</p>
+          ${db.relCustom.length?`<div class="mm-types">${db.relCustom.map(c=>mmTypeBtn(c.label,MM_TAG,MM_GOLD,st.type&&st.type.kind==='cus'&&st.type.id===c.id,`data-cus="${c.id}"`)).join('')}</div>`:'<div class="mm-empty"><span>Você ainda não criou nenhum tipo.</span></div>'}`;
+      } else {
+        const c=cur()||{label:'',tile:MM_GOLD,ico:''};
+        body.innerHTML=`<div class="mm-sum"><span class="mm-ico" style="background:${c.tile[0]};color:${c.tile[1]}">${c.ico}</span><div><span class="s">Tipo de relação</span><br><b>${esc(c.label)}</b></div><button type="button" class="mm-link" id="mmChange">Trocar</button></div>
+          <div class="mm-seg" style="margin:0" role="tablist"><button type="button" role="tab" data-who="ex" class="${st.who==='ex'?'on':''}">Escolher existente</button><button type="button" role="tab" data-who="nv" class="${st.who==='nv'?'on':''}">Criar novo</button></div>`
+          +(st.who==='ex'
+            ?`<div class="mm-search">${MM_SEARCH}<input id="mmQ" type="text" placeholder="Buscar Sim pelo nome ou família" aria-label="Buscar Sim" value="${esc(st.q)}"></div><div class="mm-list" id="mmList"></div>`
+            :`<div class="mm-grid2"><div class="mm-field"><label for="mmFirst">Nome</label><input id="mmFirst" class="mm-inp" type="text" placeholder="Ex.: Rafael" value="${esc(st.first)}"></div><div class="mm-field"><label for="mmLast">Sobrenome</label><input id="mmLast" class="mm-inp" type="text" placeholder="Ex.: Rocha" value="${esc(st.last)}"></div></div>${mmNote(`O novo Sim entra na árvore ao lado de ${esc(base.first)}. Foto e detalhes você completa depois.`)}`);
+        if(st.who==='ex') paintList();
       }
-      if(t.id==='rmOk'){
-        const c=cur(); if(!c||!st.sim) return;
-        db.rels.push(makeRel(c.couple?'spouse':'link',baseId,st.sim,{label:c.label,icon:c.icon}));
-        closeModal(); commit(); toast('Relacionamento criado.');
+    };
+    const paintAdd=()=>{ $b('#mmAdd').innerHTML=st.step===1?`<div class="mm-addwrap"><button type="button" class="mm-addnew" id="mmNew"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar novo personagem</button></div>`:''; };
+    const off=()=>{ const c=cur(); if(st.step===1) return !c; return !c||(st.who==='ex'?!st.sim:!st.first.trim()); };
+    const paintFoot=()=>{
+      const c=cur(), sim=st.sim&&byId(st.sim);
+      const hint=st.step===1?(c?`${c.label} selecionado`:'Escolha um tipo'):(st.who==='ex'&&sim?`${fullName(sim)} selecionado(a)`:'');
+      $b('#mmFoot').innerHTML=`<span class="mm-hint">${esc(hint)}</span><button type="button" class="mm-btn out" id="mmBack">${st.step===1?'Cancelar':'Voltar'}</button><button type="button" class="mm-btn lime${off()?' off':''}" id="mmCta" aria-disabled="${off()}">${st.step===1?'Continuar':'Adicionar relacionamento'}</button>`;
+    };
+    const paint=()=>{ paintTop(); paintBody(); paintAdd(); paintFoot(); };
+    paint();
+    box.addEventListener('click',e=>{
+      const t=e.target.closest('[data-tab],[data-opt],[data-cus],[data-sim],[data-who],#mmNew,#mmCta,#mmBack,#mmChange,#mmAddType');
+      if(!t) return;
+      if(t.dataset.tab){ st.tab=t.dataset.tab; paint(); return; }
+      if(t.dataset.opt!==undefined){ st.type={kind:'pre',i:+t.dataset.opt}; paintBody(); paintFoot(); return; }
+      if(t.dataset.cus){ st.type={kind:'cus',id:t.dataset.cus}; paintBody(); paintFoot(); return; }
+      if(t.dataset.sim){ st.sim=t.dataset.sim; paintList(); paintFoot(); return; }
+      if(t.dataset.who){ st.who=t.dataset.who; paintBody(); paintFoot(); return; }
+      if(t.id==='mmChange'||(t.id==='mmBack'&&st.step===2)){ st.step=1; paint(); return; }
+      if(t.id==='mmBack'){ closeModal(); return; }
+      if(t.id==='mmAddType'){
+        const name=st.newName.trim(); if(!name){ toast('Dê um nome ao tipo de relacionamento.'); return; }
+        let c=db.relCustom.find(x=>x.label.toLowerCase()===name.toLowerCase());
+        if(!c){ c={id:uid(),label:name,couple:st.newCouple}; db.relCustom.push(c); save(); }
+        st.type={kind:'cus',id:c.id}; st.newName=''; paint(); return;
+      }
+      if(t.id==='mmNew'){
+        if(!cur()){ toast('Escolha o tipo de relacionamento primeiro.'); return; }
+        st.step=2; st.who='nv'; paint(); return;
+      }
+      if(t.id==='mmCta'){
+        if(off()) return;
+        if(st.step===1){ st.step=2; st.who='ex'; paint(); return; }
+        const c=cur(); const kind=c.couple?'spouse':'link';
+        if(st.who==='ex'){ db.rels.push(makeRel(kind,baseId,st.sim,{label:c.label,icon:c.icon})); closeModal(); commit(); toast('Relacionamento criado.'); return; }
+        const np=quickPerson(st.first,st.last,base.stage);
+        db.rels.push(makeRel(kind,baseId,np.id,{label:c.label,icon:c.icon}));
+        ui.selected=np.id; closeModal(); commit(); toast('Personagem criado e vinculado.');
       }
     });
     box.addEventListener('input',e=>{
-      if(e.target.id==='rmCustom'){ st.custom=e.target.value; refreshOk(); }
-      if(e.target.id==='rmQ'){ st.q=e.target.value; paintList(); }
+      const id=e.target.id;
+      if(id==='mmQ'){ st.q=e.target.value; paintList(); }
+      else if(id==='mmFirst'){ st.first=e.target.value; paintFoot(); }
+      else if(id==='mmLast'){ st.last=e.target.value; }
+      else if(id==='mmNT'){ st.newName=e.target.value; }
     });
-    box.addEventListener('change',e=>{
-      if(e.target.id==='rmCouple'){ st.couple=e.target.checked; refreshOk(); }
-    });
+    box.addEventListener('change',e=>{ if(e.target.id==='mmNC') st.newCouple=e.target.checked; });
+    box.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.id==='mmNT'){ e.preventDefault(); const b=$b('#mmAddType'); b&&b.click(); } });
   });
 }
 
@@ -1424,45 +1819,40 @@ function relEditModal(rel){
   const isLink=rel.type==='link';
   const idx=REL_TYPES.findIndex(t=>(isLink||t.couple)&&t.label===key);
   const st={tab:idx>=0?'pre':'cus',type:idx,custom:idx>=0?'':key};
-  const couples=REL_TYPES.map((t,i)=>({t,i})).filter(x=>isLink?x.t.label!=='Irmão/irmã':x.t.couple);
-  openModal(`<div class="rel-modal">
-    <header class="rm-h"><h2>Editar relacionamento</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="hint rm-sub">Entre <strong>${esc(fullName(a))}</strong> e <strong>${esc(fullName(b))}</strong></p>
-    <div class="rm-tabs"><button type="button" data-tab="pre">Predefinidos</button><button type="button" data-tab="cus">Personalizados</button></div>
-    <div id="rmBody"></div>
-    <footer class="rm-footer">
-      <button type="button" class="btn danger" data-label="Remover vínculo" id="rmDel">Remover vínculo</button>
-      <span class="grow"></span>
-      <button type="button" class="btn ghost" data-close>Cancelar</button>
-      <button type="button" class="btn dark" id="rmSave">Salvar</button></footer>
-  </div>`,box=>{
+  const idxs=REL_TYPES.map((t,i)=>({t,i})).filter(x=>isLink?x.t.label!=='Irmão/irmã':x.t.couple).map(x=>x.i);
+  openModal(`<div class="mm" role="dialog" aria-modal="true" aria-labelledby="mmT">
+    ${mmHead('Editar relacionamento',`entre <b>${esc(fullName(a))}</b> e <b>${esc(fullName(b))}</b>`,a)}
+    <div class="mm-tabs"><button type="button" data-tab="pre">Predefinidos</button><button type="button" data-tab="cus">Personalizados</button></div>
+    <div class="mm-body" id="mmBody"></div>
+    <div class="mm-foot"><button type="button" class="mm-btn danger" data-label="Remover vínculo" id="mmDel">Remover vínculo</button><span class="mm-hint"></span>
+      <button type="button" class="mm-btn out" data-close>Cancelar</button><button type="button" class="mm-btn lime" id="mmSave">Salvar</button></div></div>`,box=>{
     const $b=s=>box.querySelector(s);
     const paintBody=()=>{
       box.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x.dataset.tab===st.tab));
-      $b('#rmBody').innerHTML = st.tab==='pre'
-        ? `<div class="rm-grid">${couples.map(({t,i})=>`<button type="button" class="rm-opt${st.type===i?' on':''}" data-opt="${i}"><img src="${t.icon}" alt=""><span>${esc(t.label)}</span></button>`).join('')}</div>`
-        : `<div class="rm-custom"><label>Nome do relacionamento<input id="rmCustom" value="${esc(st.custom)}" placeholder="Ex.: Casado(a) no exterior"></label></div>`;
+      $b('#mmBody').innerHTML = st.tab==='pre'
+        ? mmTypeGroups(idxs,st.type)
+        : `<div class="mm-field"><label for="mmCustom">Nome do relacionamento</label><input id="mmCustom" class="mm-inp" value="${esc(st.custom)}" placeholder="Ex.: Casado(a) no exterior"></div>`;
     };
     paintBody();
     box.addEventListener('click',e=>{
-      const t=e.target.closest('[data-tab],[data-opt],#rmSave,#rmDel');
+      const t=e.target.closest('[data-tab],[data-opt],#mmSave,#mmDel');
       if(!t) return;
       if(t.dataset.tab){ st.tab=t.dataset.tab; paintBody(); return; }
       if(t.dataset.opt!==undefined){ st.type=+t.dataset.opt; paintBody(); return; }
-      if(t.id==='rmDel'){ armed(t,()=>{ db.rels=db.rels.filter(r=>r.id!==rel.id); closeModal(); commit(); toast('Vínculo removido.'); }); return; }
-      if(t.id==='rmSave'){
+      if(t.id==='mmDel'){ armed(t,()=>{ db.rels=db.rels.filter(r=>r.id!==rel.id); closeModal(); commit(); toast('Vínculo removido.'); }); return; }
+      if(t.id==='mmSave'){
         if(st.tab==='pre'){
           if(st.type<0){ toast('Escolha um tipo de relacionamento.'); return; }
           rel.label=REL_TYPES[st.type].label; rel.icon=REL_TYPES[st.type].icon;
         } else {
-          const name=$b('#rmCustom').value.trim();
+          const name=st.custom.trim();
           if(!name){ toast('Informe o nome do relacionamento.'); return; }
           rel.label=name; rel.icon=isLink?REL_TYPES.find(t=>t.label==='Outros').icon:CASADO_ICON;
         }
         closeModal(); commit(); toast('Relacionamento atualizado.');
       }
     });
-    box.addEventListener('input',e=>{ if(e.target.id==='rmCustom') st.custom=e.target.value; });
+    box.addEventListener('input',e=>{ if(e.target.id==='mmCustom') st.custom=e.target.value; });
   });
 }
 function selectOptions(list,current){
@@ -1502,12 +1892,9 @@ function personForm(p,preset){
       <label>Status de vida<select name="status">${selectOptions(STATUSES,v.status)}</select></label>
       <label>Gênero<select name="gender">${selectOptions(GENDERS,v.gender)}</select></label>
     </div>
-    ${msBlock('traits','Traços de personalidade',TRAITS,ms.traits)}
-    <div class="grid2">
-      <label>Aspiração<select name="aspiration">${sel(ASPIRATIONS,v.aspiration,'Selecione uma aspiração')}</select></label>
+    <div>
       <label>Carreira<select name="career">${sel(CAREERS,v.career,'Selecione uma carreira')}</select></label>
     </div>
-    ${msBlock('skills','Habilidades',SKILLS,ms.skills)}
     <div class="grid2">
       <label>Mundo em que reside<select name="world">${sel(WORLDS,v.world,'Selecione um mundo')}</select></label>
       <label>Tipo de ocultismo<select name="occult">${selectOptions(OCCULTS,v.occult)}</select></label>
@@ -1553,10 +1940,10 @@ function personForm(p,preset){
         deathDate:status==='Falecido'?(fd.get('deathDate')||''):'',
         causeOfDeath:status==='Falecido'?(fd.get('causeOfDeath')||''):'',
         bio:fd.get('bio').trim(),
-        traits:ms.traits,
-        aspiration:fd.get('aspiration')||'',
+        traits:v.traits,
+        aspiration:v.aspiration||'',
         career:fd.get('career')||'',
-        skills:ms.skills,
+        skills:v.skills,
         world:fd.get('world')||'', occult:fd.get('occult'), photo
       };
       if(!data.first){ toast('Informe pelo menos o nome.'); return; }
@@ -1580,34 +1967,6 @@ function addSibling(baseId,otherId){
     db.rels.push(makeRel('link',baseId,otherId,{label:t.label,icon:t.icon}));
   }
 }
-function siblingModal(baseId){
-  const base=byId(baseId);
-  const linked=new Set(rls().filter(r=>r.type==='link'&&(r.a===baseId||r.b===baseId)).map(r=>r.a===baseId?r.b:r.a));
-  const sibs=new Set(siblingsOf(baseId));
-  const cands=ppl().filter(p=>p.id!==baseId&&!linked.has(p.id)&&!sibs.has(p.id));
-  openModal(`<form class="form" id="sForm">
-    <header><h2>Adicionar irmão(a)</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="hint" style="margin:0">Para <strong>${esc(fullName(base))}</strong></p>
-    <label>Personagem existente
-      <select name="other">${cands.map(p=>`<option value="${p.id}">${esc(fullName(p))} · ${esc(p.stage)}</option>`).join('')}</select>
-    </label>
-    <button type="button" class="rm-new" id="sNew">+ Criar novo personagem</button>
-    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn dark" type="submit">Confirmar</button></footer>
-  </form>`,box=>{
-    enhancePicker(box);
-    box.querySelector('#sNew').onclick=()=>{
-      const t=REL_TYPES.find(x=>x.label==='Irmão/irmã');
-      closeModal(); personForm(null,{type:'sibling',baseId});
-    };
-    box.querySelector('#sForm').onsubmit=e=>{
-      e.preventDefault();
-      const v=e.target.other.value;
-      const t=REL_TYPES.find(x=>x.label==='Irmão/irmã');
-      addSibling(baseId,v);
-      closeModal(); commit(); toast('Irmão(a) vinculado(a).');
-    };
-  });
-}
 function enhancePicker(box){
   const sel=box.querySelector('select[name="other"]'); if(!sel) return;
   const lab=sel.closest('label');
@@ -1620,34 +1979,93 @@ function enhancePicker(box){
 }
 function linkModal(type,baseId){
   if(type==='spouse'){ relModal(baseId); return; }
-  if(type==='sibling'){ siblingModal(baseId); return; }
   const base=byId(baseId);
   if(type==='parent'&&parentsOf(baseId).length>=2){ toast('Este personagem já tem dois pais vinculados.'); return; }
-  const cands=ppl().filter(p=>p.id!==baseId&&!relError(type,baseId,p.id));
-  const title={parent:'Adicionar pai ou mãe',spouse:'Adicionar cônjuge',child:'Adicionar filho(a)'}[type];
-  openModal(`<form class="form" id="lForm">
-    <header><h2>${title}</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="hint" style="margin:0">Para <strong>${esc(fullName(base))}</strong></p>
-    <label>Personagem existente
-      <select name="other">
-        ${cands.map(p=>`<option value="${p.id}">${esc(fullName(p))} · ${esc(p.stage)}</option>`).join('')||'<option value="">Nenhum personagem disponível</option>'}
-      </select>
-    </label>
-    <button type="button" class="rm-new" id="lNew">+ Criar novo personagem</button>
-    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn dark" type="submit">Confirmar</button></footer>
-  </form>`,box=>{
-    enhancePicker(box);
-    const form=box.querySelector('#lForm');
-    box.querySelector('#lNew').onclick=()=>{ closeModal(); personForm(null,{type,baseId}); };
-    form.onsubmit=e=>{
-      e.preventDefault();
-      const v=form.other.value;
-      if(!v){ toast('Escolha um personagem ou crie um novo.'); return; }
-      const err=relError(type,baseId,v);
-      if(err){ toast(err); return; }
-      db.rels.push(makeRel(type,baseId,v));
-      closeModal(); commit(); toast('Vínculo criado.');
+  let cands;
+  if(type==='sibling'){
+    const linked=new Set(rls().filter(r=>r.type==='link'&&(r.a===baseId||r.b===baseId)).map(r=>r.a===baseId?r.b:r.a));
+    const sibs=new Set(siblingsOf(baseId));
+    cands=ppl().filter(p=>p.id!==baseId&&!linked.has(p.id)&&!sibs.has(p.id));
+  } else cands=ppl().filter(p=>p.id!==baseId&&!relError(type,baseId,p.id));
+  const T={parent:{title:'Adicionar pai ou mãe',cta:'Adicionar como pai/mãe'},child:{title:'Adicionar filho(a)',cta:'Adicionar como filho(a)'},sibling:{title:'Adicionar irmão(ã)',cta:'Adicionar como irmão(ã)'}}[type];
+  const st={tab:'ex',q:'',pick:null,first:'',last:base.last||'',stage:type==='child'?'Criança':type==='parent'?'Adulto':base.stage,kind:'bio',other:''};
+  const kids=type==='child'?childrenOf(baseId).map(byId).filter(Boolean):[];
+  const names=kids.map(k=>`<b>${esc(k.first)}</b>`);
+  const nameList=names.length>1?names.slice(0,-1).join(', ')+' e '+names[names.length-1]:names[0]||'';
+  const otherOpts=()=>{
+    const sp=new Set(spousesOf(baseId));
+    const rest=ppl().filter(p=>p.id!==baseId);
+    return `<option value="">Ninguém por enquanto</option>`+[...rest.filter(p=>sp.has(p.id)),...rest.filter(p=>!sp.has(p.id))].map(p=>`<option value="${p.id}" ${st.other===p.id?'selected':''}>${esc(fullName(p))}</option>`).join('');
+  };
+  openModal(`<div class="mm" role="dialog" aria-modal="true" aria-labelledby="mmT">
+    ${mmHead(T.title,`de <b>${esc(fullName(base))}</b>`,base)}
+    <div class="mm-seg" role="tablist">
+      <button type="button" role="tab" data-tab="ex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><path d="M16 11l2 2 4-4"/></svg>Escolher existente</button>
+      <button type="button" role="tab" data-tab="nv"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><path d="M19 8v6M16 11h6"/></svg>Criar novo</button>
+    </div>
+    <div class="mm-body" id="mmBody"></div><div class="mm-foot" id="mmFoot"></div></div>`,box=>{
+    const $b=s=>box.querySelector(s);
+    const filtered=()=>{ const q=st.q.trim().toLowerCase(); return cands.filter(p=>(fullName(p)+' '+mmMeta(p)).toLowerCase().includes(q)); };
+    const paintList=()=>{
+      const l=filtered(); const el=$b('#mmList');
+      if(!l.length){ el.innerHTML=`<div class="mm-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9B7BEA" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><b>Nenhum Sim encontrado</b><span>Não achamos ninguém disponível com esse nome.</span><button type="button" class="mm-link" data-tab="nv">+ Criar novo personagem</button></div>`; return; }
+      const groups=type==='child'?[['Sims sem pais na árvore',l.filter(p=>parentsOf(p.id).length===0)],['Sims com um dos pais',l.filter(p=>parentsOf(p.id).length>0)]]:[['Sims disponíveis',l]];
+      el.innerHTML=groups.filter(g=>g[1].length).map(g=>`<p class="mm-lbl">${g[0]}</p><div class="mm-list">${g[1].map(p=>mmSimRow(p,st.pick===p.id,mmMeta(p))).join('')}</div>`).join('');
     };
+    const chips=(arr,key)=>`<div class="mm-chips">${arr.map(([id,l])=>`<button type="button" data-${key}="${id}" class="${st[key==='stage'?'stage':'kind']===id?'on':''}">${l}</button>`).join('')}</div>`;
+    const paintBody=()=>{
+      box.querySelectorAll('.mm-seg [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===st.tab));
+      const body=$b('#mmBody');
+      if(st.tab==='ex'){
+        body.innerHTML=`<div class="mm-search">${MM_SEARCH}<input id="mmQ" type="text" placeholder="Buscar Sim pelo nome ou família" aria-label="Buscar Sim" value="${esc(st.q)}"></div><div id="mmList" style="display:flex;flex-direction:column;gap:12px"></div>`
+          +(type==='child'&&kids.length?mmNote(`O novo filho(a) também vira irmão(ã) de ${nameList} automaticamente.`):'');
+        paintList();
+      } else {
+        body.innerHTML=`<div class="mm-grid2"><div class="mm-field"><label for="mmFirst">Nome</label><input id="mmFirst" class="mm-inp" type="text" placeholder="Ex.: Lia" value="${esc(st.first)}"></div><div class="mm-field"><label for="mmLast">Sobrenome</label><input id="mmLast" class="mm-inp" type="text" value="${esc(st.last)}"></div></div>
+          <div class="mm-field"><span class="mm-fl">Fase da vida</span>${chips(STAGES.map(s=>[s,s]),'stage')}</div>`
+          +(type==='child'?`<div class="mm-field"><span class="mm-fl">Tipo de vínculo</span>${chips([['bio','Biológico'],['ado','Adotivo']],'kind')}</div>
+          <div class="mm-field"><label for="mmOther">Outro pai ou mãe <span style="color:var(--ink-muted);font-weight:400">(opcional)</span></label><select id="mmOther" class="mm-inp">${otherOpts()}</select></div>`:'')
+          +mmNote('Foto, carreira e outros detalhes você completa depois na ficha do Sim.');
+      }
+    };
+    const off=()=>st.tab==='ex'?!st.pick:!st.first.trim();
+    const paintFoot=()=>{
+      const p=st.pick&&byId(st.pick);
+      const hint=st.tab==='ex'?(p?`${fullName(p)} selecionado(a)`:'Escolha um Sim da lista'):'';
+      $b('#mmFoot').innerHTML=`<span class="mm-hint">${esc(hint)}</span><button type="button" class="mm-btn out" data-close>Cancelar</button><button type="button" class="mm-btn lime${off()?' off':''}" id="mmCta" aria-disabled="${off()}">${st.tab==='ex'?T.cta:'Criar e adicionar'}</button>`;
+    };
+    const paint=()=>{ paintBody(); paintFoot(); };
+    paint();
+    box.addEventListener('click',e=>{
+      const t=e.target.closest('[data-tab],[data-sim],[data-stage],[data-kind],#mmCta');
+      if(!t) return;
+      if(t.dataset.tab){ st.tab=t.dataset.tab; paint(); return; }
+      if(t.dataset.sim){ st.pick=t.dataset.sim; paintList(); paintFoot(); return; }
+      if(t.dataset.stage){ st.stage=t.dataset.stage; paintBody(); return; }
+      if(t.dataset.kind){ st.kind=t.dataset.kind; paintBody(); return; }
+      if(t.id==='mmCta'){
+        if(off()) return;
+        if(st.tab==='ex'){
+          if(type==='sibling'){ addSibling(baseId,st.pick); closeModal(); commit(); toast('Irmão(ã) vinculado(a).'); return; }
+          const err=relError(type,baseId,st.pick); if(err){ toast(err); return; }
+          db.rels.push(makeRel(type,baseId,st.pick)); closeModal(); commit(); toast('Vínculo criado.'); return;
+        }
+        const np=quickPerson(st.first,st.last,st.stage);
+        if(type==='sibling') addSibling(baseId,np.id);
+        else {
+          const r=makeRel(type,baseId,np.id); if(type==='child'&&st.kind==='ado') r.adoptive=true; db.rels.push(r);
+          if(type==='child'&&st.other){ const r2=makeRel('child',st.other,np.id); if(st.kind==='ado') r2.adoptive=true; db.rels.push(r2); }
+        }
+        ui.selected=np.id; closeModal(); commit(); toast('Personagem criado e vinculado.');
+      }
+    });
+    box.addEventListener('input',e=>{
+      const id=e.target.id;
+      if(id==='mmQ'){ st.q=e.target.value; paintList(); }
+      else if(id==='mmFirst'){ st.first=e.target.value; paintFoot(); }
+      else if(id==='mmLast'){ st.last=e.target.value; }
+    });
+    box.addEventListener('change',e=>{ if(e.target.id==='mmOther') st.other=e.target.value; });
   });
 }
 
@@ -1769,12 +2187,20 @@ TS4.extract=async function(buf){
   const cands=pkg.entries.filter(e=>e.type===0xD);
   if(!cands.length) throw new TS4Error('Versão de save não suportada: não encontrei os dados dos Sims.');
   cands.sort((a,b)=>b.mem-a.mem);
-  const blob=await TS4.readResource(pkg,cands[0]);
-  let top; try{ top=TS4.pb(blob); }catch(e){ throw new TS4Error('Dados dos Sims ilegíveis. O arquivo pode estar corrompido ou ser de uma versão não suportada.'); }
+  const tops=[]; let readErr=0;
+  for(const c of cands){ try{ tops.push(TS4.pb(await TS4.readResource(pkg,c))); }catch(e){ readErr++; } }
+  if(!tops.length) throw new TS4Error('Dados dos Sims ilegíveis. O arquivo pode estar corrompido ou ser de uma versão não suportada.');
+  const top=[].concat(...tops);
   const recs=top.filter(x=>x.f===6&&x.w===2);
   if(!recs.length) throw new TS4Error('Nenhum Sim encontrado neste save.');
+  const tipos={}; pkg.entries.forEach(e=>{ const k='0x'+e.type.toString(16); tipos[k]=(tipos[k]||0)+1; });
   const dec=new TextDecoder('utf-8');
-  const rep={dbpf:pkg.info.major+'.'+pkg.info.minor,recursos:pkg.info.entries,registros:recs.length,semId:0,duplicados:0,semNome:0,idadeDesconhecida:{},sexoDesconhecido:{},semGenealogia:0,paisAusentes:0,conjugeSemRetorno:0,ciclos:0,conjugeAusente:0,erros:0};
+  const rep={blocos:cands.length,blocosIlegiveis:readErr,tipos,dbpf:pkg.info.major+'.'+pkg.info.minor,recursos:pkg.info.entries,registros:recs.length,semId:0,duplicados:0,semNome:0,idadeDesconhecida:{},sexoDesconhecido:{},semGenealogia:0,paisAusentes:0,conjugeSemRetorno:0,ciclos:0,conjugeAusente:0,erros:0};
+  const hhNames=new Map();
+  for(const t of top){
+    if(t.f!==5||t.w!==2) continue;
+    try{ let hid='',hn=''; for(const e of TS4.pb(t.v)){ if(e.f===2&&e.w===1&&!hid) hid=e.v.toString(); else if(e.f===3&&e.w===2&&!hn) hn=dec.decode(e.v).trim(); } if(hid) hhNames.set(hid,hn); }catch(e){}
+  }
   const sims=new Map();
   for(const r of recs){
     let F={};
@@ -1810,24 +2236,24 @@ TS4.extract=async function(buf){
     if(!hasGen) rep.semGenealogia++;
     sims.set(id,s);
   }
-  return {sims,rep,topFields:[...new Set(top.map(x=>x.f))].length};
+  return {sims,rep,hhNames,topFields:[...new Set(top.map(x=>x.f))].length};
 };
 
-/* --- reconstrução: placeholders, famílias, gerações --- */
-TS4.build=function(sims,rep){
+/* --- reconstrução: placeholders, vínculos, casas --- */
+TS4.build=function(sims,rep,hhNames){
+  hhNames=hhNames||new Map();
   const nodes=new Map();
   sims.forEach(s=>nodes.set(s.id,{...s,placeholder:false}));
-  const edges=[]; // {kind:'parent',a,b} | {kind:'spouse',a,b}
-  const seenSp=new Set();
+  const edges=[], seenSp=new Set();
   const place=id=>{ if(!nodes.has(id)) nodes.set(id,{id,first:'Sim',last:'desconhecido',sexo:0,idade:0,hh:'',spouse:'',mother:'',father:'',placeholder:true}); };
-  nodes.forEach(n=>{
-    if(n.placeholder) return;
-    [[n.mother,4096*0+8192],[n.father,4096]].forEach(([pid,sx])=>{
+  sims.forEach(n=>{
+    const ps=[[n.mother,8192],[n.father,4096]];
+    if(n.mother&&n.mother===n.father) ps.pop();
+    ps.forEach(([pid,sx])=>{
       if(!pid||pid===n.id) return;
       if(!sims.has(pid)){ rep.paisAusentes++; place(pid); const p=nodes.get(pid); if(!p.sexo) p.sexo=sx; }
       edges.push({kind:'parent',a:pid,b:n.id});
     });
-    if(n.mother&&n.mother===n.father){ edges.pop(); }
     if(n.spouse&&n.spouse!==n.id){
       if(!sims.has(n.spouse)){ rep.conjugeAusente++; }
       else{
@@ -1837,71 +2263,87 @@ TS4.build=function(sims,rep){
       }
     }
   });
-  // remove vínculos de pai/mãe que criariam ciclo
-  const parentsOf=new Map(); const okEdges=[];
+  const parentsOf=new Map(), childrenOf=new Map(), spousesOf=new Map(), okEdges=[];
+  const add=(m,k,v)=>{ if(!m.has(k)) m.set(k,[]); m.get(k).push(v); };
   const reach=(from,target,seen=new Set())=>{ if(from===target) return true; if(seen.has(from)) return false; seen.add(from); for(const p of (parentsOf.get(from)||[])) if(reach(p,target,seen)) return true; return false; };
   for(const e of edges){
     if(e.kind==='parent'){
       if(reach(e.a,e.b)){ rep.ciclos++; continue; }
-      if(!parentsOf.has(e.b)) parentsOf.set(e.b,[]);
-      parentsOf.get(e.b).push(e.a);
-    }
+      add(parentsOf,e.b,e.a); add(childrenOf,e.a,e.b);
+    }else{ add(spousesOf,e.a,e.b); add(spousesOf,e.b,e.a); }
     okEdges.push(e);
   }
-  // componentes
-  const uf=new Map(); nodes.forEach((_,k)=>uf.set(k,k));
-  const find=x=>{ while(uf.get(x)!==x){ uf.set(x,uf.get(uf.get(x))); x=uf.get(x);} return x; };
-  okEdges.forEach(e=>{ const x=find(e.a),y=find(e.b); if(x!==y) uf.set(x,y); });
   const depthMemo=new Map();
   const depth=id=>{ if(depthMemo.has(id)) return depthMemo.get(id); const ps=parentsOf.get(id)||[]; const d=ps.length?1+Math.max(...ps.map(depth)):1; depthMemo.set(id,d); return d; };
-  const groups=new Map();
-  nodes.forEach((n,id)=>{ const r=find(id); if(!groups.has(r)) groups.set(r,[]); groups.get(r).push(id); });
-  const fams=[]; const loose=[];
-  groups.forEach(ids=>{
-    if(ids.length<2){ loose.push(ids[0]); return; }
-    const real=ids.filter(i=>!nodes.get(i).placeholder);
-    const cnt={}; real.forEach(i=>{ const l=nodes.get(i).last; if(l) cnt[l]=(cnt[l]||0)+1; });
+  const goodName=n=>!!n&&n.length<=40&&/\p{L}{2,}/u.test(n);
+  const byH=new Map();
+  nodes.forEach((n,id)=>{ if(n.placeholder) return; const k=n.hh||('solo:'+id); if(!byH.has(k)) byH.set(k,[]); byH.get(k).push(id); });
+  const houses=[]; const used={};
+  byH.forEach((ids,k)=>{
+    const cnt={}; ids.forEach(i=>{ const l=nodes.get(i).last; if(l) cnt[l]=(cnt[l]||0)+1; });
     const best=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
-    fams.push({ids,real:real.length,gens:Math.max(...ids.map(depth)),surname:best?best[0]:'',loose:false});
+    let name=goodName(hhNames.get(k))?hhNames.get(k).replace(/^fam[ií]lia\s+/i,'').trim():(best?best[0]:'');
+    if(!name){ const n=nodes.get(ids[0]); name=(n.first+' '+n.last).trim(); }
+    houses.push({key:k,ids,real:ids.length,name,gens:Math.max(...ids.map(depth))});
   });
-  fams.sort((a,b)=>b.real-a.real);
-  const used={};
-  fams.forEach(f=>{ const base='Família '+(f.surname||'sem sobrenome'); used[base]=(used[base]||0)+1; f.name=used[base]>1?base+' ('+used[base]+')':base; });
-  if(loose.length){ const real=loose.filter(i=>!nodes.get(i).placeholder); if(real.length) fams.push({ids:loose,real:real.length,gens:1,name:'Sims sem parentesco',surname:'',loose:true}); }
-  fams.forEach((f,i)=>{ f.key='f'+i; f.selected=!f.loose; });
-  return {nodes,edges:okEdges,parentsOf,depth,fams};
+  houses.sort((a,b)=>b.real-a.real||a.name.localeCompare(b.name,'pt-BR'));
+  houses.forEach(h=>{ used[h.name]=(used[h.name]||0)+1; h.label=used[h.name]>1?h.name+' ('+used[h.name]+')':h.name; });
+  return {nodes,edges:okEdges,parentsOf,childrenOf,spousesOf,depth,houses};
+};
+/* parentes diretos: ancestrais, descendentes, cônjuges e irmãos */
+TS4.relatives=function(m,id){
+  const out=new Set(), st=[];
+  const walk=(start,map)=>{ const q=[start]; while(q.length){ const x=q.pop(); for(const y of (map.get(x)||[])) if(!out.has(y)&&y!==id){ out.add(y); q.push(y); } } };
+  walk(id,m.parentsOf); walk(id,m.childrenOf);
+  (m.spousesOf.get(id)||[]).forEach(x=>out.add(x));
+  (m.parentsOf.get(id)||[]).forEach(p=>(m.childrenOf.get(p)||[]).forEach(c=>{ if(c!==id) out.add(c); }));
+  return out;
+};
+/* agrupa as casas escolhidas em famílias do LhamaTree */
+TS4.plan=function(m,keys,includeRel){
+  const sel=m.houses.filter(h=>keys.has(h.key));
+  const sets=sel.map(h=>{ const s=new Set(h.ids); if(includeRel) h.ids.forEach(i=>TS4.relatives(m,i).forEach(x=>s.add(x))); return s; });
+  const uf=sel.map((_,i)=>i); const find=x=>{ while(uf[x]!==x){ uf[x]=uf[uf[x]]; x=uf[x]; } return x; };
+  const seen=new Map();
+  sets.forEach((s,i)=>s.forEach(id=>{ if(seen.has(id)){ const a=find(i),b=find(seen.get(id)); if(a!==b) uf[a]=b; } else seen.set(id,i); }));
+  const g=new Map();
+  sel.forEach((h,i)=>{ const r=find(i); if(!g.has(r)) g.set(r,{houses:[],ids:new Set()}); const o=g.get(r); o.houses.push(h); sets[i].forEach(x=>o.ids.add(x)); });
+  return [...g.values()].map(o=>{
+    o.houses.sort((a,b)=>b.real-a.real);
+    const extra=o.houses.length-1;
+    const ids=[...o.ids];
+    return {name:'Família '+o.houses[0].label+(extra>0?' (+'+extra+' casa'+(extra>1?'s':'')+')':''),ids,real:ids.filter(i=>!m.nodes.get(i).placeholder).length};
+  }).sort((a,b)=>b.real-a.real);
 };
 
 /* --- relatório sem nomes (seguro para compartilhar) --- */
 TS4.report=function(rep,model){
   const real=[...model.nodes.values()].filter(n=>!n.placeholder).length;
   const ph=model.nodes.size-real;
-  const L=[
+  return [
     'Relatório de importação — LhamaTree',
     'Pacote: DBPF '+rep.dbpf+' · recursos: '+rep.recursos,
+    'Blocos de Sims lidos: '+rep.blocos+' (ilegíveis: '+rep.blocosIlegiveis+') · tipos de recurso: '+JSON.stringify(rep.tipos),
     'Registros de Sims: '+rep.registros+' · importáveis: '+real,
-    'Famílias (2+ Sims ligados): '+model.fams.filter(f=>!f.loose).length+' · Sims sem parentesco: '+(model.fams.find(f=>f.loose)?.real||0),
-    'Gerações (maior cadeia): '+Math.max(0,...model.fams.map(f=>f.gens)),
+    'Casas: '+model.houses.length+' · com 2+ Sims: '+model.houses.filter(h=>h.real>1).length,
+    'Gerações (maior cadeia): '+Math.max(0,...model.houses.map(h=>h.gens)),
     'Sims com genealogia gravada: '+(real-rep.semGenealogia)+' · sem genealogia: '+rep.semGenealogia,
     'Pais/mães sem registro no save (viram "Sim desconhecido"): '+rep.paisAusentes+' vínculos, '+ph+' Sims',
     'Cônjuge sem registro: '+rep.conjugeAusente+' · cônjuge sem retorno: '+rep.conjugeSemRetorno,
     'Vínculos descartados por ciclo: '+rep.ciclos,
     'Duplicados ignorados: '+rep.duplicados+' · sem ID: '+rep.semId+' · sem nome: '+rep.semNome+' · registros ilegíveis: '+rep.erros,
-    'Fases de vida não reconhecidas: '+(JSON.stringify(rep.idadeDesconhecida)),
-    'Sexo não reconhecido: '+(JSON.stringify(rep.sexoDesconhecido)),
+    'Fases de vida não reconhecidas: '+JSON.stringify(rep.idadeDesconhecida),
+    'Sexo não reconhecido: '+JSON.stringify(rep.sexoDesconhecido),
     'Não identificado no save: data de nascimento, vivo/falecido e foto (Sims entram como "Vivo" por padrão).'
-  ];
-  return L.join('\n');
+  ].join('\n');
 };
 
 /* --- gravação no app --- */
-TS4.commit=function(model){
-  const sel=model.fams.filter(f=>f.selected);
+TS4.commit=function(model,groups){
   const existing=new Map(db.people.filter(p=>p.ts4Id).map(p=>[p.ts4Id,p.id]));
   const casado=(REL_TYPES.find(r=>r.label==='Casado(a)')||{});
   let nf=0,np=0,skipped=0,nr=0,firstFam=null;
-  const mapId=new Map();
-  sel.forEach(f=>{
+  groups.forEach(f=>{
     const fam={id:uid(),name:f.name,icon:ICONS[0],desc:'Importada do The Sims 4',cover:null};
     const idMap=new Map(); let added=0;
     f.ids.forEach(sid=>{
@@ -1915,13 +2357,12 @@ TS4.commit=function(model){
       if(n.placeholder){ p.ts4Placeholder=true; p.bio='Sim que não está mais no save; só o vínculo familiar foi preservado.'; }
       db.people.push(p); idMap.set(sid,p.id); added++; np++;
     });
-    if(!added){ return; }
+    if(!added) return;
     db.families.push(fam); nf++; if(!firstFam) firstFam=fam.id;
     const have=new Set();
     model.edges.forEach(e=>{
       if(!idMap.has(e.a)||!idMap.has(e.b)) return;
-      const a=idMap.get(e.a), b=idMap.get(e.b);
-      if(!a||!b) return;
+      const a=idMap.get(e.a), b=idMap.get(e.b); if(!a||!b) return;
       const k=e.kind+'|'+a+'|'+b; if(have.has(k)) return; have.add(k);
       if(e.kind==='parent') db.rels.push({id:uid(),familyId:fam.id,type:'parent',a,b});
       else db.rels.push({id:uid(),familyId:fam.id,type:'spouse',a,b,label:casado.label||'Casado(a)',icon:casado.icon||''});
@@ -1936,13 +2377,12 @@ TS4.commit=function(model){
 /* --- interface --- */
 function importModal(){
   let model=null,rep=null,reportTxt='';
-  const drop=`<form class="form" onsubmit="return false">
+  openModal(`<form class="form" onsubmit="return false">
     <header><h2>Importar do The Sims 4</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="imp-note">Selecione o arquivo <b>.save</b> (por exemplo <code>Slot_00000001.save</code>). A leitura acontece <b>só no seu navegador</b>: o arquivo não é enviado a nenhum servidor e não fica guardado. Só os Sims e os vínculos que você confirmar são salvos.</p>
+    <p class="imp-note">Selecione o arquivo <b>.save</b> (por exemplo <code>Slot_00000001.save</code>). A leitura acontece <b>só no seu navegador</b>: o arquivo não é enviado a nenhum servidor e não fica guardado. Depois você escolhe quais famílias (casas) quer trazer.</p>
     <label class="imp-drop" id="impDrop">Arraste o .save aqui ou clique para escolher<input type="file" id="impFile" hidden></label>
     <p class="imp-err hidden" id="impErr"></p>
-    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button></footer></form>`;
-  openModal(drop,box=>{
+    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button></footer></form>`,box=>{
     box.classList.add('imp-box');
     const err=m=>{ const e=box.querySelector('#impErr'); e.textContent=m; e.classList.remove('hidden'); };
     const run=async file=>{
@@ -1952,7 +2392,7 @@ function importModal(){
       try{
         const buf=await file.arrayBuffer();
         const r=await TS4.extract(buf);
-        rep=r.rep; model=TS4.build(r.sims,rep); reportTxt=TS4.report(rep,model);
+        rep=r.rep; model=TS4.build(r.sims,rep,r.hhNames); reportTxt=TS4.report(rep,model);
         preview(box);
       }catch(e){
         box.querySelector('#impDrop').firstChild.textContent='Arraste o .save aqui ou clique para escolher';
@@ -1969,46 +2409,66 @@ function importModal(){
   function preview(box){
     const real=[...model.nodes.values()].filter(n=>!n.placeholder).length;
     const ph=model.nodes.size-real;
-    const famsN=model.fams.filter(f=>!f.loose).length;
-    const maxG=Math.max(0,...model.fams.map(f=>f.gens));
-    const looseG=model.fams.find(f=>f.loose);
+    const maxG=Math.max(0,...model.houses.map(h=>h.gens));
     const dupExisting=db.people.filter(p=>p.ts4Id).length;
-    const row=f=>{
-      const byGen={}; f.ids.forEach(id=>{ const d=model.depth(id); (byGen[d]=byGen[d]||[]).push(id); });
-      const nm=id=>{ const n=model.nodes.get(id); return n?esc((n.first+' '+n.last).trim()):'?'; };
-      const tree=f.loose?`<div class="imp-chips">${f.ids.slice(0,60).map(id=>`<span class="imp-chip">${nm(id)}</span>`).join('')}${f.ids.length>60?`<span class="imp-chip">+${f.ids.length-60}</span>`:''}</div>`
-        :Object.keys(byGen).sort((a,b)=>a-b).map(g=>`<div class="imp-gen"><b>Geração ${g}</b><div class="imp-chips">${byGen[g].map(id=>{
-          const n=model.nodes.get(id); const sp=n.spouse&&model.nodes.has(n.spouse)?' ♥ '+nm(n.spouse):'';
-          return `<span class="imp-chip${n.placeholder?' ph':''}" title="${n.placeholder?'Sim removido do save':esc(TS4.AGE[n.idade]||'Fase desconhecida')}">${nm(id)}${n.placeholder?'':esc(sp)}</span>`;}).join('')}</div></div>`).join('');
-      return `<div class="imp-fam"><label class="imp-frow"><input type="checkbox" class="imp-chk" data-k="${f.key}" ${f.selected?'checked':''}>
-        <span class="imp-fn">${esc(f.name)}</span><span class="imp-fm">${f.real} Sims${f.loose?'':' · '+f.gens+' ger.'}</span></label>
-        <details><summary>Ver membros</summary>${tree}</details></div>`;
+    const nm=id=>{ const n=model.nodes.get(id); return n?(n.first+' '+n.last).trim():'?'; };
+    const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    const names=new Map(model.houses.map(h=>[h.key,h.ids.map(nm)]));
+    const sel=new Set(); let q='';
+    const houseRow=h=>{
+      const nn=names.get(h.key), on=sel.has(h.key);
+      const byGen={}; h.ids.forEach(id=>{ const d=model.depth(id); (byGen[d]=byGen[d]||[]).push(id); });
+      const tree=Object.keys(byGen).sort((a,b)=>a-b).map(g=>`<div class="imp-gen"><b>Geração ${g}</b><div class="imp-chips">${byGen[g].map(id=>{
+        const n=model.nodes.get(id); const sp=(model.spousesOf.get(id)||[]).filter(x=>model.nodes.has(x)).map(nm);
+        return `<span class="imp-chip" title="${esc(TS4.AGE[n.idade]||'Fase desconhecida')}">${esc(nm(id))}${sp.length?esc(' ♥ '+sp.join(', ')):''}</span>`;}).join('')}</div></div>`).join('');
+      const rel=new Set(); h.ids.forEach(i=>TS4.relatives(model,i).forEach(x=>{ if(!h.ids.includes(x)) rel.add(x); }));
+      const relReal=[...rel].filter(x=>!model.nodes.get(x).placeholder).length, relPh=rel.size-relReal;
+      const relTxt=rel.size?`<p class="imp-mem">Parentes diretos em outras casas: ${relReal}${relPh?' · sem registro no save: '+relPh:''}</p>`:'';
+      return `<div class="imp-fam${on?' on':''}"><label class="imp-frow"><input type="checkbox" class="imp-chk" data-k="${esc(h.key)}" ${on?'checked':''}>
+        <span class="imp-fn">${esc(h.label)}</span><span class="imp-fm">${h.real} Sim${h.real>1?'s':''}</span></label>
+        <p class="imp-mem">${esc(nn.slice(0,6).join(', '))}${nn.length>6?' +'+(nn.length-6):''}</p>
+        <details><summary>Ver membros e parentes</summary>${tree}${relTxt}</details></div>`;
     };
+    const vis=()=>model.houses.filter(h=>!q||norm(h.label).includes(q)||names.get(h.key).some(n=>norm(n).includes(q)));
     box.innerHTML=`<form class="form" onsubmit="return false">
-      <header><h2>Prévia da importação</h2><button type="button" class="btn ghost" data-close>×</button></header>
-      <div class="imp-stats"><div><b>${real}</b><span>Sims</span></div><div><b>${famsN}</b><span>famílias</span></div><div><b>${maxG}</b><span>gerações</span></div><div><b>${looseG?looseG.real:0}</b><span>sem parentesco</span></div></div>
-      ${ph?`<p class="imp-note">${ph} Sim(s) citado(s) como pai/mãe não estão mais no save. Entram como <b>“Sim desconhecido”</b> para manter o vínculo.</p>`:''}
-      <p class="imp-note">Não encontrei no save: <b>data de nascimento</b>, <b>vivo/falecido</b> e <b>foto</b>. Todos entram como “Vivo” e você pode ajustar depois. Sims já importados antes (${dupExisting}) não são duplicados.</p>
-      <div class="imp-list">${model.fams.map(row).join('')}</div>
+      <header><h2>Escolha as famílias</h2><button type="button" class="btn ghost" data-close>×</button></header>
+      <div class="imp-stats"><div><b>${real}</b><span>Sims no save</span></div><div><b>${model.houses.length}</b><span>famílias (casas)</span></div><div><b>${maxG}</b><span>gerações</span></div><div><b>${ph}</b><span>sem registro</span></div></div>
+      <p class="imp-note"><b>Nada vem marcado.</b> Cada item é uma casa do jogo. Marque as que você quer e as outras ficam de fora.</p>
+      <div class="imp-tools"><input type="search" id="impQ" placeholder="Buscar família ou Sim pelo nome…" autocomplete="off"><button type="button" class="btn ghost" id="impAll">Marcar as que aparecem</button><button type="button" class="btn ghost" id="impNone">Limpar</button></div>
+      <label class="imp-opt"><input type="checkbox" id="impRel" class="imp-chk" checked><span>Trazer também os parentes diretos de outras casas (pais, avós, filhos, irmãos e cônjuges), para a árvore ficar completa</span></label>
+      <div class="imp-list" id="impList"></div>
+      ${ph?`<p class="imp-note">${ph} Sim(s) citado(s) como pai/mãe não estão mais no save. Entram como <b>“Sim desconhecido”</b> só para manter o vínculo.</p>`:''}
+      <p class="imp-note">O save não traz <b>data de nascimento</b>, <b>vivo/falecido</b> nem <b>foto</b>. Todos entram como “Vivo” e você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
       <details class="imp-rep"><summary>Relatório técnico (sem nomes)</summary><pre id="impRep"></pre><button type="button" class="btn ghost" id="impCopy">Copiar relatório</button></details>
       <footer><span class="imp-sel" id="impSel"></span><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn dark" id="impGo">Importar selecionadas</button></footer></form>`;
     box.querySelector('#impRep').textContent=reportTxt;
-    const upd=()=>{ const s=model.fams.filter(f=>f.selected); box.querySelector('#impSel').textContent=s.length+' selecionada(s) · '+s.reduce((a,f)=>a+f.real,0)+' Sims'; box.querySelector('#impGo').disabled=!s.length; };
-    box.querySelectorAll('.imp-chk').forEach(c=>c.onchange=()=>{ model.fams.find(f=>f.key===c.dataset.k).selected=c.checked; upd(); });
+    const list=box.querySelector('#impList');
+    const incl=()=>box.querySelector('#impRel').checked;
+    const upd=()=>{
+      const g=sel.size?TS4.plan(model,sel,incl()):[]; const n=g.reduce((a,x)=>a+x.ids.length,0);
+      box.querySelector('#impSel').textContent=g.length?`${sel.size} casa(s) → ${g.length} família(s) · ${n} Sims`:'Nada selecionado';
+      box.querySelector('#impGo').disabled=!g.length;
+    };
+    const paint=()=>{ const v=vis(); list.innerHTML=v.length?v.map(houseRow).join(''):`<p class="imp-mem">Nenhuma família encontrada.</p>`; upd(); };
+    list.onchange=e=>{ const c=e.target.closest('.imp-chk'); if(!c||!c.dataset.k) return; c.checked?sel.add(c.dataset.k):sel.delete(c.dataset.k); c.closest('.imp-fam').classList.toggle('on',c.checked); upd(); };
+    box.querySelector('#impRel').onchange=upd;
+    box.querySelector('#impQ').oninput=e=>{ q=norm(e.target.value.trim()); paint(); };
+    box.querySelector('#impAll').onclick=()=>{ vis().forEach(h=>sel.add(h.key)); paint(); };
+    box.querySelector('#impNone').onclick=()=>{ sel.clear(); paint(); };
     box.querySelector('#impCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(reportTxt); box.querySelector('#impCopy').textContent='Copiado ✓'; }catch(e){ const r=document.createRange(); r.selectNodeContents(box.querySelector('#impRep')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); box.querySelector('#impCopy').textContent='Selecionado: use Ctrl+C'; } };
     box.querySelector('#impGo').onclick=()=>{
-      const res=TS4.commit(model);
+      const res=TS4.commit(model,TS4.plan(model,sel,incl()));
       box.innerHTML=`<form class="form" onsubmit="return false"><header><h2>Importação concluída</h2><button type="button" class="btn ghost" data-close>×</button></header>
         <p class="imp-note"><b>${res.np}</b> Sims em <b>${res.nf}</b> família(s), com <b>${res.nr}</b> vínculos.${res.skipped?` ${res.skipped} Sim(s) já existiam e foram mantidos.`:''}</p>
         <footer><span class="grow"></span><button type="button" class="btn dark" data-close>Ver árvore</button></footer></form>`;
       try{ setView('tree'); }catch(e){}
     };
-    upd();
+    paint();
   }
 }
 
 $('#newFamilyBtn').onclick=()=>familyForm(null);
-$('#importBtn').onclick=()=>importModal();
+$('#navImport').onclick=()=>importModal();
 $('#renameFamily').onclick=()=>familyForm(fam());
 $('#bgBtn').onclick=bgModal;
 $('#addPersonBtn').onclick=()=>{ if(db.activeFamily) personForm(null); };
@@ -2018,6 +2478,7 @@ $('#zoomIn').onclick=()=>{ui.zoom+=.1; applyZoom()};
 $('#zoomOut').onclick=()=>{ui.zoom-=.1; applyZoom()};
 $('#zoomCenter').onclick=centerTree;
 $('#zoomFit').onclick=fit;
+$('#zoomVal').onclick=()=>{ ui.zoom=1; applyZoom(); centerTree(); };
 $('#search').oninput=e=>{ ui.search=e.target.value; renderPeople(); };
 
 $('#famList').onclick=e=>{
@@ -2092,6 +2553,8 @@ $('#stage').onclick=e=>{
   if(sb){ const r=db.rels.find(x=>x.id===sb.dataset.rel); if(r) relEditModal(r); return; }
   const a=e.target.closest('[data-mact]');
   if(a){ menuAction(a.dataset.mact,a.dataset.mid); return; }
+  const dn=e.target.closest('[data-delnode]');
+  if(dn){ confirmDeleteNode(dn.dataset.delnode); return; }
   const m=e.target.closest('[data-more]');
   if(m){ ui.menu=ui.menu===m.dataset.more?null:m.dataset.more; render(); return; }
   const n=e.target.closest('[data-id]');
@@ -2123,6 +2586,20 @@ $('#ficha').onclick=e=>{
   if(t.dataset.act==='delete') armed(t,()=>deletePerson(p.id));
 };
 $('#familiesBody').onclick=e=>{
+  if(e.target.closest('[data-fpencil]')){ famSelecting=true; famSel=new Set(); renderFamilies(); return; }
+  if(e.target.closest('[data-fscancel]')){ famSelecting=false; famSel=new Set(); renderFamilies(); return; }
+  if(e.target.closest('[data-fsall]')){ if(famSel.size===db.families.length) famSel=new Set(); else famSel=new Set(db.families.map(f=>f.id)); renderFamilies(); return; }
+  if(e.target.closest('[data-fsdel]')){
+    const ids=[...famSel]; if(!ids.length) return;
+    const np=db.people.filter(p=>famSel.has(p.familyId)).length;
+    openModal(`<div class="form">
+      <header><h2>Excluir ${ids.length===1?'família':'famílias'}?</h2><button type="button" class="btn ghost" data-close>×</button></header>
+      <p class="gal-desc" style="margin:0">Você vai excluir ${ids.length} ${ids.length===1?'família':'famílias'}, com ${np} ${np===1?'personagem':'personagens'} e todos os vínculos. Essa ação não pode ser desfeita.</p>
+      <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn danger" id="famDelOk">Excluir</button></footer>
+    </div>`, box=>{ box.querySelector('#famDelOk').onclick=()=>{ closeModal(); deleteFamilies(ids); }; });
+    return;
+  }
+  if(famSelecting){ const c=e.target.closest('[data-fprev]'); if(c){ const id=c.dataset.fprev; famSel.has(id)?famSel.delete(id):famSel.add(id); renderFamilies(); } return; }
   if(e.target.closest('[data-fnew]')){ familyForm(null); return; }
   if(e.target.closest('[data-fimport]')){ importModal(); return; }
   const o=e.target.closest('[data-fopen]');
@@ -2141,6 +2618,18 @@ document.addEventListener('keydown',e=>{
   else if(ui.selected||ui.menu){ ui.selected=null; ui.menu=null; render(); }
 });
 
+/* ============ busca da barra lateral ============ */
+(function(){
+  const inp=$('#sbSearch'); if(!inp) return;
+  inp.addEventListener('input',()=>{ ui.sbQ=inp.value; renderSidebar(); });
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ const ps=$('#search'); if(ps){ ps.value=inp.value.trim(); ui.search=ps.value; } setView('people'); }
+    if(e.key==='Escape'){ inp.value=''; ui.sbQ=''; renderSidebar(); inp.blur(); e.stopPropagation(); }
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')){ e.preventDefault(); inp.focus(); }
+  });
+})();
 /* ============ barra lateral ============ */
 (function(){
   const app=document.getElementById('app'), btn=document.getElementById('sbToggle');

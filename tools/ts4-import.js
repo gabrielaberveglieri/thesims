@@ -104,12 +104,20 @@ TS4.extract=async function(buf){
   const cands=pkg.entries.filter(e=>e.type===0xD);
   if(!cands.length) throw new TS4Error('Versão de save não suportada: não encontrei os dados dos Sims.');
   cands.sort((a,b)=>b.mem-a.mem);
-  const blob=await TS4.readResource(pkg,cands[0]);
-  let top; try{ top=TS4.pb(blob); }catch(e){ throw new TS4Error('Dados dos Sims ilegíveis. O arquivo pode estar corrompido ou ser de uma versão não suportada.'); }
+  const tops=[]; let readErr=0;
+  for(const c of cands){ try{ tops.push(TS4.pb(await TS4.readResource(pkg,c))); }catch(e){ readErr++; } }
+  if(!tops.length) throw new TS4Error('Dados dos Sims ilegíveis. O arquivo pode estar corrompido ou ser de uma versão não suportada.');
+  const top=[].concat(...tops);
   const recs=top.filter(x=>x.f===6&&x.w===2);
   if(!recs.length) throw new TS4Error('Nenhum Sim encontrado neste save.');
+  const tipos={}; pkg.entries.forEach(e=>{ const k='0x'+e.type.toString(16); tipos[k]=(tipos[k]||0)+1; });
   const dec=new TextDecoder('utf-8');
-  const rep={dbpf:pkg.info.major+'.'+pkg.info.minor,recursos:pkg.info.entries,registros:recs.length,semId:0,duplicados:0,semNome:0,idadeDesconhecida:{},sexoDesconhecido:{},semGenealogia:0,paisAusentes:0,conjugeSemRetorno:0,ciclos:0,conjugeAusente:0,erros:0};
+  const rep={blocos:cands.length,blocosIlegiveis:readErr,tipos,dbpf:pkg.info.major+'.'+pkg.info.minor,recursos:pkg.info.entries,registros:recs.length,semId:0,duplicados:0,semNome:0,idadeDesconhecida:{},sexoDesconhecido:{},semGenealogia:0,paisAusentes:0,conjugeSemRetorno:0,ciclos:0,conjugeAusente:0,erros:0};
+  const hhNames=new Map();
+  for(const t of top){
+    if(t.f!==5||t.w!==2) continue;
+    try{ let hid='',hn=''; for(const e of TS4.pb(t.v)){ if(e.f===2&&e.w===1&&!hid) hid=e.v.toString(); else if(e.f===3&&e.w===2&&!hn) hn=dec.decode(e.v).trim(); } if(hid) hhNames.set(hid,hn); }catch(e){}
+  }
   const sims=new Map();
   for(const r of recs){
     let F={};
@@ -145,24 +153,24 @@ TS4.extract=async function(buf){
     if(!hasGen) rep.semGenealogia++;
     sims.set(id,s);
   }
-  return {sims,rep,topFields:[...new Set(top.map(x=>x.f))].length};
+  return {sims,rep,hhNames,topFields:[...new Set(top.map(x=>x.f))].length};
 };
 
-/* --- reconstrução: placeholders, famílias, gerações --- */
-TS4.build=function(sims,rep){
+/* --- reconstrução: placeholders, vínculos, casas --- */
+TS4.build=function(sims,rep,hhNames){
+  hhNames=hhNames||new Map();
   const nodes=new Map();
   sims.forEach(s=>nodes.set(s.id,{...s,placeholder:false}));
-  const edges=[]; // {kind:'parent',a,b} | {kind:'spouse',a,b}
-  const seenSp=new Set();
+  const edges=[], seenSp=new Set();
   const place=id=>{ if(!nodes.has(id)) nodes.set(id,{id,first:'Sim',last:'desconhecido',sexo:0,idade:0,hh:'',spouse:'',mother:'',father:'',placeholder:true}); };
-  nodes.forEach(n=>{
-    if(n.placeholder) return;
-    [[n.mother,4096*0+8192],[n.father,4096]].forEach(([pid,sx])=>{
+  sims.forEach(n=>{
+    const ps=[[n.mother,8192],[n.father,4096]];
+    if(n.mother&&n.mother===n.father) ps.pop();
+    ps.forEach(([pid,sx])=>{
       if(!pid||pid===n.id) return;
       if(!sims.has(pid)){ rep.paisAusentes++; place(pid); const p=nodes.get(pid); if(!p.sexo) p.sexo=sx; }
       edges.push({kind:'parent',a:pid,b:n.id});
     });
-    if(n.mother&&n.mother===n.father){ edges.pop(); }
     if(n.spouse&&n.spouse!==n.id){
       if(!sims.has(n.spouse)){ rep.conjugeAusente++; }
       else{
@@ -172,71 +180,87 @@ TS4.build=function(sims,rep){
       }
     }
   });
-  // remove vínculos de pai/mãe que criariam ciclo
-  const parentsOf=new Map(); const okEdges=[];
+  const parentsOf=new Map(), childrenOf=new Map(), spousesOf=new Map(), okEdges=[];
+  const add=(m,k,v)=>{ if(!m.has(k)) m.set(k,[]); m.get(k).push(v); };
   const reach=(from,target,seen=new Set())=>{ if(from===target) return true; if(seen.has(from)) return false; seen.add(from); for(const p of (parentsOf.get(from)||[])) if(reach(p,target,seen)) return true; return false; };
   for(const e of edges){
     if(e.kind==='parent'){
       if(reach(e.a,e.b)){ rep.ciclos++; continue; }
-      if(!parentsOf.has(e.b)) parentsOf.set(e.b,[]);
-      parentsOf.get(e.b).push(e.a);
-    }
+      add(parentsOf,e.b,e.a); add(childrenOf,e.a,e.b);
+    }else{ add(spousesOf,e.a,e.b); add(spousesOf,e.b,e.a); }
     okEdges.push(e);
   }
-  // componentes
-  const uf=new Map(); nodes.forEach((_,k)=>uf.set(k,k));
-  const find=x=>{ while(uf.get(x)!==x){ uf.set(x,uf.get(uf.get(x))); x=uf.get(x);} return x; };
-  okEdges.forEach(e=>{ const x=find(e.a),y=find(e.b); if(x!==y) uf.set(x,y); });
   const depthMemo=new Map();
   const depth=id=>{ if(depthMemo.has(id)) return depthMemo.get(id); const ps=parentsOf.get(id)||[]; const d=ps.length?1+Math.max(...ps.map(depth)):1; depthMemo.set(id,d); return d; };
-  const groups=new Map();
-  nodes.forEach((n,id)=>{ const r=find(id); if(!groups.has(r)) groups.set(r,[]); groups.get(r).push(id); });
-  const fams=[]; const loose=[];
-  groups.forEach(ids=>{
-    if(ids.length<2){ loose.push(ids[0]); return; }
-    const real=ids.filter(i=>!nodes.get(i).placeholder);
-    const cnt={}; real.forEach(i=>{ const l=nodes.get(i).last; if(l) cnt[l]=(cnt[l]||0)+1; });
+  const goodName=n=>!!n&&n.length<=40&&/\p{L}{2,}/u.test(n);
+  const byH=new Map();
+  nodes.forEach((n,id)=>{ if(n.placeholder) return; const k=n.hh||('solo:'+id); if(!byH.has(k)) byH.set(k,[]); byH.get(k).push(id); });
+  const houses=[]; const used={};
+  byH.forEach((ids,k)=>{
+    const cnt={}; ids.forEach(i=>{ const l=nodes.get(i).last; if(l) cnt[l]=(cnt[l]||0)+1; });
     const best=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
-    fams.push({ids,real:real.length,gens:Math.max(...ids.map(depth)),surname:best?best[0]:'',loose:false});
+    let name=goodName(hhNames.get(k))?hhNames.get(k).replace(/^fam[ií]lia\s+/i,'').trim():(best?best[0]:'');
+    if(!name){ const n=nodes.get(ids[0]); name=(n.first+' '+n.last).trim(); }
+    houses.push({key:k,ids,real:ids.length,name,gens:Math.max(...ids.map(depth))});
   });
-  fams.sort((a,b)=>b.real-a.real);
-  const used={};
-  fams.forEach(f=>{ const base='Família '+(f.surname||'sem sobrenome'); used[base]=(used[base]||0)+1; f.name=used[base]>1?base+' ('+used[base]+')':base; });
-  if(loose.length){ const real=loose.filter(i=>!nodes.get(i).placeholder); if(real.length) fams.push({ids:loose,real:real.length,gens:1,name:'Sims sem parentesco',surname:'',loose:true}); }
-  fams.forEach((f,i)=>{ f.key='f'+i; f.selected=!f.loose; });
-  return {nodes,edges:okEdges,parentsOf,depth,fams};
+  houses.sort((a,b)=>b.real-a.real||a.name.localeCompare(b.name,'pt-BR'));
+  houses.forEach(h=>{ used[h.name]=(used[h.name]||0)+1; h.label=used[h.name]>1?h.name+' ('+used[h.name]+')':h.name; });
+  return {nodes,edges:okEdges,parentsOf,childrenOf,spousesOf,depth,houses};
+};
+/* parentes diretos: ancestrais, descendentes, cônjuges e irmãos */
+TS4.relatives=function(m,id){
+  const out=new Set(), st=[];
+  const walk=(start,map)=>{ const q=[start]; while(q.length){ const x=q.pop(); for(const y of (map.get(x)||[])) if(!out.has(y)&&y!==id){ out.add(y); q.push(y); } } };
+  walk(id,m.parentsOf); walk(id,m.childrenOf);
+  (m.spousesOf.get(id)||[]).forEach(x=>out.add(x));
+  (m.parentsOf.get(id)||[]).forEach(p=>(m.childrenOf.get(p)||[]).forEach(c=>{ if(c!==id) out.add(c); }));
+  return out;
+};
+/* agrupa as casas escolhidas em famílias do LhamaTree */
+TS4.plan=function(m,keys,includeRel){
+  const sel=m.houses.filter(h=>keys.has(h.key));
+  const sets=sel.map(h=>{ const s=new Set(h.ids); if(includeRel) h.ids.forEach(i=>TS4.relatives(m,i).forEach(x=>s.add(x))); return s; });
+  const uf=sel.map((_,i)=>i); const find=x=>{ while(uf[x]!==x){ uf[x]=uf[uf[x]]; x=uf[x]; } return x; };
+  const seen=new Map();
+  sets.forEach((s,i)=>s.forEach(id=>{ if(seen.has(id)){ const a=find(i),b=find(seen.get(id)); if(a!==b) uf[a]=b; } else seen.set(id,i); }));
+  const g=new Map();
+  sel.forEach((h,i)=>{ const r=find(i); if(!g.has(r)) g.set(r,{houses:[],ids:new Set()}); const o=g.get(r); o.houses.push(h); sets[i].forEach(x=>o.ids.add(x)); });
+  return [...g.values()].map(o=>{
+    o.houses.sort((a,b)=>b.real-a.real);
+    const extra=o.houses.length-1;
+    const ids=[...o.ids];
+    return {name:'Família '+o.houses[0].label+(extra>0?' (+'+extra+' casa'+(extra>1?'s':'')+')':''),ids,real:ids.filter(i=>!m.nodes.get(i).placeholder).length};
+  }).sort((a,b)=>b.real-a.real);
 };
 
 /* --- relatório sem nomes (seguro para compartilhar) --- */
 TS4.report=function(rep,model){
   const real=[...model.nodes.values()].filter(n=>!n.placeholder).length;
   const ph=model.nodes.size-real;
-  const L=[
+  return [
     'Relatório de importação — LhamaTree',
     'Pacote: DBPF '+rep.dbpf+' · recursos: '+rep.recursos,
+    'Blocos de Sims lidos: '+rep.blocos+' (ilegíveis: '+rep.blocosIlegiveis+') · tipos de recurso: '+JSON.stringify(rep.tipos),
     'Registros de Sims: '+rep.registros+' · importáveis: '+real,
-    'Famílias (2+ Sims ligados): '+model.fams.filter(f=>!f.loose).length+' · Sims sem parentesco: '+(model.fams.find(f=>f.loose)?.real||0),
-    'Gerações (maior cadeia): '+Math.max(0,...model.fams.map(f=>f.gens)),
+    'Casas: '+model.houses.length+' · com 2+ Sims: '+model.houses.filter(h=>h.real>1).length,
+    'Gerações (maior cadeia): '+Math.max(0,...model.houses.map(h=>h.gens)),
     'Sims com genealogia gravada: '+(real-rep.semGenealogia)+' · sem genealogia: '+rep.semGenealogia,
     'Pais/mães sem registro no save (viram "Sim desconhecido"): '+rep.paisAusentes+' vínculos, '+ph+' Sims',
     'Cônjuge sem registro: '+rep.conjugeAusente+' · cônjuge sem retorno: '+rep.conjugeSemRetorno,
     'Vínculos descartados por ciclo: '+rep.ciclos,
     'Duplicados ignorados: '+rep.duplicados+' · sem ID: '+rep.semId+' · sem nome: '+rep.semNome+' · registros ilegíveis: '+rep.erros,
-    'Fases de vida não reconhecidas: '+(JSON.stringify(rep.idadeDesconhecida)),
-    'Sexo não reconhecido: '+(JSON.stringify(rep.sexoDesconhecido)),
+    'Fases de vida não reconhecidas: '+JSON.stringify(rep.idadeDesconhecida),
+    'Sexo não reconhecido: '+JSON.stringify(rep.sexoDesconhecido),
     'Não identificado no save: data de nascimento, vivo/falecido e foto (Sims entram como "Vivo" por padrão).'
-  ];
-  return L.join('\n');
+  ].join('\n');
 };
 
 /* --- gravação no app --- */
-TS4.commit=function(model){
-  const sel=model.fams.filter(f=>f.selected);
+TS4.commit=function(model,groups){
   const existing=new Map(db.people.filter(p=>p.ts4Id).map(p=>[p.ts4Id,p.id]));
   const casado=(REL_TYPES.find(r=>r.label==='Casado(a)')||{});
   let nf=0,np=0,skipped=0,nr=0,firstFam=null;
-  const mapId=new Map();
-  sel.forEach(f=>{
+  groups.forEach(f=>{
     const fam={id:uid(),name:f.name,icon:ICONS[0],desc:'Importada do The Sims 4',cover:null};
     const idMap=new Map(); let added=0;
     f.ids.forEach(sid=>{
@@ -250,13 +274,12 @@ TS4.commit=function(model){
       if(n.placeholder){ p.ts4Placeholder=true; p.bio='Sim que não está mais no save; só o vínculo familiar foi preservado.'; }
       db.people.push(p); idMap.set(sid,p.id); added++; np++;
     });
-    if(!added){ return; }
+    if(!added) return;
     db.families.push(fam); nf++; if(!firstFam) firstFam=fam.id;
     const have=new Set();
     model.edges.forEach(e=>{
       if(!idMap.has(e.a)||!idMap.has(e.b)) return;
-      const a=idMap.get(e.a), b=idMap.get(e.b);
-      if(!a||!b) return;
+      const a=idMap.get(e.a), b=idMap.get(e.b); if(!a||!b) return;
       const k=e.kind+'|'+a+'|'+b; if(have.has(k)) return; have.add(k);
       if(e.kind==='parent') db.rels.push({id:uid(),familyId:fam.id,type:'parent',a,b});
       else db.rels.push({id:uid(),familyId:fam.id,type:'spouse',a,b,label:casado.label||'Casado(a)',icon:casado.icon||''});
@@ -271,13 +294,12 @@ TS4.commit=function(model){
 /* --- interface --- */
 function importModal(){
   let model=null,rep=null,reportTxt='';
-  const drop=`<form class="form" onsubmit="return false">
+  openModal(`<form class="form" onsubmit="return false">
     <header><h2>Importar do The Sims 4</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <p class="imp-note">Selecione o arquivo <b>.save</b> (por exemplo <code>Slot_00000001.save</code>). A leitura acontece <b>só no seu navegador</b>: o arquivo não é enviado a nenhum servidor e não fica guardado. Só os Sims e os vínculos que você confirmar são salvos.</p>
+    <p class="imp-note">Selecione o arquivo <b>.save</b> (por exemplo <code>Slot_00000001.save</code>). A leitura acontece <b>só no seu navegador</b>: o arquivo não é enviado a nenhum servidor e não fica guardado. Depois você escolhe quais famílias (casas) quer trazer.</p>
     <label class="imp-drop" id="impDrop">Arraste o .save aqui ou clique para escolher<input type="file" id="impFile" hidden></label>
     <p class="imp-err hidden" id="impErr"></p>
-    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button></footer></form>`;
-  openModal(drop,box=>{
+    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button></footer></form>`,box=>{
     box.classList.add('imp-box');
     const err=m=>{ const e=box.querySelector('#impErr'); e.textContent=m; e.classList.remove('hidden'); };
     const run=async file=>{
@@ -287,7 +309,7 @@ function importModal(){
       try{
         const buf=await file.arrayBuffer();
         const r=await TS4.extract(buf);
-        rep=r.rep; model=TS4.build(r.sims,rep); reportTxt=TS4.report(rep,model);
+        rep=r.rep; model=TS4.build(r.sims,rep,r.hhNames); reportTxt=TS4.report(rep,model);
         preview(box);
       }catch(e){
         box.querySelector('#impDrop').firstChild.textContent='Arraste o .save aqui ou clique para escolher';
@@ -304,40 +326,60 @@ function importModal(){
   function preview(box){
     const real=[...model.nodes.values()].filter(n=>!n.placeholder).length;
     const ph=model.nodes.size-real;
-    const famsN=model.fams.filter(f=>!f.loose).length;
-    const maxG=Math.max(0,...model.fams.map(f=>f.gens));
-    const looseG=model.fams.find(f=>f.loose);
+    const maxG=Math.max(0,...model.houses.map(h=>h.gens));
     const dupExisting=db.people.filter(p=>p.ts4Id).length;
-    const row=f=>{
-      const byGen={}; f.ids.forEach(id=>{ const d=model.depth(id); (byGen[d]=byGen[d]||[]).push(id); });
-      const nm=id=>{ const n=model.nodes.get(id); return n?esc((n.first+' '+n.last).trim()):'?'; };
-      const tree=f.loose?`<div class="imp-chips">${f.ids.slice(0,60).map(id=>`<span class="imp-chip">${nm(id)}</span>`).join('')}${f.ids.length>60?`<span class="imp-chip">+${f.ids.length-60}</span>`:''}</div>`
-        :Object.keys(byGen).sort((a,b)=>a-b).map(g=>`<div class="imp-gen"><b>Geração ${g}</b><div class="imp-chips">${byGen[g].map(id=>{
-          const n=model.nodes.get(id); const sp=n.spouse&&model.nodes.has(n.spouse)?' ♥ '+nm(n.spouse):'';
-          return `<span class="imp-chip${n.placeholder?' ph':''}" title="${n.placeholder?'Sim removido do save':esc(TS4.AGE[n.idade]||'Fase desconhecida')}">${nm(id)}${n.placeholder?'':esc(sp)}</span>`;}).join('')}</div></div>`).join('');
-      return `<div class="imp-fam"><label class="imp-frow"><input type="checkbox" class="imp-chk" data-k="${f.key}" ${f.selected?'checked':''}>
-        <span class="imp-fn">${esc(f.name)}</span><span class="imp-fm">${f.real} Sims${f.loose?'':' · '+f.gens+' ger.'}</span></label>
-        <details><summary>Ver membros</summary>${tree}</details></div>`;
+    const nm=id=>{ const n=model.nodes.get(id); return n?(n.first+' '+n.last).trim():'?'; };
+    const norm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    const names=new Map(model.houses.map(h=>[h.key,h.ids.map(nm)]));
+    const sel=new Set(); let q='';
+    const houseRow=h=>{
+      const nn=names.get(h.key), on=sel.has(h.key);
+      const byGen={}; h.ids.forEach(id=>{ const d=model.depth(id); (byGen[d]=byGen[d]||[]).push(id); });
+      const tree=Object.keys(byGen).sort((a,b)=>a-b).map(g=>`<div class="imp-gen"><b>Geração ${g}</b><div class="imp-chips">${byGen[g].map(id=>{
+        const n=model.nodes.get(id); const sp=(model.spousesOf.get(id)||[]).filter(x=>model.nodes.has(x)).map(nm);
+        return `<span class="imp-chip" title="${esc(TS4.AGE[n.idade]||'Fase desconhecida')}">${esc(nm(id))}${sp.length?esc(' ♥ '+sp.join(', ')):''}</span>`;}).join('')}</div></div>`).join('');
+      const rel=new Set(); h.ids.forEach(i=>TS4.relatives(model,i).forEach(x=>{ if(!h.ids.includes(x)) rel.add(x); }));
+      const relReal=[...rel].filter(x=>!model.nodes.get(x).placeholder).length, relPh=rel.size-relReal;
+      const relTxt=rel.size?`<p class="imp-mem">Parentes diretos em outras casas: ${relReal}${relPh?' · sem registro no save: '+relPh:''}</p>`:'';
+      return `<div class="imp-fam${on?' on':''}"><label class="imp-frow"><input type="checkbox" class="imp-chk" data-k="${esc(h.key)}" ${on?'checked':''}>
+        <span class="imp-fn">${esc(h.label)}</span><span class="imp-fm">${h.real} Sim${h.real>1?'s':''}</span></label>
+        <p class="imp-mem">${esc(nn.slice(0,6).join(', '))}${nn.length>6?' +'+(nn.length-6):''}</p>
+        <details><summary>Ver membros e parentes</summary>${tree}${relTxt}</details></div>`;
     };
+    const vis=()=>model.houses.filter(h=>!q||norm(h.label).includes(q)||names.get(h.key).some(n=>norm(n).includes(q)));
     box.innerHTML=`<form class="form" onsubmit="return false">
-      <header><h2>Prévia da importação</h2><button type="button" class="btn ghost" data-close>×</button></header>
-      <div class="imp-stats"><div><b>${real}</b><span>Sims</span></div><div><b>${famsN}</b><span>famílias</span></div><div><b>${maxG}</b><span>gerações</span></div><div><b>${looseG?looseG.real:0}</b><span>sem parentesco</span></div></div>
-      ${ph?`<p class="imp-note">${ph} Sim(s) citado(s) como pai/mãe não estão mais no save. Entram como <b>“Sim desconhecido”</b> para manter o vínculo.</p>`:''}
-      <p class="imp-note">Não encontrei no save: <b>data de nascimento</b>, <b>vivo/falecido</b> e <b>foto</b>. Todos entram como “Vivo” e você pode ajustar depois. Sims já importados antes (${dupExisting}) não são duplicados.</p>
-      <div class="imp-list">${model.fams.map(row).join('')}</div>
+      <header><h2>Escolha as famílias</h2><button type="button" class="btn ghost" data-close>×</button></header>
+      <div class="imp-stats"><div><b>${real}</b><span>Sims no save</span></div><div><b>${model.houses.length}</b><span>famílias (casas)</span></div><div><b>${maxG}</b><span>gerações</span></div><div><b>${ph}</b><span>sem registro</span></div></div>
+      <p class="imp-note"><b>Nada vem marcado.</b> Cada item é uma casa do jogo. Marque as que você quer e as outras ficam de fora.</p>
+      <div class="imp-tools"><input type="search" id="impQ" placeholder="Buscar família ou Sim pelo nome…" autocomplete="off"><button type="button" class="btn ghost" id="impAll">Marcar as que aparecem</button><button type="button" class="btn ghost" id="impNone">Limpar</button></div>
+      <label class="imp-opt"><input type="checkbox" id="impRel" class="imp-chk" checked><span>Trazer também os parentes diretos de outras casas (pais, avós, filhos, irmãos e cônjuges), para a árvore ficar completa</span></label>
+      <div class="imp-list" id="impList"></div>
+      ${ph?`<p class="imp-note">${ph} Sim(s) citado(s) como pai/mãe não estão mais no save. Entram como <b>“Sim desconhecido”</b> só para manter o vínculo.</p>`:''}
+      <p class="imp-note">O save não traz <b>data de nascimento</b>, <b>vivo/falecido</b> nem <b>foto</b>. Todos entram como “Vivo” e você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
       <details class="imp-rep"><summary>Relatório técnico (sem nomes)</summary><pre id="impRep"></pre><button type="button" class="btn ghost" id="impCopy">Copiar relatório</button></details>
       <footer><span class="imp-sel" id="impSel"></span><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn dark" id="impGo">Importar selecionadas</button></footer></form>`;
     box.querySelector('#impRep').textContent=reportTxt;
-    const upd=()=>{ const s=model.fams.filter(f=>f.selected); box.querySelector('#impSel').textContent=s.length+' selecionada(s) · '+s.reduce((a,f)=>a+f.real,0)+' Sims'; box.querySelector('#impGo').disabled=!s.length; };
-    box.querySelectorAll('.imp-chk').forEach(c=>c.onchange=()=>{ model.fams.find(f=>f.key===c.dataset.k).selected=c.checked; upd(); });
+    const list=box.querySelector('#impList');
+    const incl=()=>box.querySelector('#impRel').checked;
+    const upd=()=>{
+      const g=sel.size?TS4.plan(model,sel,incl()):[]; const n=g.reduce((a,x)=>a+x.ids.length,0);
+      box.querySelector('#impSel').textContent=g.length?`${sel.size} casa(s) → ${g.length} família(s) · ${n} Sims`:'Nada selecionado';
+      box.querySelector('#impGo').disabled=!g.length;
+    };
+    const paint=()=>{ const v=vis(); list.innerHTML=v.length?v.map(houseRow).join(''):`<p class="imp-mem">Nenhuma família encontrada.</p>`; upd(); };
+    list.onchange=e=>{ const c=e.target.closest('.imp-chk'); if(!c||!c.dataset.k) return; c.checked?sel.add(c.dataset.k):sel.delete(c.dataset.k); c.closest('.imp-fam').classList.toggle('on',c.checked); upd(); };
+    box.querySelector('#impRel').onchange=upd;
+    box.querySelector('#impQ').oninput=e=>{ q=norm(e.target.value.trim()); paint(); };
+    box.querySelector('#impAll').onclick=()=>{ vis().forEach(h=>sel.add(h.key)); paint(); };
+    box.querySelector('#impNone').onclick=()=>{ sel.clear(); paint(); };
     box.querySelector('#impCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(reportTxt); box.querySelector('#impCopy').textContent='Copiado ✓'; }catch(e){ const r=document.createRange(); r.selectNodeContents(box.querySelector('#impRep')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); box.querySelector('#impCopy').textContent='Selecionado: use Ctrl+C'; } };
     box.querySelector('#impGo').onclick=()=>{
-      const res=TS4.commit(model);
+      const res=TS4.commit(model,TS4.plan(model,sel,incl()));
       box.innerHTML=`<form class="form" onsubmit="return false"><header><h2>Importação concluída</h2><button type="button" class="btn ghost" data-close>×</button></header>
         <p class="imp-note"><b>${res.np}</b> Sims em <b>${res.nf}</b> família(s), com <b>${res.nr}</b> vínculos.${res.skipped?` ${res.skipped} Sim(s) já existiam e foram mantidos.`:''}</p>
         <footer><span class="grow"></span><button type="button" class="btn dark" data-close>Ver árvore</button></footer></form>`;
       try{ setView('tree'); }catch(e){}
     };
-    upd();
+    paint();
   }
 }
