@@ -1025,6 +1025,51 @@ select.mm-inp{appearance:auto}
 .fmc-name{padding:42px 16px 18px;font:700 17px Outfit,Inter,sans-serif;color:var(--ink)}
 .fmc-img{height:110px;border-radius:12px;background-size:cover;background-position:center;border:1px solid var(--line)}
 @media (prefers-reduced-motion:reduce){.fm-card{transition:none}.fm-card:hover{transform:none}}
+/* Minha galeria */
+#galleryView .main{margin:0!important;border-radius:0;box-shadow:none;background:#fff}
+.alb-top .pill{vertical-align:middle;margin-left:6px}
+.alb-top h1 .pill:empty{display:none}
+.gl-acts{display:flex;gap:10px}
+.gl-acts .btn{height:40px;padding:0 16px;gap:8px;font-size:14px}
+.gl-bar{gap:12px;padding:14px 24px}
+.gl-bar .fsearch{width:280px}
+.gl-fams button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 8px}
+.gl-fams button[data-gfam=""]{padding:0 12px}
+.gl-fic{width:20px;height:20px;display:grid;place-items:center;font-size:15px}
+.gl-fic .ico-img{width:20px;height:20px}
+.gl-sel{margin-left:auto;display:flex;gap:8px}
+.gl-dd{-webkit-appearance:none;appearance:none;height:36px;padding:0 34px 0 12px;border-radius:10px;border:1.5px solid var(--line);background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23080032' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 12px center;font:600 13px Inter,sans-serif;color:var(--ink);cursor:pointer;max-width:200px}
+.gl-dd:focus{outline:2px solid var(--lilac);border-color:var(--lilac)}
+.gl-selbar{padding:10px 24px;margin:0;border-bottom:1px solid var(--line)}
+.gl-selbar .btn{height:36px;padding:0 14px}
+.gl-selbar[hidden]{display:none!important}
+.gl-list{padding:20px 24px 32px}
+.gl-sec h2{margin:0 0 12px;font:700 16px Outfit,Inter,sans-serif;display:flex;align-items:center;gap:10px;color:var(--ink)}
+.gl-sec h2 span{font:600 12px Inter,sans-serif;color:var(--ink-muted)}
+.gl-grid{columns:5 200px;column-gap:14px}
+.gl-ph{position:relative;display:block;width:100%;margin:0 0 14px;break-inside:avoid;border-radius:16px;overflow:hidden;cursor:pointer;background:var(--soft)}
+.gl-ph img{display:block;width:100%;height:auto;transition:transform .35s}
+.gl-ph:hover img{transform:scale(1.04)}
+.gl-ph .ov{position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(8,0,50,.55));opacity:0;transition:opacity .2s;pointer-events:none}
+.gl-ph:hover .ov,.gl-ph.titled .ov{opacity:1}
+.gl-ph .tt{position:absolute;left:12px;right:12px;bottom:10px;display:flex;flex-direction:column;gap:2px;text-align:left;color:#fff;pointer-events:none;opacity:0;transition:opacity .2s}
+.gl-ph.titled .tt,.gl-ph:hover .tt{opacity:1}
+.gl-ph .tt b{font:700 14px Outfit,Inter,sans-serif}
+.gl-ph .tt span{font-size:11px;opacity:.85}
+.gl-ph .fav{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.92);color:var(--ink-muted);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.85);transition:.2s;cursor:pointer}
+.gl-ph:hover .fav,.gl-ph .fav.on,.gl-ph .fav:focus-visible{opacity:1;transform:scale(1)}
+.gl-ph .fav.on{color:#E23D74}
+.gl-ph .who{position:absolute;top:10px;left:10px;display:flex;opacity:0;transition:.2s}
+.gl-ph:hover .who{opacity:1}
+.gl-ph .who i{width:26px;height:26px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:inline-flex;align-items:center;justify-content:center;font:700 10px Outfit,sans-serif;font-style:normal;box-sizing:border-box}
+.gl-ph .who i:first-child{margin-left:0}
+.gl-ph.sel{box-shadow:0 0 0 3px var(--lime)}
+.gl-ph .gal-chk{top:10px;right:10px}
+.gl-drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;height:180px;margin:0 0 14px;break-inside:avoid;border-radius:16px;border:2px dashed #CFC9EA;background:#fff;color:var(--lilac-deep);font:600 13px Inter,sans-serif;cursor:pointer;text-align:center}
+.gl-drop span{font-weight:400;color:var(--ink-muted);font-size:12px}
+.gl-drop .pl{width:44px;height:44px;border-radius:50%;background:var(--lilac-soft);display:flex;align-items:center;justify-content:center}
+.gl-drop:hover,.gl-drop.over{background:var(--lilac-soft);border-color:var(--lilac)}
+@media (prefers-reduced-motion:reduce){.gl-ph img,.gl-ph .fav{transition:none}.gl-ph:hover img{transform:none}}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -1110,20 +1155,19 @@ select.mm-inp{appearance:auto}
 
     <section class="view hidden" id="galleryView">
       <div class="main" style="margin-top:0">
-        <div class="gal-page">
-          <div class="gal-top">
-            <div><h2 class="gal-title">Minha galeria</h2><p class="gal-desc">Todas as memórias das suas famílias em um só lugar.</p></div>
-            <div class="gal-acts"><button class="btn ghost" id="galSelBtn">Editar</button><button class="btn dark" id="galAddBtn">+ Adicionar fotografia</button></div>
+        <div class="alb-wrap">
+          <div class="alb-top">
+            <div><h1>Minha galeria <span class="pill" id="galTotal"></span></h1><p>Todas as memórias das suas famílias em um só lugar.</p></div>
+            <div class="gl-acts"><button class="btn ab-ghost" id="galSelBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span id="galSelLbl">Selecionar</span></button><button class="btn dark" id="galAddBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar fotos</button></div>
           </div>
-          <div class="gal-tools">
-            <input type="search" id="galSearch" placeholder="Pesquisar por título ou descrição…">
-            <select id="galFam"></select>
-            <select id="galPer"></select>
-            <select id="galSort"><option value="desc">Mais recentes</option><option value="asc">Mais antigas</option></select>
+          <div class="pbar gl-bar">
+            <label class="fsearch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" id="galSearch" placeholder="Buscar por título ou Sim" aria-label="Buscar fotos" autocomplete="off"></label>
+            <div class="gfil gl-fams" id="galFams" role="group" aria-label="Filtrar por família"></div>
+            <input type="hidden" id="galFam" value="">
+            <div class="gl-sel"><select id="galPer" class="gl-dd" aria-label="Filtrar por Sim"></select><select id="galSort" class="gl-dd" aria-label="Ordenar"><option value="desc">Mais recentes</option><option value="asc">Mais antigas</option></select></div>
           </div>
-          <div class="gal-selbar" id="galSelBar" hidden><span id="galSelCount">0 selecionadas</span><span class="grow"></span><button class="btn ghost" id="galSelCancel">Cancelar</button><button class="btn danger" id="galSelDel" data-label="Excluir selecionadas" disabled>Excluir selecionadas</button></div>
-          <p class="gal-count" id="galCount"></p>
-          <div class="gal-grid" id="galGrid"></div>
+          <div class="gal-selbar gl-selbar" id="galSelBar" hidden><span id="galSelCount">0 selecionadas</span><span class="grow"></span><button class="btn ab-ghost" id="galSelCancel">Cancelar</button><button class="btn danger" id="galSelDel" data-label="Excluir selecionadas" disabled>Excluir selecionadas</button></div>
+          <div class="plist gl-list" id="galGrid"></div>
         </div>
       </div>
     </section>
@@ -3059,23 +3103,43 @@ function galFiltered(){
   return photos.filter(ph=>{
     if(fam&&ph.familyId!==fam) return false;
     if(per&&!(ph.personIds||[]).includes(per)) return false;
-    if(q&&!((ph.title||'')+' '+(ph.desc||'')).toLowerCase().includes(q)) return false;
+    if(q){ const names=(ph.personIds||[]).map(byId).filter(Boolean).map(fullName).join(' '); if(!((ph.title||'')+' '+(ph.desc||'')+' '+names).toLowerCase().includes(q)) return false; }
     return true;
   }).sort((a,b)=>sort==='asc'?a.addedAt-b.addedAt:b.addedAt-a.addedAt);
 }
+const GAL_MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const GAL_HEART='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>';
 function renderGallery(){
   const view=$('#galleryView'); if(!view||view.classList.contains('hidden')) return;
   updateGalSel();
-  const famSel=$('#galFam'), perSel=$('#galPer'), curF=famSel.value, curP=perSel.value;
-  famSel.innerHTML='<option value="">Todas as famílias</option>'+db.families.map(f=>`<option value="${f.id}">${esc(f.name)}</option>`).join('');
-  perSel.innerHTML='<option value="">Todos os Sims</option>'+db.people.map(p=>`<option value="${p.id}">${esc(fullName(p))}</option>`).join('');
-  famSel.value=curF; perSel.value=curP;
+  const fam=$('#galFam').value, perSel=$('#galPer'), curP=perSel.value;
+  if(fam&&!db.families.some(f=>f.id===fam)) $('#galFam').value='';
+  const fv=$('#galFam').value;
+  $('#galFams').innerHTML=`<button type="button" data-gfam="" class="${fv?'':'on'}">Todas</button>`+db.families.map(f=>`<button type="button" data-gfam="${f.id}" class="${f.id===fv?'on':''}"><span class="gl-fic">${iconHTML(f.icon)}</span>${esc(f.name.replace(/^fam[ií]lia\s+/i,''))}</button>`).join('');
+  const ppl=db.people.filter(p=>!fv||p.familyId===fv);
+  perSel.innerHTML='<option value="">Todos os Sims</option>'+ppl.map(p=>`<option value="${p.id}">${esc(fullName(p))}</option>`).join('');
+  perSel.value=ppl.some(p=>p.id===curP)?curP:'';
+  $('#galTotal').textContent=photosReady&&photosDb&&assetsApi?`${photos.length} ${photos.length===1?'foto':'fotos'}`:'';
+  const grid=$('#galGrid');
+  if(!photosReady){ grid.innerHTML='<p class="none">Carregando…</p>'; return; }
+  if(!photosDb||!assetsApi){ grid.innerHTML=`<div class="gal-missing"><p class="none">Sem acesso a ${galMissing.join(' e ')||'banco e armazenamento'} nesta visualização.</p><button class="btn dark" id="galGrant">Permitir acesso</button></div>`; return; }
   const list=galFiltered();
-  $('#galCount').textContent=!photosReady?'Carregando…':(photosDb&&assetsApi?`${list.length} ${list.length===1?'fotografia':'fotografias'}`:'Galeria indisponível neste acesso');
-  if(!photosReady){ $('#galGrid').innerHTML=''; return; }
-  if(!photosDb||!assetsApi){ $('#galGrid').innerHTML=`<div class="gal-missing"><p class="none">Sem acesso a ${galMissing.join(' e ')||'banco e armazenamento'} nesta visualização.</p><button class="btn dark" id="galGrant">Permitir acesso</button></div>`; return; }
-  $('#galGrid').innerHTML=list.length?list.map(ph=>{ const t=esc(ph.title||'Sem título'); return `<button class="gal-tile${galSelecting&&galSel.has(ph.id)?' sel':''}" data-gal="${ph.id}" title="${t}"><img src="${photoSrc(ph)}" alt="" loading="lazy"><span class="cap">${t}</span>${galSelecting?`<span class="gal-chk${galSel.has(ph.id)?' on':''}">✓</span>`:''}</button>`; }).join('')
-    :`<p class="none">${photos.length?'Nenhuma fotografia encontrada.':'Nenhuma fotografia ainda. Adicione a primeira!'}</p>`;
+  const drop=galSelecting?'':`<button type="button" class="gl-drop" id="galDrop"><span class="pl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Arraste fotos aqui<span>ou clique para escolher</span></button>`;
+  const tile=ph=>{
+    const f=db.families.find(x=>x.id===ph.familyId), d=new Date(ph.addedAt||Date.now());
+    const sub=`${f?esc(f.name):'Sem família'} · ${d.getDate()} ${GAL_MONTHS[d.getMonth()].slice(0,3).toLowerCase()}`;
+    const who=(ph.personIds||[]).map(byId).filter(Boolean).slice(0,3);
+    const sel=galSelecting&&galSel.has(ph.id);
+    return `<div class="gl-ph${ph.title?' titled':''}${sel?' sel':''}" data-gal="${ph.id}" role="button" tabindex="0" aria-label="${esc(ph.title||'Foto')}">
+      <img src="${photoSrc(ph)}" alt="" loading="lazy"><span class="ov"></span>
+      ${who.length&&!galSelecting?`<span class="who">${who.map(p=>{ const t=mmTile(p); return `<i style="background:${t[0]};color:${t[1]}" title="${esc(fullName(p))}">${esc(initials(p))}</i>`; }).join('')}</span>`:''}
+      ${galSelecting?`<span class="gal-chk${sel?' on':''}">✓</span>`:`<button type="button" class="fav${ph.fav?' on':''}" data-gfav="${ph.id}" aria-label="${ph.fav?'Desfavoritar':'Favoritar'}" aria-pressed="${!!ph.fav}">${GAL_HEART}</button>`}
+      <span class="tt">${ph.title?`<b>${esc(ph.title)}</b>`:''}<span>${sub}</span></span></div>`;
+  };
+  if(!list.length){ grid.innerHTML=`<section class="gl-sec"><div class="gl-grid">${drop}</div>${photos.length?'<p class="none">Nenhuma foto encontrada com esses filtros.</p>':''}</section>`; return; }
+  const groups=[];
+  list.forEach(ph=>{ const d=new Date(ph.addedAt||Date.now()), k=d.getFullYear()+'-'+d.getMonth(); let g=groups[groups.length-1]; if(!g||g.k!==k){ g={k,label:`${GAL_MONTHS[d.getMonth()]} de ${d.getFullYear()}`,items:[]}; groups.push(g); } g.items.push(ph); });
+  grid.innerHTML=groups.map((g,i)=>`<section class="gl-sec"><h2>${g.label} <span>${g.items.length} ${g.items.length===1?'foto':'fotos'}</span></h2><div class="gl-grid">${i===0?drop:''}${g.items.map(tile).join('')}</div></section>`).join('');
 }
 function openPhotoViewer(id){
   const list=galFiltered(), i=list.findIndex(x=>x.id===id); if(i<0) return;
@@ -3562,7 +3626,7 @@ function updateGalSel(){
   const bar=$('#galSelBar'); if(!bar) return;
   bar.hidden=!galSelecting;
   $('#galAddBtn').hidden=galSelecting;
-  $('#galSelBtn').textContent=galSelecting?'Concluir':'Editar';
+  $('#galSelLbl').textContent=galSelecting?'Concluir':'Selecionar';
   $('#galSelCount').textContent=galSel.size===1?'1 selecionada':`${galSel.size} selecionadas`;
   $('#galSelDel').disabled=!galSel.size;
 }
@@ -3591,8 +3655,22 @@ $('#galSelDel').onclick=()=>{
 };
 $('#galAddBtn').onclick=()=>photoForm(null);
 $('#galSearch').oninput=renderGallery;
-['#galFam','#galPer','#galSort'].forEach(sel=>$(sel).onchange=renderGallery);
-$('#galGrid').onclick=e=>{ const t=e.target.closest('[data-gal]'); if(t){ if(galSelecting) toggleGalSel(t.dataset.gal); else openPhotoViewer(t.dataset.gal); } else if(e.target.closest('#galGrant')) grantPhotoAccess(); };
+['#galPer','#galSort'].forEach(sel=>$(sel).onchange=renderGallery);
+$('#galFams').onclick=e=>{ const b=e.target.closest('[data-gfam]'); if(!b) return; $('#galFam').value=b.dataset.gfam; renderGallery(); };
+function galDropFiles(files){
+  files=[...files].filter(f=>/^image\//.test(f.type)); if(!files.length) return;
+  if(!photosCol||!assetsApi){ toast('Galeria indisponível neste acesso.'); return; }
+  toast(files.length>1?`Enviando ${files.length} fotos…`:'Enviando foto…');
+  addPhotoFiles(files,{title:'',desc:'',familyId:$('#galFam').value||db.activeFamily||'',personIds:[]}).then(ids=>toast(ids.length>1?`${ids.length} fotos adicionadas.`:'Foto adicionada.')).catch(()=>toast('Não foi possível enviar as fotos.'));
+}
+$('#galGrid').addEventListener('dragover',e=>{ if(galSelecting) return; e.preventDefault(); const d=$('#galDrop'); if(d) d.classList.add('over'); });
+$('#galGrid').addEventListener('dragleave',e=>{ const d=$('#galDrop'); if(d&&!e.currentTarget.contains(e.relatedTarget)) d.classList.remove('over'); });
+$('#galGrid').addEventListener('drop',e=>{ if(galSelecting) return; e.preventDefault(); const d=$('#galDrop'); if(d) d.classList.remove('over'); galDropFiles(e.dataTransfer.files); });
+$('#galGrid').addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-gal]')){ e.preventDefault(); e.target.click(); } });
+$('#galGrid').onclick=e=>{
+  const fv=e.target.closest('[data-gfav]'); if(fv){ const ph=photos.find(x=>x.id===fv.dataset.gfav); if(ph&&photosCol){ ph.fav=!ph.fav; renderGallery(); photosCol.doc(ph.id).update({fav:ph.fav}).catch(()=>{ ph.fav=!ph.fav; renderGallery(); toast('Não foi possível favoritar.'); }); } return; }
+  if(e.target.closest('#galDrop')){ photoForm(null); return; }
+  const t=e.target.closest('[data-gal]'); if(t){ if(galSelecting) toggleGalSel(t.dataset.gal); else openPhotoViewer(t.dataset.gal); } else if(e.target.closest('#galGrant')) grantPhotoAccess(); };
 
 /* ============ início ============ */
 save();
