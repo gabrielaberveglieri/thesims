@@ -1933,7 +1933,7 @@ const fmHash=s=>{ let h=0; for(const c of String(s)) h=(h*31+c.charCodeAt(0))>>>
 function famBanner(f){
   if(f.cover) return `background-color:#DCEFFB;background-image:linear-gradient(transparent 40%, rgba(8,0,50,.25)), url('${f.cover}');background-size:cover;background-position:center`;
   const ck=Object.keys(FM_COL), pk=['bolinhas','listras','xadrez'], h=fmHash(f.id);
-  const c=FM_COL[f.bannerColor]?f.bannerColor:ck[h%ck.length], p=FM_PAT[f.bannerPat]?f.bannerPat:pk[(h>>3)%pk.length];
+  const c=FM_COL[f.bannerColor]?f.bannerColor:ck[h%ck.length], p=FM_PAT[f.bannerPat]?f.bannerPat:pk[(h>>>3)%pk.length];
   return `background-color:${FM_COL[c][0]};background-image:${FM_PAT[p][0]};background-size:${FM_PAT[p][1]}`;
 }
 let famMenu=null;
@@ -1979,7 +1979,7 @@ function renderFamilies(){
 }
 function familyCoverModal(f){
   const ck=Object.keys(FM_COL), h=fmHash(f.id);
-  const st={color:FM_COL[f.bannerColor]?f.bannerColor:ck[h%ck.length],pat:FM_PAT[f.bannerPat]?f.bannerPat:['bolinhas','listras','xadrez'][(h>>3)%3],img:f.cover||null};
+  const st={color:FM_COL[f.bannerColor]?f.bannerColor:ck[h%ck.length],pat:FM_PAT[f.bannerPat]?f.bannerPat:['bolinhas','listras','xadrez'][(h>>>3)%3],img:f.cover||null};
   openModal(`<div class="mm cov fmc" role="dialog" aria-modal="true" aria-labelledby="mmT">
     <div class="mm-head cov-head"><div><h2 id="mmT">Capa da família</h2><p>Escolha uma cor e estampa ou envie uma imagem para ${esc(f.name)}.</p></div><button type="button" class="mm-x" data-close aria-label="Fechar">${MM_X}</button></div>
     <div class="cov-body">
