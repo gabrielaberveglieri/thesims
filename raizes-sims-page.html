@@ -765,13 +765,17 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--lilac);outline-o
 .mm-addnew{width:100%;height:48px;border-radius:14px;border:1.5px dashed var(--lime);background:#F7FCF1;color:var(--lime-deep);font:700 14px Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .mm-addnew:hover{background:var(--lime-soft)}
 select.mm-inp{appearance:auto}
-@media (max-width:1300px){.seg .lbl{display:none}}
-.app.with-ficha .seg .lbl,.app.with-ficha #addPersonBtn .lbl{display:none}
+@media (max-width:1300px){.seg .tlbl{display:none}}
+.app.with-ficha .seg .tlbl,.app.with-ficha #addPersonBtn .tlbl{display:none}
 .app.with-ficha #addPersonBtn{padding:0 12px}
 .hdr h1{flex:0 1 auto;min-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hdr-t{flex:1}
 .node .nm{text-shadow:0 1px 2px rgba(8,0,50,.5),0 0 6px rgba(8,0,50,.25)}
-.seg .lbl,#addPersonBtn .lbl{line-height:1;display:block}
+.tlbl{color:inherit;margin:0;font:inherit}
+#addPersonBtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:12px;border:1.5px solid var(--lime);background:var(--lime);color:#fff;font:700 14px/20px Inter,system-ui,sans-serif;letter-spacing:0;white-space:nowrap}
+#addPersonBtn svg{flex:none;display:block;width:16px;height:16px;stroke-width:2}
+#addPersonBtn .tlbl{display:block;line-height:20px}
+#addPersonBtn:hover{filter:brightness(.92);background:var(--lime);border-color:var(--lime)}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -818,11 +822,11 @@ select.mm-inp{appearance:auto}
             <button id="zoomIn" title="Aumentar zoom" aria-label="Aumentar zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
           </div>
           <div class="seg" role="group" aria-label="Visualização">
-            <button id="zoomCenter" title="Centralizar a árvore"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><circle cx="12" cy="12" r="2.5"/></svg><span class="lbl">Centralizar</span></button>
+            <button id="zoomCenter" title="Centralizar a árvore"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><circle cx="12" cy="12" r="2.5"/></svg><span class="tlbl">Centralizar</span></button>
             <span class="sep"></span>
-            <button id="zoomFit" title="Ajustar à tela"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="lbl">Ajustar</span></button>
+            <button id="zoomFit" title="Ajustar à tela"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="tlbl">Ajustar</span></button>
           </div>
-          <button class="btn dark" id="addPersonBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">Personagem</span></button>
+          <button class="btn dark" id="addPersonBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="tlbl">Personagem</span></button>
         </div>
       </div>
     </header>
