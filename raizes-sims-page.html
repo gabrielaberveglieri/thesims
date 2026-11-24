@@ -263,8 +263,6 @@ svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .alb-card .alb-pencil{z-index:4}
 .gal-tile.alb-card{aspect-ratio:.8;overflow:visible;border-radius:0;background:none;box-shadow:none}
 .alb-group .gal-grid{gap:36px 32px}
-#albFamWrap{margin:4px 0 6px}
-#albCount{display:none}
 .gal-acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .gal-selbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 10px;font-size:14px;font-weight:600;color:var(--ink)}
 .gal-selbar .grow{flex:1}
@@ -821,6 +819,54 @@ select.mm-inp{appearance:auto}
 .pempty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:48px;border-radius:16px;background:#fff;color:var(--ink-muted)}
 .pempty b{color:var(--ink);font:600 16px Outfit,Inter,sans-serif}
 @media (prefers-reduced-motion:reduce){.sc{transition:none}.sc:hover{transform:none}}
+/* Álbuns */
+.alb-wrap{display:flex;flex-direction:column;height:100%;min-height:0}
+.alb-top{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:76px;padding:0 24px;border-bottom:1px solid var(--line);flex:none;box-sizing:border-box}
+.alb-top h1{margin:0;font:700 22px/1.2 Outfit,Inter,sans-serif;letter-spacing:-.01em;color:var(--ink)}
+.alb-top p{margin:2px 0 0;font-size:13px;color:var(--ink-muted)}
+#albNewTop{height:40px;padding:0 16px;gap:8px;font-size:14px}
+#albumsView .main{margin:0!important;border-radius:0;box-shadow:none;background:#fff}
+.plist.alb-detail{gap:14px}
+.fam-h{display:flex;align-items:center;gap:10px}
+.fam-h-ic{width:28px;height:28px;display:grid;place-items:center;font-size:20px;flex:none}
+.fam-h-ic .ico-img{width:28px;height:28px}
+.fam-h h2{margin:0;font:700 16px Outfit,Inter,sans-serif;color:var(--ink)}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:28px 24px;padding:8px 4px 0}
+.alb{display:flex;flex-direction:column;gap:12px;min-width:0}
+.alb-btn{border:0;background:transparent;padding:0;cursor:pointer;transition:transform .2s;display:block;width:100%;text-align:inherit}
+.alb-btn:hover{transform:translateY(-4px) rotate(-1deg)}
+.cover{position:relative;width:100%;aspect-ratio:3/4;border-radius:8px 20px 20px 8px;overflow:visible;box-shadow:0 10px 24px rgba(8,0,50,.12),inset 0 0 0 1px rgba(8,0,50,.04);isolation:isolate}
+.cover .pages{position:absolute;inset:6px -6px 6px 6px;border-radius:8px 18px 18px 8px;background:#fff;box-shadow:0 0 0 1px var(--line);z-index:-1}
+.cover .face{position:absolute;inset:0;border-radius:8px 20px 20px 8px;overflow:hidden;background-repeat:repeat;background-position:center}
+.cover .spine{position:absolute;left:0;top:0;bottom:0;width:16px;background:rgba(8,0,50,.10);border-right:1.5px dashed rgba(255,255,255,.75)}
+.cover .tape{position:absolute;top:-10px;left:50%;width:64px;height:22px;margin-left:-32px;transform:rotate(-4deg);background:rgba(255,224,140,.75);border-left:2px dotted rgba(8,0,50,.08);border-right:2px dotted rgba(8,0,50,.08);box-shadow:0 1px 2px rgba(8,0,50,.08);z-index:2}
+.cover .label{position:absolute;left:28px;right:14px;bottom:18%;padding:12px;border-radius:12px;background:#fff;box-shadow:0 4px 10px rgba(8,0,50,.12);transform:rotate(-2deg);text-align:center}
+.cover .label b{font:700 17px/1.2 Outfit,Inter,sans-serif;color:var(--ink);overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cover .stk{position:absolute;right:12px;top:22px;width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(8,0,50,.15);transform:rotate(8deg)}
+.alb-meta{display:flex;align-items:center;gap:8px;padding:0 2px}
+.alb-meta span{flex:1;font-size:12px;color:var(--ink-muted);min-width:0}
+.alb-pen{width:32px;height:32px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink-muted)}
+.alb-pen:hover{background:var(--soft);color:var(--ink)}
+.new-alb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;aspect-ratio:3/4;border-radius:8px 20px 20px 8px;border:2px dashed #CFC9EA;background:#fff;color:var(--lilac-deep);font:600 14px Inter,sans-serif;cursor:pointer;width:100%}
+.new-alb:hover{background:var(--lilac-soft);border-color:var(--lilac)}
+.new-alb .pl{width:44px;height:44px;border-radius:50%;background:var(--lilac-soft);display:flex;align-items:center;justify-content:center}
+.cov-body{flex-direction:row;align-items:flex-start;gap:24px;max-height:min(560px,calc(92vh - 200px))}
+.cov-prev2{width:170px;flex:none;padding:12px 8px 0 0}
+.cov-opts{flex:1;min-width:0;display:flex;flex-direction:column;gap:16px}
+#covPane{display:flex;flex-direction:column;gap:16px}
+.cov-cols{display:flex;flex-wrap:wrap;gap:8px}
+.cov-cols button{width:32px;height:32px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.cov-cols button.on{box-shadow:0 0 0 2px var(--lime)}
+.cov-stks{display:flex;flex-wrap:wrap;gap:6px}
+.cov-stks button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:#fff;color:var(--lilac-deep);display:grid;place-items:center;cursor:pointer;padding:0}
+.cov-stks button:first-child{color:var(--ink-muted)}
+.cov-stks button.on{border-color:var(--lime);background:var(--lime-soft)}
+.cov-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.cov-photos button{aspect-ratio:1;border-radius:10px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:var(--soft)}
+.cov-photos button.on{border-color:var(--lime)}
+.cov-photos img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:620px){.cov-body{flex-direction:column}.cov-prev2{width:150px;margin:0 auto}}
+@media (prefers-reduced-motion:reduce){.alb-btn{transition:none}.alb-btn:hover{transform:none}}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -925,20 +971,13 @@ select.mm-inp{appearance:auto}
     </section>
     <section class="view hidden" id="albumsView">
       <div class="main" style="margin-top:0">
-        <div class="gal-page">
-          <div class="gal-top">
-            <div><h2 class="gal-title">Álbuns</h2><p class="gal-desc">Organize suas fotografias em álbuns personalizados.</p></div>
-            <button class="btn dark" id="albNewTop">+ Novo álbum</button>
+        <div class="alb-wrap">
+          <div class="alb-top">
+            <div><h1>Álbuns</h1><p>Guarde os momentos dos seus Sims em álbuns com a capa do seu jeito.</p></div>
+            <button class="btn dark" id="albNewTop"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo álbum</button>
           </div>
-          <div class="gal-tools" id="albFamWrap">
-            <div class="cs" id="albCs">
-              <button type="button" class="cs-btn" id="albCsBtn" aria-haspopup="listbox" aria-expanded="false"><span id="albCsLbl">Todas as famílias</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="#444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <div class="cs-menu" id="albCsMenu" role="listbox" hidden></div>
-            </div>
-            <select id="albFam" hidden></select>
-          </div>
-          <p class="gal-count" id="albCount"></p>
-          <div id="albBody"></div>
+          <div class="pbar" id="albFamWrap"><div class="gfil" id="albFil" role="group" aria-label="Filtrar por família"></div><span class="ptotal" id="albCount"></span></div>
+          <div class="plist" id="albBody"></div>
         </div>
       </div>
     </section>
@@ -2899,32 +2938,64 @@ const COVER_COLORS=[
 ];
 const coverColorOf=a=>COVER_COLORS.find(c=>c.bg===a.coverColor)||COVER_COLORS[0];
 const albumCoverSrc=al=>{ const ph=photos.find(x=>x.id===al.coverId)||photos.find(x=>(al.photoIds||[]).includes(x.id)); return ph?photoSrc(ph):''; };
+const ALB_COL={lilac:['#C9B2F5','#3A2D8F','Lilás'],lime:['#CDEFA6','#3F8F12','Verde'],pink:['#FFC9DA','#A3345C','Rosa'],peach:['#FFD8B5','#A8571C','Pêssego'],sky:['#BFE3F7','#1F5F8A','Céu'],butter:['#FFE9A8','#8A6400','Manteiga'],mint:['#BFEBDD','#1E6B55','Menta'],navy:['#3A2D8F','#C9B2F5','Anil']};
+const ALB_PAT={liso:['none','auto','Liso'],bolinhas:['radial-gradient(rgba(255,255,255,.55) 2.5px, transparent 3px)','18px 18px','Bolinhas'],listras:['repeating-linear-gradient(135deg, rgba(255,255,255,.35) 0 8px, transparent 8px 18px)','auto','Listras'],xadrez:['linear-gradient(90deg, rgba(255,255,255,.35) 50%, transparent 50%), linear-gradient(rgba(255,255,255,.35) 50%, transparent 50%)','24px 24px','Xadrez']};
+const ALB_STK={heart:'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z',sun:'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',flower:'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 9V5a3 3 0 0 1 3 3M15 12h4a3 3 0 0 1-3 3M12 15v4a3 3 0 0 1-3-3M9 12H5a3 3 0 0 1 3-3',camera:'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',crystal:'M12 2l5 6-5 14-5-14zM7 8h10',leaf:'M5 19C5 10 11 5 20 4c-1 9-6 15-15 15zM5 19l8-8',music:'M9 18V5l11-2v13M9 18a3 3 0 1 1-3-3 3 3 0 0 1 3 3zM20 16a3 3 0 1 1-3-3 3 3 0 0 1 3 3z'};
+const ALB_PEN='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>';
+const albStkSvg=(d,sz)=>`<svg width="${sz||22}" height="${sz||22}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+function coverLook(a){
+  let bg=ALB_COL.lilac[0], fg=ALB_COL.lilac[1];
+  const k=ALB_COL[a.coverColor];
+  if(k){ bg=k[0]; fg=k[1]; }
+  else if(a.coverColor){ const o=COVER_COLORS.find(c=>c.bg===a.coverColor); if(o){ bg=o.bg; fg=o.fg; } }
+  const p=ALB_PAT[a.coverPat]||ALB_PAT.liso;
+  return {bg,fg,img:p[0],size:p[1],stk:ALB_STK[a.coverStk]||''};
+}
+function coverHTML(a,src){
+  const c=coverLook(a), photo=a.coverStyle!=='color'&&src;
+  const face=photo?`background-color:${c.bg};background-image:url('${src}');background-size:cover`:`background-color:${c.bg};background-image:${c.img};background-size:${c.size}`;
+  return `<div class="cover"><span class="pages"></span><div class="face" style="${face}"><span class="spine"></span></div><span class="tape"></span>${c.stk?`<span class="stk" style="color:${c.fg==='#C9B2F5'?'#3A2D8F':c.fg}">${albStkSvg(c.stk)}</span>`:''}<div class="label"><b>${esc(a.name||'Sem título')}</b></div></div>`;
+}
+const relTime=ts=>{
+  if(!ts) return '';
+  const d=Math.floor((Date.now()-ts)/864e5);
+  if(d<=0) return 'hoje'; if(d===1) return 'ontem'; if(d<7) return `há ${d} dias`;
+  if(d<30){ const w=Math.floor(d/7); return `há ${w} ${w===1?'semana':'semanas'}`; }
+  if(d<365){ const m=Math.floor(d/30); return `há ${m} ${m===1?'mês':'meses'}`; }
+  const y=Math.floor(d/365); return `há ${y} ${y===1?'ano':'anos'}`;
+};
+let albFilter='';
 function renderAlbums(){
   const view=$('#albumsView'); if(!view||view.classList.contains('hidden')) return;
   const body=$('#albBody');
+  body.classList.remove('alb-detail');
   if(!photosReady){ body.innerHTML=''; return; }
   if(!albumsCol){ $('#albCount').textContent='Álbuns indisponíveis neste acesso'; body.innerHTML=`<div class="gal-missing"><p class="none">Sem acesso ao banco de dados nesta visualização.</p><button class="btn dark" id="galGrant">Permitir acesso</button></div>`; return; }
   const al=albums.find(a=>a.id===openAlbumId);
   $('#albFamWrap').hidden=!!al;
-  if(al){ renderAlbumDetail(al); return; }
+  if(al){ body.classList.add('alb-detail'); renderAlbumDetail(al); return; }
   openAlbumId=null;
-  const fsel=$('#albFam'), curF=fsel.value;
-  fsel.innerHTML='<option value="">Todas as famílias</option>'+db.families.map(f=>`<option value="${f.id}">${esc(f.name)}</option>`).join('');
-  fsel.value=curF;
-  const fv=fsel.value, shownAlbums=albums.filter(a=>!fv||a.familyId===fv);
-  $('#albCsLbl').textContent=(db.families.find(f=>f.id===fv)||{name:'Todas as famílias'}).name;
-  $('#albCsMenu').innerHTML=[{id:'',name:'Todas as famílias'},...db.families].map(o=>`<button type="button" class="cs-opt${o.id===fv?' on':''}" role="option" aria-selected="${o.id===fv}" data-v="${o.id}">${esc(o.name)}</button>`).join('');
-  $('#albCount').textContent=`${shownAlbums.length} ${shownAlbums.length===1?'álbum':'álbuns'}`;
-  const tile=a=>{
-    const solid=a.coverStyle==='color', c=coverColorOf(a), src=albumCoverSrc(a);
-    const body=solid
-      ? `<div class="alb-cover" style="background:${c.bg};color:${c.fg}"><span class="alb-cover-t">${esc(a.name)}</span></div>`
-      : `${src?`<img src="${src}" alt="" loading="lazy">`:'<span class="alb-empty"></span>'}<span class="cap">${esc(a.name)}</span>`;
-    return `<div class="gal-tile alb-card${solid?' solid':''}" data-alb="${a.id}" title="${esc(a.name)}" role="button" tabindex="0"><span class="alb-leaf"></span><div class="alb-lid">${body}</div><button class="alb-pencil" data-albcover="${a.id}" title="Trocar capa" aria-label="Trocar capa do álbum"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button></div>`;
+  const noFam=a=>!db.families.some(f=>f.id===a.familyId);
+  const hasNone=albums.some(noFam);
+  if(albFilter==='__none'&&!hasNone) albFilter='';
+  if(albFilter&&albFilter!=='__none'&&!db.families.some(f=>f.id===albFilter)) albFilter='';
+  const opts=[{v:'',l:'Todas'},...db.families.map(f=>({v:f.id,l:f.name})),...(hasNone?[{v:'__none',l:'Sem família'}]:[])];
+  $('#albFil').innerHTML=opts.map(o=>`<button type="button" data-albf="${o.v}" class="${o.v===albFilter?'on':''}">${esc(o.l)}</button>`).join('');
+  const shown=albums.filter(a=>!albFilter||(albFilter==='__none'?noFam(a):a.familyId===albFilter));
+  $('#albCount').innerHTML=`<b>${shown.length}</b> ${shown.length===1?'álbum':'álbuns'}`;
+  const card=a=>{
+    const n=(a.photoIds||[]).length, rel=relTime(a.updatedAt||a.createdAt);
+    return `<div class="alb"><button type="button" class="alb-btn" data-alb="${a.id}" aria-label="Abrir álbum ${esc(a.name)}">${coverHTML(a,albumCoverSrc(a))}</button>
+      <div class="alb-meta"><span>${n} ${n===1?'foto':'fotos'}${rel?' · '+rel:''}</span><button type="button" class="ibtn alb-pen" data-albcover="${a.id}" title="Personalizar capa" aria-label="Personalizar capa de ${esc(a.name)}">${ALB_PEN}</button></div></div>`;
   };
-  const groups=[...db.families.filter(f=>!fv||f.id===fv).map(f=>({name:f.name,list:albums.filter(a=>a.familyId===f.id)})),
-    ...(fv?[]:[{name:'Sem família',list:albums.filter(a=>!db.families.some(f=>f.id===a.familyId))}])].filter(g=>g.list.length);
-  body.innerHTML=groups.length?groups.map(g=>`<section class="alb-group"><h3 class="alb-gh">${esc(g.name)}</h3><div class="gal-grid">${g.list.map(tile).join('')}</div></section>`).join(''):'<p class="none">Nenhum álbum ainda. Crie o primeiro!</p>';
+  const newCard=fid=>`<button type="button" class="new-alb" data-albnew="${fid}"><span class="pl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>Novo álbum</button>`;
+  const groups=[
+    ...db.families.filter(f=>albFilter?f.id===albFilter:albums.some(a=>a.familyId===f.id)).map(f=>({id:f.id,name:f.name,icon:iconHTML(f.icon),list:albums.filter(a=>a.familyId===f.id)})),
+    ...((!albFilter||albFilter==='__none')&&hasNone?[{id:'',name:'Sem família',icon:'',list:albums.filter(noFam)}]:[])
+  ];
+  body.innerHTML=groups.length?groups.map(g=>`<section class="gen-sec"><div class="fam-h">${g.icon?`<span class="fam-h-ic">${g.icon}</span>`:''}<h2>${esc(g.name)}</h2><span class="gcount">${g.list.length}</span><span class="gline"></span></div>
+    <div class="agrid">${g.list.map(card).join('')}${newCard(g.id)}</div></section>`).join('')
+    :`<div class="pempty"><b>Nenhum álbum ainda</b><span>Crie o primeiro e escolha uma capa do seu jeito.</span><button type="button" class="btn dark" data-albnew="${db.activeFamily||''}" style="margin-top:8px">Novo álbum</button></div>`;
 }
 let albSpread=0, albSpreadFor=null, albOpening=false, albFlip='';
 const POL_ROT=[-2.5,1.5,-1,2.5,-1.5,1,-2,2];
@@ -2979,8 +3050,8 @@ function renderAlbumDetailOld(al){
     ${f||names?`<p class="gal-meta">${f?`<strong>Família:</strong> ${esc(f.name)}`:''}${f&&names?' · ':''}${names?`<strong>Personagens:</strong> ${names}`:''}</p>`:''}
     <div class="gal-grid">${list.length?list.map(ph=>`<div class="gal-tile alb-tile"><img src="${photoSrc(ph)}" alt="" loading="lazy"><span class="cap">${esc(ph.title||'Sem título')}</span><button class="alb-rm" data-albrm="${ph.id}" title="Remover do álbum" aria-label="Remover do álbum">×</button></div>`).join(''):'<p class="none">Nenhuma fotografia neste álbum ainda.</p>'}</div>`;
 }
-function albumForm(al){
-  const isNew=!al, famId=al?(al.familyId||''):(db.activeFamily||'');
+function albumForm(al,presetFam){
+  const isNew=!al, famId=al?(al.familyId||''):(presetFam!==undefined&&presetFam!==''?presetFam:(db.activeFamily||''));
   let chosen=new Set(al?(al.personIds||[]):[]);
   const famOpts=db.families.map(f=>`<option value="${f.id}" ${f.id===famId?'selected':''}>${esc(f.name)}</option>`).join('');
   const inAlb=al?(al.photoIds||[]).map(id=>photos.find(x=>x.id===id)).filter(Boolean):[];
@@ -3095,54 +3166,52 @@ function albumCoverModalOld(al){
 }
 function albumCoverModal(al){
   const inAlb=(al.photoIds||[]).map(id=>photos.find(x=>x.id===id)).filter(Boolean);
-  const cur=coverColorOf(al);
-  let style=al.coverStyle==='color'?'color':'photo', sel=al.coverId||'', col=cur.bg;
-  openModal(`<div class="form">
-    <header><h2>Capa e título</h2><button type="button" class="btn ghost" data-close>×</button></header>
-    <label>Título do álbum (aparece na capa)<input id="covName" value="${esc(al.name)}" maxlength="60"></label>
-    <div class="cov-tabs">
-      <button type="button" class="btn ghost cov-t${style==='photo'?' on':''}" data-style="photo">Fotografia</button>
-      <button type="button" class="btn ghost cov-t${style==='color'?' on':''}" data-style="color">Cor sólida</button>
+  const st={name:al.name||'',style:al.coverStyle==='color'?'color':(inAlb.length?'photo':'color'),color:ALB_COL[al.coverColor]?al.coverColor:'lilac',pat:ALB_PAT[al.coverPat]?al.coverPat:'liso',stk:ALB_STK[al.coverStk]?al.coverStk:'',coverId:al.coverId||''};
+  if(!ALB_COL[al.coverColor]&&al.coverColor) st.legacy=al.coverColor;
+  const draft=()=>({name:st.name.trim()||'Sem título',coverStyle:st.style,coverColor:st.legacy&&st.style==='color'&&!st.touched?st.legacy:st.color,coverPat:st.pat,coverStk:st.stk});
+  const draftSrc=()=>{ if(st.style!=='photo') return ''; const ph=photos.find(x=>x.id===st.coverId)||inAlb[0]; return ph?photoSrc(ph):''; };
+  openModal(`<div class="mm" role="dialog" aria-modal="true" aria-labelledby="mmT">
+    <div class="mm-head"><div><h2 id="mmT">Personalizar capa</h2><p>do álbum <b>${esc(al.name||'')}</b></p></div><button type="button" class="mm-x" data-close aria-label="Fechar">${MM_X}</button></div>
+    <div class="mm-body cov-body">
+      <div class="cov-prev2" id="covPrev"></div>
+      <div class="cov-opts">
+        <div class="mm-field"><label for="covName">Título na capa</label><input id="covName" class="mm-inp" maxlength="60" value="${esc(st.name)}"></div>
+        <div class="mm-seg" style="margin:0" role="tablist"><button type="button" data-cst="color">Cor e estampa</button><button type="button" data-cst="photo">Fotografia</button></div>
+        <div id="covPane"></div>
+        <div class="mm-field"><span class="mm-fl">Adesivo</span><div class="cov-stks">${['',...Object.keys(ALB_STK)].map(k=>`<button type="button" data-stk="${k}" aria-label="${k||'Sem adesivo'}" title="${k?'':'Sem adesivo'}">${k?albStkSvg(ALB_STK[k],18):'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M6.5 17.5l11-11"/></svg>'}</button>`).join('')}</div></div>
+      </div>
     </div>
-    <div id="covPhoto" ${style==='color'?'hidden':''}>
-      ${inAlb.length?`<p class="gal-desc" style="margin:0 0 10px">Escolha a fotografia que representa o álbum.</p>
-      <div class="gal-grid alb-pick">
-        <button type="button" class="gal-tile alb-pk${sel===''?' sel':''}" data-cov=""><span class="alb-empty"></span><span class="cap">Automática (primeira foto)</span></button>
-        ${inAlb.map(ph=>`<button type="button" class="gal-tile alb-pk${sel===ph.id?' sel':''}" data-cov="${ph.id}"><img src="${photoSrc(ph)}" alt="" loading="lazy"><span class="cap">${esc(ph.title||'Sem título')}</span></button>`).join('')}
-      </div>`:'<p class="none">Este álbum ainda não tem fotografias. Use a capa em cor ou adicione fotos primeiro.</p>'}
-    </div>
-    <div id="covColor" ${style==='photo'?'hidden':''}>
-      <div class="cov-prev" id="covPrev" style="background:${col};color:${cur.fg}"><span>${esc(al.name)}</span></div>
-      <p class="gal-desc" style="margin:12px 0 8px">Escolha a cor da capa.</p>
-      <div class="cov-sw">${COVER_COLORS.map(c=>`<button type="button" class="cov-sw-b${c.bg===col?' sel':''}" data-col="${c.bg}" data-fg="${c.fg}" style="background:${c.bg}" title="${c.name}" aria-label="${c.name}"></button>`).join('')}</div>
-    </div>
-    <footer><span class="grow"></span><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn dark" id="covOk">Salvar capa</button></footer>
-  </div>`, box=>{
-    const tabs=box.querySelectorAll('.cov-t');
-    tabs.forEach(t=>t.onclick=()=>{
-      style=t.dataset.style;
-      tabs.forEach(x=>x.classList.toggle('on',x===t));
-      box.querySelector('#covPhoto').hidden=style!=='photo';
-      box.querySelector('#covColor').hidden=style!=='color';
-    });
-    box.querySelectorAll('[data-cov]').forEach(b=>b.onclick=()=>{
-      sel=b.dataset.cov;
-      box.querySelectorAll('[data-cov]').forEach(x=>x.classList.toggle('sel',x.dataset.cov===sel));
-    });
-    const prev=box.querySelector('#covPrev');
-    box.querySelector('#covName').oninput=e=>{ prev.querySelector('span').textContent=e.target.value.trim()||'Sem título'; };
-    box.querySelectorAll('[data-col]').forEach(b=>b.onclick=()=>{
-      col=b.dataset.col;
-      box.querySelectorAll('[data-col]').forEach(x=>x.classList.toggle('sel',x===b));
-      prev.style.background=col; prev.style.color=b.dataset.fg;
-    });
-    box.querySelector('#covOk').onclick=async()=>{
-      if(!albumsCol){ toast('Álbuns indisponíveis neste acesso.'); return; }
-      const name=box.querySelector('#covName').value.trim();
-      if(!name){ toast('Dê um título ao álbum.'); return; }
-      try{ await albumsCol.doc(al.id).update({name,coverStyle:style,coverColor:col,coverId:sel}); closeModal(); toast('Capa e título atualizados.'); }
-      catch(e){ toast('Não foi possível salvar a capa.'); }
+    <div class="mm-foot"><span class="mm-hint"></span><button type="button" class="mm-btn out" data-close>Cancelar</button><button type="button" class="mm-btn lime" id="covOk">Salvar capa</button></div></div>`,box=>{
+    const $b=s=>box.querySelector(s);
+    const paintPrev=()=>{ $b('#covPrev').innerHTML=coverHTML(draft(),draftSrc()); };
+    const paintPane=()=>{
+      box.querySelectorAll('[data-cst]').forEach(x=>x.classList.toggle('on',x.dataset.cst===st.style));
+      box.querySelectorAll('[data-stk]').forEach(x=>x.classList.toggle('on',x.dataset.stk===st.stk));
+      $b('#covPane').innerHTML=st.style==='color'
+        ?`<div class="mm-field"><span class="mm-fl">Cor</span><div class="cov-cols">${Object.entries(ALB_COL).map(([k,c])=>`<button type="button" data-ccol="${k}" class="${k===st.color&&(st.touched||!st.legacy)?'on':''}" style="background:${c[0]}" title="${c[2]}" aria-label="${c[2]}"></button>`).join('')}</div></div>
+           <div class="mm-field"><span class="mm-fl">Estampa</span><div class="mm-chips">${Object.entries(ALB_PAT).map(([k,p])=>`<button type="button" data-cpat="${k}" class="${k===st.pat?'on':''}">${p[2]}</button>`).join('')}</div></div>`
+        :(inAlb.length?`<div class="mm-field"><span class="mm-fl">Fotografia da capa</span><div class="cov-photos">${inAlb.map((ph,i)=>`<button type="button" data-cph="${ph.id}" class="${(st.coverId?st.coverId===ph.id:i===0)?'on':''}"><img src="${photoSrc(ph)}" alt="" loading="lazy"></button>`).join('')}</div></div>`
+          :mmNote('Este álbum ainda não tem fotografias. Adicione fotos para usar uma delas na capa.'));
+      paintPrev();
     };
+    paintPane();
+    box.addEventListener('input',e=>{ if(e.target.id==='covName'){ st.name=e.target.value; paintPrev(); } });
+    box.addEventListener('click',async e=>{
+      const t=e.target.closest('[data-cst],[data-ccol],[data-cpat],[data-cph],[data-stk],#covOk'); if(!t) return;
+      if(t.dataset.cst){ st.style=t.dataset.cst; paintPane(); return; }
+      if(t.dataset.ccol){ st.color=t.dataset.ccol; st.touched=true; paintPane(); return; }
+      if(t.dataset.cpat){ st.pat=t.dataset.cpat; paintPane(); return; }
+      if(t.dataset.cph){ st.coverId=t.dataset.cph; paintPane(); return; }
+      if(t.dataset.stk!==undefined){ st.stk=t.dataset.stk; paintPane(); return; }
+      if(t.id==='covOk'){
+        if(!albumsCol){ toast('Álbuns indisponíveis neste acesso.'); return; }
+        const name=st.name.trim(); if(!name){ toast('Dê um título ao álbum.'); return; }
+        if(st.style==='photo'&&!inAlb.length){ toast('Este álbum ainda não tem fotografias.'); return; }
+        const d=draft();
+        try{ await albumsCol.doc(al.id).update({name,coverStyle:d.coverStyle,coverColor:d.coverColor,coverPat:d.coverPat,coverStk:d.coverStk,coverId:st.coverId,updatedAt:Date.now()}); closeModal(); toast('Capa atualizada.'); }
+        catch(err){ toast('Não foi possível salvar a capa.'); }
+      }
+    });
   });
 }
 function pagesHTML(){ return [...document.querySelectorAll('#albBody .alb-spread > .alb-page')].map(p=>p.outerHTML); }
@@ -3156,12 +3225,9 @@ function playFlip(dir,frontHTML,backHTML){
   setTimeout(()=>ov.remove(),1000);
 }
 $('#albNewTop').onclick=()=>albumForm(null);
-const closeCs=()=>{ $('#albCsMenu').hidden=true; $('#albCsBtn').setAttribute('aria-expanded','false'); };
-$('#albCsBtn').onclick=e=>{ e.stopPropagation(); const open=$('#albCsMenu').hidden; $('#albCsMenu').hidden=!open; $('#albCsBtn').setAttribute('aria-expanded',String(open)); };
-$('#albCsMenu').onclick=e=>{ const b=e.target.closest('[data-v]'); if(!b) return; $('#albFam').value=b.dataset.v; closeCs(); renderAlbums(); };
-document.addEventListener('click',e=>{ if(!e.target.closest('#albCs')) closeCs(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCs(); });
+$('#albFil').onclick=e=>{ const b=e.target.closest('[data-albf]'); if(!b) return; albFilter=b.dataset.albf; renderAlbums(); };
 $('#albBody').onclick=e=>{
+  const nb=e.target.closest('[data-albnew]'); if(nb){ albumForm(null,nb.dataset.albnew); return; }
   const pc=e.target.closest('[data-albcover]'); if(pc){ const a=albums.find(x=>x.id===pc.dataset.albcover); if(a) albumCoverModal(a); return; }
   const t=e.target.closest('[data-alb]'); if(t){ openAlbumId=t.dataset.alb; albOpening=true; renderAlbums(); return; }
   if(e.target.closest('#galGrant')){ grantPhotoAccess(); return; }
