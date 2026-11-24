@@ -780,6 +780,47 @@ select.mm-inp{appearance:auto}
 .mm-type.on{border-color:var(--lime);background:#F7FCF1}
 .mm .mm-ico{background:transparent!important}
 .mm .mm-ico img{width:30px;height:30px}
+/* Meus Sims */
+.vtog{display:flex;height:40px;padding:3px;border-radius:12px;background:var(--soft);gap:2px;box-sizing:border-box}
+.vtog button{display:inline-flex;align-items:center;gap:6px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:var(--ink-muted);font:600 13px Inter,sans-serif;cursor:pointer}
+.vtog button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(8,0,50,.12)}
+.app.with-ficha .vtog .tlbl{display:none}
+.toolbar .hidden{display:none!important}
+#peopleView .main{background:#fff;margin:0!important;border-radius:0;box-shadow:none}
+.pbar{display:flex;align-items:center;gap:16px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap;flex:none}
+.fsearch{display:flex;align-items:center;gap:8px;width:300px;max-width:100%;height:40px;padding:0 12px;border-radius:12px;border:1.5px solid var(--line);color:var(--ink-muted);box-sizing:border-box}
+.fsearch:focus-within{border-color:var(--lilac)}
+.fsearch input{border:0;outline:0;flex:1;font:400 14px Inter,sans-serif;color:var(--ink);background:transparent;padding:0;min-width:0;border-radius:0}
+.fsearch input:focus{outline:0;border:0}
+.gfil{display:flex;gap:6px;flex-wrap:wrap}
+.gfil button{height:34px;padding:0 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font:600 13px Inter,sans-serif;color:var(--ink-muted);cursor:pointer}
+.gfil button:hover{border-color:#CFC9EA}
+.gfil button.on{border-color:var(--lilac-soft);background:var(--lilac-soft);color:var(--lilac-deep)}
+.ptotal{margin-left:auto;font-size:13px;color:var(--ink-muted)}
+.ptotal b{color:var(--ink)}
+.plist{flex:1;min-height:0;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:28px}
+.gen-sec{display:flex;flex-direction:column;gap:12px}
+.gen-h{display:flex;align-items:center;gap:10px}
+.gen-h h2{margin:0;font:700 16px Outfit,Inter,sans-serif;color:var(--ink)}
+.gcount{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink-muted)}
+.gline{flex:1;height:1px;background:var(--line)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sc{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%;min-width:0;transition:border-color .15s,box-shadow .15s,transform .15s}
+.sc:hover{border-color:#CFC9EA;box-shadow:0 6px 16px rgba(8,0,50,.08);transform:translateY(-1px)}
+.sc.on{border-color:var(--lime);box-shadow:0 0 0 3px var(--lime-soft)}
+.sav{width:48px;height:48px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font:700 17px Outfit,sans-serif;flex:none;overflow:hidden}
+.sav img{width:100%;height:100%;object-fit:cover}
+.sav.dead{filter:grayscale(1)}
+.sc-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.sc-t b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-muted)}
+.sdot{width:3px;height:3px;border-radius:50%;background:#B9B4D3}
+.salive{color:var(--lime-deep);font-weight:600}
+.sdead{color:var(--ink-muted);font-weight:600}
+.vinc{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--ink-muted);font-size:12px;font-weight:600;flex:none}
+.pempty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:48px;border-radius:16px;background:#fff;color:var(--ink-muted)}
+.pempty b{color:var(--ink);font:600 16px Outfit,Inter,sans-serif}
+@media (prefers-reduced-motion:reduce){.sc{transition:none}.sc:hover{transform:none}}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -820,12 +861,16 @@ select.mm-inp{appearance:auto}
       </div>
       <div class="hdr-r">
         <div class="toolbar" id="treeTools">
-          <div class="seg" role="group" aria-label="Zoom da árvore">
+          <div class="vtog" role="group" aria-label="Visualização">
+            <button type="button" data-vt="tree"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1.5"/><rect x="3" y="16" width="6" height="5" rx="1.5"/><rect x="15" y="16" width="6" height="5" rx="1.5"/><path d="M12 8v4M6 16v-4h12v4"/></svg><span class="tlbl">Árvore</span></button>
+            <button type="button" data-vt="people"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="tlbl">Personagens</span></button>
+          </div>
+          <div class="seg tree-only" role="group" aria-label="Zoom da árvore">
             <button id="zoomOut" title="Diminuir zoom" aria-label="Diminuir zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
             <button id="zoomVal" class="zv" title="Voltar para 100%">100%</button>
             <button id="zoomIn" title="Aumentar zoom" aria-label="Aumentar zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
           </div>
-          <div class="seg" role="group" aria-label="Visualização">
+          <div class="seg tree-only" role="group" aria-label="Enquadramento">
             <button id="zoomCenter" title="Centralizar a árvore"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><circle cx="12" cy="12" r="2.5"/></svg><span class="tlbl">Centralizar</span></button>
             <span class="sep"></span>
             <button id="zoomFit" title="Ajustar à tela"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="tlbl">Ajustar</span></button>
@@ -899,12 +944,12 @@ select.mm-inp{appearance:auto}
     </section>
     <section class="view hidden" id="peopleView">
       <div class="main" style="margin-top:0">
-        <div class="people-tools">
-          <input id="search" type="search" placeholder="Buscar por nome…">
-          <span id="peopleCount"></span>
-          <button class="btn" id="peopleTreeBtn">Ver árvore genealógica</button>
+        <div class="pbar">
+          <label class="fsearch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="search" type="search" placeholder="Buscar personagem pelo nome" aria-label="Buscar personagem" autocomplete="off"></label>
+          <div class="gfil" id="genFil" role="group" aria-label="Filtrar por geração"></div>
+          <span class="ptotal" id="peopleCount"></span>
         </div>
-        <div class="people-body" id="peopleBody"></div>
+        <div class="plist" id="peopleBody"></div>
       </div>
     </section>
 
@@ -1230,7 +1275,9 @@ function renderTopbar(){
   $('#renameFamily').classList.toggle('hidden',!f||fv);
   $('#addPersonBtn').disabled=!f;
   $('#bgBtn').disabled=!f;
-  $('#treeTools').classList.toggle('hidden',ui.view!=='tree');
+  $('#treeTools').classList.toggle('hidden',!(ui.view==='tree'||ui.view==='people'));
+  $$('.tree-only').forEach(x=>x.classList.toggle('hidden',ui.view!=='tree'));
+  $$('[data-vt]').forEach(x=>{ const on=x.dataset.vt===ui.view; x.classList.toggle('on',on); x.setAttribute('aria-pressed',String(on)); });
 }
 /* geometria das ligações pai/filho: sempre saem e chegam em personagens */
 function unitConn(u){
@@ -1375,20 +1422,28 @@ const spouseBadges=[];
 function renderPeople(){
   const q=ui.search.trim().toLowerCase();
   const all=ppl();
-  const list=all.filter(p=>fullName(p).toLowerCase().includes(q));
-  $('#peopleCount').textContent=`${all.length} personagens`;
-  if(!all.length){ $('#peopleBody').innerHTML='<p class="none">Nenhum personagem nesta família ainda.</p>'; return; }
+  const genOf=p=>L&&L.pos[p.id]?L.pos[p.id].depth+1:1;
+  const maxG=all.reduce((m,p)=>Math.max(m,genOf(p)),0);
+  if(!(ui.pgen<=maxG)) ui.pgen=0;
+  const g0=ui.pgen||0;
+  $('#genFil').innerHTML=[0,...Array.from({length:maxG},(_,k)=>k+1)].map(n=>`<button type="button" data-g="${n}" class="${n===g0?'on':''}">${n?'Geração '+n:'Todas'}</button>`).join('');
+  const list=all.filter(p=>(!g0||genOf(p)===g0)&&fullName(p).toLowerCase().includes(q));
+  $('#peopleCount').innerHTML=`<b>${list.length}</b> de ${all.length} ${all.length===1?'personagem':'personagens'}`;
+  if(!all.length){ $('#peopleBody').innerHTML='<div class="pempty"><b>Nenhum personagem ainda</b><span>Use “+ Personagem” para criar o primeiro.</span></div>'; return; }
   const groups={};
-  list.forEach(p=>{const g=L&&L.pos[p.id]?L.pos[p.id].depth+1:1; if(!groups[g]) groups[g]=[]; groups[g].push(p)});
+  list.forEach(p=>{ const g=genOf(p); (groups[g]=groups[g]||[]).push(p); });
   const keys=Object.keys(groups).map(Number).sort((a,b)=>a-b);
+  const LINK='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7L11.5 6.8"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></svg>';
   $('#peopleBody').innerHTML=keys.length?keys.map(g=>`
-    <div class="gen-group"><h3>Geração ${g}<span>${groups[g].length}</span></h3>
-      <div class="pgrid">${groups[g].map(p=>{
-        const n=parentsOf(p.id).length+childrenOf(p.id).length+spousesOf(p.id).length;
-        return `<button class="pcard" data-id="${p.id}">
-          <div class="pav${isDead(p)?' dead':''}">${avatarInner(p)}</div>
-          <div><strong>${esc(fullName(p))}</strong><small>${esc(p.stage)} · ${isDead(p)?'Falecido':'Vivo'}</small><small>${n} vínculo(s)</small></div></button>`;
-      }).join('')}</div></div>`).join(''):'<p class="none">Nenhum personagem encontrado.</p>';
+    <section class="gen-sec"><div class="gen-h"><h2>Geração ${g}</h2><span class="gcount">${groups[g].length}</span><span class="gline"></span></div>
+      <div class="sgrid">${groups[g].map(p=>{
+        const n=rls().filter(r=>r.a===p.id||r.b===p.id).length;
+        const t=mmTile(p), dead=isDead(p);
+        return `<button type="button" class="sc${ui.selected===p.id?' on':''}" data-id="${p.id}">
+          <span class="sav${dead?' dead':''}" style="background:${t[0]};color:${t[1]}">${p.photo?`<img src="${p.photo}" alt="">`:esc(initials(p))}</span>
+          <span class="sc-t"><b>${esc(fullName(p))}</b><span class="sc-meta">${esc(p.stage)}<span class="sdot"></span><span class="${dead?'sdead':'salive'}">${dead?'Falecido':'Vivo'}</span></span></span>
+          <span class="vinc" title="Vínculos">${n}${LINK}</span></button>`;
+      }).join('')}</div></section>`).join(''):'<div class="pempty"><b>Ninguém encontrado</b><span>Tente outro nome ou outra geração.</span></div>';
 }
 function renderFicha(){
   const f=$('#ficha');
@@ -2482,7 +2537,8 @@ $('#navImport').onclick=()=>importModal();
 $('#renameFamily').onclick=()=>familyForm(fam());
 $('#bgBtn').onclick=bgModal;
 $('#addPersonBtn').onclick=()=>{ if(db.activeFamily) personForm(null); };
-$('#peopleTreeBtn').onclick=()=>{ setView('tree'); requestAnimationFrame(()=>centerTree()); };
+$$('[data-vt]').forEach(b=>b.onclick=()=>{ if(ui.view===b.dataset.vt) return; setView(b.dataset.vt); if(b.dataset.vt==='tree') requestAnimationFrame(()=>centerTree()); });
+$('#genFil').onclick=e=>{ const b=e.target.closest('[data-g]'); if(!b) return; ui.pgen=+b.dataset.g; renderPeople(); };
 $('#emptyAdd').onclick=()=>personForm(null);
 $('#zoomIn').onclick=()=>{ui.zoom+=.1; applyZoom()};
 $('#zoomOut').onclick=()=>{ui.zoom-=.1; applyZoom()};
@@ -2572,7 +2628,7 @@ $('#stage').onclick=e=>{
   if(ui.selected||ui.menu){ ui.selected=null; ui.menu=null; render(); }
 };
 $('#peopleBody').onclick=e=>{
-  const c=e.target.closest('[data-id]'); if(c){ setView('tree'); select(c.dataset.id,true); }
+  const c=e.target.closest('[data-id]'); if(c){ ui.selected=c.dataset.id; ui.menu=null; render(); }
 };
 let galTarget=-1;
 $('#ficha').addEventListener('change',e=>{
