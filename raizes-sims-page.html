@@ -867,6 +867,24 @@ select.mm-inp{appearance:auto}
 .cov-photos img{width:100%;height:100%;object-fit:cover;display:block}
 @media (max-width:620px){.cov-body{flex-direction:column}.cov-prev2{width:150px;margin:0 auto}}
 @media (prefers-reduced-motion:reduce){.alb-btn{transition:none}.alb-btn:hover{transform:none}}
+/* Personalizar capa (v2) */
+.modal-box:has(.mm.cov){width:min(760px,100%)}
+.mm.cov .cov-head{padding:20px 24px 16px;border-bottom:1px solid var(--line);align-items:center}
+.mm.cov .cov-head p{font-size:13px}
+.mm.cov .cov-body{display:flex;flex-direction:row;align-items:stretch;gap:0;padding:0;overflow:auto;max-height:calc(92vh - 170px);min-height:0}
+.mm.cov .cov-left{flex:0 0 42%;background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 24px}
+.mm.cov .cov-prev2{width:190px;padding:12px 6px 0 0}
+.mm.cov .cov-cap{font-size:12px;color:var(--lilac-deep);font-weight:500}
+.mm.cov .cov-opts{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px;padding:20px 24px 24px}
+.mm.cov .cov-cols button{width:30px;height:30px}
+.cov-pats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.cov-pats button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 6px 8px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font:500 12px Inter,sans-serif;color:var(--ink-muted);cursor:pointer}
+.cov-pats button .sw{width:100%;height:34px;border-radius:7px;display:block}
+.cov-pats button.on{border-color:var(--lime);background:var(--lime-soft);color:var(--lime-deep);font-weight:600}
+.mm.cov .cov-stks{gap:8px}
+.mm.cov .cov-stks button{width:36px;height:36px;border-radius:10px;color:var(--ink)}
+.mm.cov .cov-stks button.on{border-color:var(--lime);background:var(--lime-soft);color:var(--lime-deep)}
+@media (max-width:640px){.mm.cov .cov-body{flex-direction:column}.mm.cov .cov-left{flex:none;padding:20px}.mm.cov .cov-prev2{width:150px}.cov-pats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ===== /Layout v2 ===== */
 /* ===== /LhamaTree DS ===== */
 </style>
@@ -3170,13 +3188,13 @@ function albumCoverModal(al){
   if(!ALB_COL[al.coverColor]&&al.coverColor) st.legacy=al.coverColor;
   const draft=()=>({name:st.name.trim()||'Sem título',coverStyle:st.style,coverColor:st.legacy&&st.style==='color'&&!st.touched?st.legacy:st.color,coverPat:st.pat,coverStk:st.stk});
   const draftSrc=()=>{ if(st.style!=='photo') return ''; const ph=photos.find(x=>x.id===st.coverId)||inAlb[0]; return ph?photoSrc(ph):''; };
-  openModal(`<div class="mm" role="dialog" aria-modal="true" aria-labelledby="mmT">
-    <div class="mm-head"><div><h2 id="mmT">Personalizar capa</h2><p>do álbum <b>${esc(al.name||'')}</b></p></div><button type="button" class="mm-x" data-close aria-label="Fechar">${MM_X}</button></div>
-    <div class="mm-body cov-body">
-      <div class="cov-prev2" id="covPrev"></div>
+  openModal(`<div class="mm cov" role="dialog" aria-modal="true" aria-labelledby="mmT">
+    <div class="mm-head cov-head"><div><h2 id="mmT">Personalizar capa</h2><p>Escolha cores, estampa, adesivo ou uma foto dos seus Sims.</p></div><button type="button" class="mm-x" data-close aria-label="Fechar">${MM_X}</button></div>
+    <div class="cov-body">
+      <div class="cov-left"><div class="cov-prev2" id="covPrev"></div><span class="cov-cap">Prévia da capa</span></div>
       <div class="cov-opts">
-        <div class="mm-field"><label for="covName">Título na capa</label><input id="covName" class="mm-inp" maxlength="60" value="${esc(st.name)}"></div>
-        <div class="mm-seg" style="margin:0" role="tablist"><button type="button" data-cst="color">Cor e estampa</button><button type="button" data-cst="photo">Fotografia</button></div>
+        <div class="mm-field"><label for="covName">Título do álbum</label><input id="covName" class="mm-inp" maxlength="60" value="${esc(st.name)}"></div>
+        <div class="mm-seg" style="margin:0" role="tablist"><button type="button" data-cst="color">Cor e estampa</button><button type="button" data-cst="photo">Foto</button></div>
         <div id="covPane"></div>
         <div class="mm-field"><span class="mm-fl">Adesivo</span><div class="cov-stks">${['',...Object.keys(ALB_STK)].map(k=>`<button type="button" data-stk="${k}" aria-label="${k||'Sem adesivo'}" title="${k?'':'Sem adesivo'}">${k?albStkSvg(ALB_STK[k],18):'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M6.5 17.5l11-11"/></svg>'}</button>`).join('')}</div></div>
       </div>
@@ -3188,8 +3206,8 @@ function albumCoverModal(al){
       box.querySelectorAll('[data-cst]').forEach(x=>x.classList.toggle('on',x.dataset.cst===st.style));
       box.querySelectorAll('[data-stk]').forEach(x=>x.classList.toggle('on',x.dataset.stk===st.stk));
       $b('#covPane').innerHTML=st.style==='color'
-        ?`<div class="mm-field"><span class="mm-fl">Cor</span><div class="cov-cols">${Object.entries(ALB_COL).map(([k,c])=>`<button type="button" data-ccol="${k}" class="${k===st.color&&(st.touched||!st.legacy)?'on':''}" style="background:${c[0]}" title="${c[2]}" aria-label="${c[2]}"></button>`).join('')}</div></div>
-           <div class="mm-field"><span class="mm-fl">Estampa</span><div class="mm-chips">${Object.entries(ALB_PAT).map(([k,p])=>`<button type="button" data-cpat="${k}" class="${k===st.pat?'on':''}">${p[2]}</button>`).join('')}</div></div>`
+        ?`<div class="mm-field"><span class="mm-fl">Cor da capa</span><div class="cov-cols">${Object.entries(ALB_COL).map(([k,c])=>`<button type="button" data-ccol="${k}" class="${k===st.color&&(st.touched||!st.legacy)?'on':''}" style="background:${c[0]}" title="${c[2]}" aria-label="${c[2]}"></button>`).join('')}</div></div>
+           <div class="mm-field"><span class="mm-fl">Estampa</span><div class="cov-pats">${Object.entries(ALB_PAT).map(([k,p])=>`<button type="button" data-cpat="${k}" class="${k===st.pat?'on':''}"><span class="sw" style="background-color:${ALB_COL[st.color][0]};background-image:${p[0]};background-size:${p[1]}"></span>${p[2]}</button>`).join('')}</div></div>`
         :(inAlb.length?`<div class="mm-field"><span class="mm-fl">Fotografia da capa</span><div class="cov-photos">${inAlb.map((ph,i)=>`<button type="button" data-cph="${ph.id}" class="${(st.coverId?st.coverId===ph.id:i===0)?'on':''}"><img src="${photoSrc(ph)}" alt="" loading="lazy"></button>`).join('')}</div></div>`
           :mmNote('Este álbum ainda não tem fotografias. Adicione fotos para usar uma delas na capa.'));
       paintPrev();
