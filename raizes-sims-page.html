@@ -1592,7 +1592,7 @@ function renderTree(){
       const sk=[...kids].sort((a,b)=>a.x-b.x);
       for(let i=0;i<sk.length-1;i++){
         const bx=(sk[i].x+sk[i+1].x)/2;
-        spouseBadges.push(`<span class="spouse-badge" data-tip="Filhos" data-bar="${u.members[0]}" style="left:${bx}px;top:${midY}px;background:transparent;box-shadow:none;width:auto;height:auto;pointer-events:auto;cursor:ns-resize"><img src="${KIDS_ICON}" alt="" style="width:26px;height:26px;object-fit:contain;display:block"></span>`);
+        spouseBadges.push(`<span class="spouse-badge" data-tip="Irmãos" data-bar="${u.members[0]}" style="left:${bx}px;top:${midY}px;background:transparent;box-shadow:none;width:auto;height:auto;pointer-events:auto;cursor:ns-resize"><img src="${SIB_ICON}" alt="" style="width:26px;height:26px;object-fit:contain;display:block"></span>`);
       }
     }
     for(let i=0;i<u.members.length-1;i++){
