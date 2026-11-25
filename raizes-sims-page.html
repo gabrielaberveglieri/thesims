@@ -2092,7 +2092,7 @@ const REL_GROUPS=[
   {title:'Já foi',labels:['Ex','Divorciado','Viúvo(a)'],tile:['#F1F0F6','#4A4766']},
   {title:'Outros laços',labels:null,tile:['#F3ECFF','#3A2D8F']}
 ];
-const REL_HIDDEN=new Set(['Sócio(a)']);
+const REL_HIDDEN=new Set(['Sócio(a)','Parceiro','Companheiro(a)']);
 function relGroups(idxs){
   idxs=idxs.filter(i=>!REL_HIDDEN.has(REL_TYPES[i].label));
   const named=new Set(REL_GROUPS.flatMap(g=>g.labels||[]));
