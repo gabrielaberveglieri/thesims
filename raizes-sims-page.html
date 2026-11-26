@@ -2408,6 +2408,7 @@ const REL_V2={"Abduzido por UFO": "data:image/svg+xml,%3Csvg width=%2248%22 heig
 const REL_ICON_MAP={};
 REL_TYPES.forEach(t=>{ if(REL_V2[t.label]){ REL_ICON_MAP[t.icon]=REL_V2[t.label]; t.icon=REL_V2[t.label]; } });
 const relIco=u=>REL_ICON_MAP[u]||u;
+const isPastCouple=r=>!!r&&(r.label==='Ex'||r.label==='Divorciado');
 const KIDS_ICON="data:image/svg+xml,%3Csvg width=%2248%22 height=%2248%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22 fill=%22none%22 stroke=%22%233A2D8F%22 stroke-width=%222.2%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 aria-hidden=%22true%22%3E%3Cpath d=%22M6 22h28.5c0 8-6.4 13.5-14.25 13.5S6 30 6 22z%22 fill=%22%23EBE2FD%22%3E%3C/path%3E%3Cpath d=%22M20 22V8.5A13.5 13.5 0 0 1 33.5 22z%22 fill=%22%23FF9EBE%22 stroke=%22%23A3345C%22%3E%3C/path%3E%3Cpath d=%22M24.5 9.3 22 22M29.5 12.5 25 22%22 stroke=%22%23A3345C%22 stroke-width=%221.5%22%3E%3C/path%3E%3Cpath d=%22M8.5 26.5h23%22 stroke=%22%23ffffff%22 stroke-width=%221.8%22%3E%3C/path%3E%3Cpath d=%22M34.5 22l4-6h3.5%22%3E%3C/path%3E%3Ccircle cx=%2212.5%22 cy=%2240%22 r=%223.5%22 fill=%22%23C3AEF3%22%3E%3C/circle%3E%3Ccircle cx=%2228%22 cy=%2240%22 r=%223.5%22 fill=%22%23C3AEF3%22%3E%3C/circle%3E%3Ccircle cx=%2212.5%22 cy=%2240%22 r=%22.6%22 fill=%22%233A2D8F%22%3E%3C/circle%3E%3Ccircle cx=%2228%22 cy=%2240%22 r=%22.6%22 fill=%22%233A2D8F%22%3E%3C/circle%3E%3Cpath d=%22M9 10v4M7 12h4%22 stroke=%22%238A5A00%22 stroke-width=%221.8%22%3E%3C/path%3E%3C/svg%3E", DEAD_ICON="data:image/svg+xml,%3Csvg width=%2248%22 height=%2248%22 xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22 fill=%22none%22 stroke=%22%234A4766%22 stroke-width=%222.2%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 aria-hidden=%22true%22%3E%3Cpath d=%22M12.5 40V19a11.5 11.5 0 0 1 23 0v21z%22 fill=%22%23EFEDF6%22%3E%3C/path%3E%3Cpath d=%22M35.5 40V19a11.5 11.5 0 0 0-6-10.1V40z%22 fill=%22%23CBC6DC%22 stroke=%22none%22%3E%3C/path%3E%3Cpath d=%22M12.5 40V19a11.5 11.5 0 0 1 23 0v21z%22%3E%3C/path%3E%3Cpath d=%22M24 15v11M19.5 19.5h9%22%3E%3C/path%3E%3Cpath d=%22M5 41h38%22 stroke=%22%233F8F12%22%3E%3C/path%3E%3Cpath d=%22M8.5 41c0-2.5-1-4.5-2.5-5.5M10.5 41c.3-2.5 1.3-4 2.5-5M38.5 41c0-2.6 1-4.4 2.6-5.4%22 stroke=%22%233F8F12%22 stroke-width=%221.8%22%3E%3C/path%3E%3Ccircle cx=%2240%22 cy=%2231.5%22 r=%222.4%22 fill=%22%23FF9EBE%22 stroke=%22%23A3345C%22 stroke-width=%221.4%22%3E%3C/circle%3E%3Cpath d=%22M40 34v7%22 stroke=%22%233F8F12%22 stroke-width=%221.6%22%3E%3C/path%3E%3Cpath d=%22M16 20.5a8 8 0 0 1 2.5-5%22 stroke=%22%23ffffff%22 stroke-width=%221.6%22%3E%3C/path%3E%3C/svg%3E";
 
 /* ============ utilitários ============ */
@@ -2515,6 +2516,27 @@ function computeLayout(){
     units[k].members.push(p.id);
   });
   const U=Object.values(units);
+  // ordena o casal: quem tem mais cônjuges fica no meio; ex e divorciados de um lado, parceiros atuais do outro
+  U.forEach(u=>{
+    if(u.members.length<3) return;
+    const ms=u.members, srs=rs.filter(r=>r.type==='spouse'&&ms.includes(r.a)&&ms.includes(r.b));
+    const deg={}; ms.forEach(m=>deg[m]=0); srs.forEach(r=>{deg[r.a]++;deg[r.b]++;});
+    const hub=ms.reduce((h,m)=>deg[m]>deg[h]?m:h,ms[0]);
+    if(deg[hub]===ms.length-1){
+      const relOf=m=>srs.find(r=>(r.a===hub&&r.b===m)||(r.b===hub&&r.a===m));
+      const others=ms.filter(m=>m!==hub);
+      u.members=[...others.filter(m=>isPastCouple(relOf(m))),hub,...others.filter(m=>!isPastCouple(relOf(m)))];
+    } else {
+      // corrente de casais (A–B–C): percorre a partir de uma ponta
+      const start=ms.find(m=>deg[m]===1)||ms[0], out=[start], seen=new Set(out);
+      while(out.length<ms.length){
+        const last=out[out.length-1];
+        const nx=srs.map(r=>r.a===last?r.b:r.b===last?r.a:null).find(x=>x&&!seen.has(x))||ms.find(m=>!seen.has(m));
+        out.push(nx); seen.add(nx);
+      }
+      u.members=out;
+    }
+  });
   rs.forEach(r=>{
     if(r.type!=='parent') return;
     const pu=unitOf[r.a], cu=units[unitOf[r.b]];
@@ -2522,6 +2544,12 @@ function computeLayout(){
     if(!cu.primary) cu.primary=pu;
   });
   U.forEach(u=>{ if(u.primary) units[u.primary].children.push(u); });
+  // com mais de um parceiro, os filhos ficam embaixo do casal de onde vieram
+  U.forEach(u=>{
+    if(u.members.length<3||u.children.length<2) return;
+    const key=c=>{ const ps=rs.filter(r=>r.type==='parent'&&c.members.includes(r.b)&&u.members.includes(r.a)).map(r=>u.members.indexOf(r.a)); return ps.length?ps.reduce((s,x)=>s+x,0)/ps.length:u.members.length/2; };
+    u.children.sort((a,b)=>key(a)-key(b));
+  });
   const roots=U.filter(u=>!u.primary);
 
   const unitW=u=>u.members.length*CARD_W+(u.members.length-1)*SP_GAP;
@@ -2753,11 +2781,35 @@ function renderTree(){
   const KID_C='#8BD83D', SP_C='#FF8FB3';
   const hasBg=!!(fam()&&fam().bg);
   const colorOf=cx=>LK.lines||(LK.byRel?KID_C:(hasBg?(cx<mid?LINE_DARK:LINE_LIGHT):LINE_DEF));
-  const par={}, spP={}; let barHits='';
+  const par={}, spP={}, spPast={}; let barHits='';
   const add=(obj,col,d)=>{obj[col]=(obj[col]||'')+d};
   L.units.forEach(u=>{
     const cn=unitConn(u);
-    if(cn){
+    if(cn&&u.members.length>2){
+      // vários parceiros: cada grupo de filhos desce do seu próprio casal
+      const {kids,yStart,cTop}=cn, rs2=rls();
+      const fw=LK.shape==='polaroid'?120:FRAME, inset=(CARD_W-fw)/2;
+      const deg=m=>rs2.filter(r=>r.type==='spouse'&&(r.a===m||r.b===m)).length;
+      const groups={};
+      kids.forEach(k=>{ const ps=rs2.filter(r=>r.type==='parent'&&r.b===k.id&&u.members.includes(r.a)).map(r=>r.a).sort(); (groups[ps.join('|')]=groups[ps.join('|')]||{ps,kids:[]}).kids.push(k); });
+      const bar=(byId(u.members[0])||{}).bar||0;
+      Object.values(groups).sort((a,b)=>a.kids[0].x-b.kids[0].x).forEach((gr,gi)=>{
+        let ax, ay;
+        const sr=gr.ps.length===2&&rs2.find(r=>r.type==='spouse'&&gr.ps.includes(r.a)&&gr.ps.includes(r.b));
+        if(sr){
+          let i=u.members.indexOf(sr.a), j=u.members.indexOf(sr.b); if(i>j) [i,j]=[j,i];
+          const g=deg(u.members[i])>=deg(u.members[j])?j-1:i, ga=L.pos[u.members[g]], gb=L.pos[u.members[g+1]];
+          ax=(ga.x+CARD_W-inset+gb.x+inset)/2; ay=ga.y+FRAME/2+4+20;
+        } else {
+          const pp=(gr.ps.length?gr.ps:[u.members[0]]).map(m=>L.pos[m]);
+          ax=pp.reduce((s,p)=>s+p.x+CARD_W/2,0)/pp.length; ay=Math.max(...pp.map(p=>p.y))+CARD_H+2;
+        }
+        const col=colorOf(ax), midY=(yStart+cTop)/2+bar+gi*12, xs=[ax,...gr.kids.map(k=>k.x)];
+        if(LK.lineStyle==='curva') gr.kids.forEach(k=>{ const cy=(ay+k.y)/2; add(par,col,`M${ax} ${ay}C${ax} ${cy} ${k.x} ${cy} ${k.x} ${k.y}`); });
+        else { add(par,col,`M${ax} ${ay}V${midY}M${Math.min(...xs)} ${midY}H${Math.max(...xs)}`); gr.kids.forEach(k=>add(par,col,`M${k.x} ${midY}V${k.y}`)); }
+        barHits+=`<path d="M${Math.min(...xs)-8} ${midY}H${Math.max(...xs)+8}" fill="none" stroke="rgba(0,0,0,0)" stroke-width="14" data-bar="${u.members[0]}" style="cursor:ns-resize"/>`;
+      });
+    } else if(cn){
       const {kids,pp,tx,yStart,cTop}=cn;
       const col=colorOf(tx);
       const bar=(byId(u.members[0])||{}).bar||0, midY=(yStart+cTop)/2+bar;
@@ -2781,16 +2833,21 @@ function renderTree(){
         spouseBadges.push(`<span class="spouse-badge" data-tip="Irmãos" data-bar="${u.members[0]}" style="left:${bx}px;top:${midY}px;background:transparent;box-shadow:none;width:auto;height:auto;pointer-events:auto;cursor:ns-resize"><img src="${SIB_ICON}" alt="" style="width:36px;height:36px;object-fit:contain;display:block"></span>`);
       }
     }
-    for(let i=0;i<u.members.length-1;i++){
-      const a=L.pos[u.members[i]], b=L.pos[u.members[i+1]];
-      const fw=LK.shape==='polaroid'?120:FRAME, inset=(CARD_W-fw)/2;
-      const x1=a.x+CARD_W-inset-3, x2=b.x+inset+3, y=a.y+FRAME/2+4;
-      add(spP,LK.lines||(LK.byRel?SP_C:(hasBg?LINE_LIGHT:LINE_DEF)),`M${x1} ${y}H${x2}`);
-      const sr=rls().find(r=>r.type==='spouse'&&((r.a===u.members[i]&&r.b===u.members[i+1])||(r.a===u.members[i+1]&&r.b===u.members[i])));
-      const badge=`<img src="${relIco((sr&&sr.icon)||CASADO_ICON)}" alt="" style="width:36px;height:36px;object-fit:contain;display:block">`;
-      const tip=sr?` data-tip="${esc(sr.label||'Casado(a)')}" data-rel="${sr.id}"`:'';
-      spouseBadges.push(`<span class="spouse-badge"${tip} style="left:${(x1+x2)/2}px;top:${y}px;background:transparent;box-shadow:none;width:auto;height:auto;${sr?'pointer-events:auto;cursor:pointer':''}">${badge}</span>`);
-    }
+    // uma linha por relação de casal (não entre vizinhos sem vínculo); ex e divorciados tracejados
+    const fw=LK.shape==='polaroid'?120:FRAME, inset=(CARD_W-fw)/2;
+    rls().filter(r=>r.type==='spouse'&&u.members.includes(r.a)&&u.members.includes(r.b)).forEach(sr=>{
+      let i=u.members.indexOf(sr.a), j=u.members.indexOf(sr.b); if(i>j) [i,j]=[j,i];
+      const a=L.pos[u.members[i]], b=L.pos[u.members[j]], y=a.y+FRAME/2+4;
+      const x1=a.x+CARD_W-inset-3, x2=b.x+inset+3;
+      add(isPastCouple(sr)?spPast:spP,LK.lines||(LK.byRel?SP_C:(hasBg?LINE_LIGHT:LINE_DEF)),`M${x1} ${y}H${x2}`);
+      // o ícone fica no vão ao lado de quem não é o centro do casal
+      const deg=m=>rls().filter(r=>r.type==='spouse'&&(r.a===m||r.b===m)).length;
+      const g=deg(u.members[i])>=deg(u.members[j])?j-1:i;
+      const ga=L.pos[u.members[g]], gb=L.pos[u.members[g+1]];
+      const bx=(ga.x+CARD_W-inset+gb.x+inset)/2;
+      const badge=`<img src="${relIco(sr.icon||CASADO_ICON)}" alt="" style="width:36px;height:36px;object-fit:contain;display:block">`;
+      spouseBadges.push(`<span class="spouse-badge" data-tip="${esc(sr.label||'Casado(a)')}" data-rel="${sr.id}" style="left:${bx}px;top:${y}px;background:transparent;box-shadow:none;width:auto;height:auto;pointer-events:auto;cursor:pointer">${badge}</span>`);
+    });
   });
   // vínculos extras (segundo pai de outro casal): tracejado
   let extra='';
@@ -2855,7 +2912,7 @@ function renderTree(){
   const paths=(obj,dash)=>Object.entries(obj).map(([col,d])=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${lw}" stroke-linecap="round" stroke-linejoin="round"${dash?' stroke-dasharray="5 5"':dots}/>`).join('');
   stage.style.width=L.W+'px'; stage.style.height=L.H+'px';
   stage.innerHTML=`<svg width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}">
-    ${paths(par)}${paths(spP)}${barHits}${sib?`<path d="${sib}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}${lnk?`<path d="${lnk}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.8" stroke-dasharray="2 6" stroke-linecap="round"/>`:''}${extra?`<path d="${extra}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}</svg>
+    ${paths(par)}${paths(spP)}${paths(spPast,true)}${barHits}${sib?`<path d="${sib}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}${lnk?`<path d="${lnk}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.8" stroke-dasharray="2 6" stroke-linecap="round"/>`:''}${extra?`<path d="${extra}" fill="none" stroke="${LK.lines||LINE_LIGHT}" stroke-width="1.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}</svg>
     ${bandsLabels}${spouseBadges.join('')}${nodeHTML}${menuHTML}`;
   stage.classList.toggle('polaroid',LK.shape==='polaroid');
   stage.style.setProperty('--frame-bg',LK.card);
