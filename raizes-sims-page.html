@@ -700,6 +700,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--lilac);outline-o
 .info dt{color:var(--ink-muted)}
 .info dd{margin:0;color:var(--ink)}
 .info dd.na{color:var(--ink-muted);font-style:italic}
+.info dd.trs{display:flex;flex-wrap:wrap;gap:6px}
+.info dd.trs span{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--lilac-soft);color:var(--lilac-deep);font:600 12px Inter,sans-serif}
 .ficha .bio{margin:0;font-size:13px;line-height:1.5;color:var(--ink-muted)}
 .rel-block{display:flex;flex-direction:column;gap:8px}
 .rel-row{display:flex;align-items:center;justify-content:space-between}
@@ -2004,6 +2006,14 @@ textarea.pm-in{height:96px;padding:12px 14px;resize:none;line-height:1.45}
 .pm-sel.open .pm-chev{transform:rotate(180deg);color:var(--lilac-deep)}
 .pm-menu{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 6px);background:#fff;border-radius:16px;box-shadow:0 18px 40px rgba(8,0,50,.16),0 0 0 1px rgba(8,0,50,.05);padding:6px;max-height:280px;overflow:auto;transform-origin:top center;animation:pm-menu-in .22s cubic-bezier(.2,.8,.2,1) both}
 .pm-menu.up{top:auto;bottom:calc(100% + 6px);transform-origin:bottom center}
+.pm-trs{position:relative;z-index:25;display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:44px}
+.pm-tr{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 6px 0 12px;border-radius:999px;background:var(--lilac-soft);color:var(--lilac-deep);font:600 13px Inter,sans-serif}
+.pm-tr button{width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:inherit;font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.pm-tr button:hover{background:rgba(58,45,143,.1)}
+.pm-tradd-w.pm-sel{position:static}
+.pm-tradd{height:34px;padding:0 14px;border-radius:999px;border:1.5px dashed #CFC9EA;background:#fff;color:var(--ink-muted);font:600 13px Inter,sans-serif;cursor:pointer}
+.pm-tradd:hover{border-color:var(--lilac);color:var(--ink)}
+.pm-tradd-w .pm-menu{left:0;right:0;width:auto}
 .pm-srch{display:flex;align-items:center;gap:8px;height:38px;margin:2px 2px 6px;padding:0 10px;border-radius:10px;background:var(--soft);color:var(--ink-muted);font-size:13px;position:sticky;top:0;z-index:1}
 .pm-srch input{flex:1;border:0;outline:0;background:transparent;font:400 14px Inter,sans-serif;color:var(--ink);min-width:0}
 .pm-op{width:100%;display:flex;align-items:center;gap:10px;height:40px;padding:0 10px;border:0;border-radius:10px;background:transparent;font:500 14px Inter,sans-serif;color:var(--ink);cursor:pointer;text-align:left;opacity:0;animation:pm-op-in .25s ease-out both}
@@ -2476,7 +2486,7 @@ const STATUSES=['Vivo','Falecido'];
 /* causas de morte do The Sims 4 (mais as genéricas), em ordem alfabética; "Não informada" no topo e "Outra" no fim */
 const CAUSES_OF_DEATH=['Não informada',...['Fome','Incêndio','Velhice','Esforço excessivo','Eletrocussão','Raiva','Vergonha','Histeria','Planta-vaca','Afogamento','Meteorito','Máquina de vendas','Vapor','Baiacu','Poço dos Desejos','Luz solar','Veneno','Febre dos roedores raivosos','Planta-Mãe','Superaquecimento','Congelamento','Raio','Arranjo de flores','Afogamento em lago','Afogamento no oceano',"Puxado para debaixo d'água",'Máquina de pesquisa','Sobrecarga de magia','Cama embutida (Murphy)','Moscas','Suco de besouro','Queda de grandes alturas','Mito urbano','Cápsula de mau cheiro','Mofo','Coração partido','Engasgo','Ataque de corvos','Durante o sono','Pântano Sinistro','Carreira de Ceifador','Planta-vaca morta-viva','Fome emocional','Sobrecarga emocional','Falha do cuco','Doença','Acidente','Sede','Sobrenatural'].sort((a,b)=>a.localeCompare(b,'pt-BR')),'Outra'];
 const WORLDS=['Willow Creek','Oasis Springs','Newcrest','Strangerville','Magnolia Promenade','Brindleton Bay','Windenburg','San Myshuno','Del Sol Valley','Sulani','Tartosa','Evergreen Harbor','Glimmerbrook','Mt. Komorebi','Granite Falls','Henford-on-Bagley','Foxbury','Outro'];
-const OCCULTS=['Nenhum','Humano','Vampiro','Lobisomem','Feiticeiro','Sereia','Fantasma','Alienígena','Robô'];
+const OCCULTS=['Nenhum','Humano','Vampiro','Lobisomem','Feiticeiro','Sereia','Fantasma','Alienígena','Robô','Fada','Sim Planta'];
 const ASPIRATIONS=['Amor verdadeiro','Família','Culinária','Pintura','Crime','Mestre do conhecimento','Atleta','Fama','Cavalheiro/Dama','Ciência'];
 const CAREERS=['Astronauta','Atleta','Negócios','Criminoso','Culinária','Entretenimento','Pintor','Agente Secreto','Influenciador de Estilo','Guru da Tecnologia','Escritor','Crítico','Político','Mídias Sociais','Jardineiro','Militar','Conservacionista','Educação','Engenharia','Direito','Designer Civil','Assalariado','Consultor Romântico','Agente Funerário','Funcionário de Parque','Médico','Cientista','Detetive','Ator/Atriz','Ceifador','Decorador de Interiores','Naturopata','Nobre','Babá','Barista','Funcionário de Fast-Food','Trabalhador Manual','Funcionário de Loja','Mergulhador','Pescador','Salva-vidas','Simfluencer','Streamer de Jogos','Faz-Tudo','Artista Digital Freelancer','Programador Freelancer','Escritor Freelancer','Artesão Freelancer','Fotógrafo de Moda Freelancer','Investigador Paranormal','Escoteiro','Clube de Teatro','Líder de Torcida','Equipe de Xadrez','Equipe de Computação','Equipe de Futebol Americano','Competidor de eSports','Jogador do Time de Futebol'];
 const ICON_IMGS={marriage:'data:image/webp;base64,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',
@@ -3270,7 +3280,7 @@ function renderFicha(){
       </section>
       <section class="sc-sec">
         <div class="box-h"><h3>Informações</h3></div>
-        <dl class="info"><dt>Carreira</dt>${dd(p.career)}<dt>Mundo</dt>${dd(p.world)}<dt>Ocultismo</dt>${dd(p.occult&&p.occult!=='Nenhum'?p.occult:'')}</dl>
+        <dl class="info"><dt>Carreira</dt>${dd(p.career)}<dt>Mundo</dt>${dd(p.world)}<dt>Ocultismo</dt>${dd(p.occult&&p.occult!=='Nenhum'?p.occult:'')}<dt>Traços</dt>${(p.traits||[]).length?`<dd class="trs">${p.traits.map(t=>`<span>${esc(t)}</span>`).join('')}</dd>`:dd('')}</dl>
         ${p.bio?`<p class="bio">${esc(p.bio)}</p>`:''}
       </section>
       <section class="sc-sec">
@@ -3844,7 +3854,7 @@ function personForm(p,preset){
   const toBR=iso=>/^\d{4}-\d{2}-\d{2}$/.test(iso||'')?iso.slice(8)+'/'+iso.slice(5,7)+'/'+iso.slice(0,4):'';
   const toISO=t=>{ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(t||''); if(!m) return ''; const d=new Date(+m[3],+m[2]-1,+m[1]); return d.getFullYear()===+m[3]&&d.getMonth()===+m[2]-1&&d.getDate()===+m[1]?`${m[3]}-${m[2]}-${m[1]}`:null; };
   const mask=t=>{ const d=t.replace(/\D/g,'').slice(0,8); return d.length>4?d.slice(0,2)+'/'+d.slice(2,4)+'/'+d.slice(4):d.length>2?d.slice(0,2)+'/'+d.slice(2):d; };
-  const S={first:v.first||'',last:v.last||'',vivo:v.status!=='Falecido',gender:v.gender||'Não definido',career:v.career||'',world:v.world||'',occult:v.occult||'Nenhum',bio:v.bio||'',stage:v.stage||'Adulto',birth:toBR(v.birthDate),death:toBR(v.deathDate),cause:!v.causeOfDeath?'Não informada':CAUSES_OF_DEATH.includes(v.causeOfDeath)?v.causeOfDeath:'Outra',causeTxt:v.causeOfDeath&&!CAUSES_OF_DEATH.includes(v.causeOfDeath)?v.causeOfDeath:'',photo:v.photo||null,open:null};
+  const S={first:v.first||'',last:v.last||'',vivo:v.status!=='Falecido',gender:v.gender||'Não definido',career:v.career||'',world:v.world||'',occult:v.occult||'Nenhum',bio:v.bio||'',stage:v.stage||'Adulto',birth:toBR(v.birthDate),death:toBR(v.deathDate),cause:!v.causeOfDeath?'Não informada':CAUSES_OF_DEATH.includes(v.causeOfDeath)?v.causeOfDeath:'Outra',causeTxt:v.causeOfDeath&&!CAUSES_OF_DEATH.includes(v.causeOfDeath)?v.causeOfDeath:'',traits:Array.isArray(v.traits)?v.traits.slice():[],trOpen:false,photo:v.photo||null,open:null};
   const X='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   const CH='<svg class="pm-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
   const CK='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>';
@@ -3866,6 +3876,7 @@ function personForm(p,preset){
         <div class="pm-sec"><div class="pm-sh">Vida no jogo</div>
           <div class="pm-g2">${fdSel('career')}${fdSel('world')}</div>
           <div class="pm-g2">${fdSel('occult')}<div></div></div>
+          <div class="pm-fd"><span class="pm-lb">Traços de personalidade <span class="pm-opt">(opcional, até 5)</span></span><div class="pm-trs" id="pmTraits"></div></div>
           <div class="pm-fd"><label for="pmBio">Biografia <span class="pm-opt">(opcional)</span></label><textarea id="pmBio" class="pm-in" maxlength="300" placeholder="Conte um pouco da história deste Sim...">${esc(S.bio)}</textarea><span class="pm-cnt" id="pmCnt">0/300</span></div>
         </div>
         <div class="pm-sec"><div class="pm-sh">Fase de vida e datas</div>
@@ -3907,8 +3918,32 @@ function personForm(p,preset){
     }
     const paintCause=()=>{ const fd=$('#pmCauseFd'); if(fd) fd.hidden=S.cause!=='Outra'; const cn=$('#pmCauseCnt'); if(cn) cn.textContent=S.causeTxt.length+'/60'; };
     const paintSels=()=>{ ['gender','career','world','occult','cause'].forEach(paintSel); paintCause(); };
+    /* traços: chips removíveis + lista com busca (nomes do jogo, na forma do gênero escolhido) */
+    const TR_MAX=5;
+    const traitOptions=()=>{ const sx=S.gender==='Feminino'?8192:4096; return [...new Set(Object.values(TS4.TRAITS).map(t=>TS4.genderName(t,sx)))].sort((a,b)=>a.localeCompare(b,'pt-BR')); };
+    const trOps=q=>{ const qq=(q||'').trim().toLowerCase(); const list=traitOptions().filter(t=>!S.traits.includes(t)&&(!qq||t.toLowerCase().includes(qq)));
+      const custom=qq&&!traitOptions().some(t=>t.toLowerCase()===qq)&&!S.traits.some(t=>t.toLowerCase()===qq)?`<button type="button" class="pm-op" data-trpick="${esc(q.trim())}"><span class="pm-dot" style="background:#F3ECFF;color:#3A2D8F">+</span>Usar “${esc(q.trim())}”</button>`:'';
+      return custom+(list.map((t,i)=>`<button type="button" class="pm-op" style="animation-delay:${Math.min(i,12)*22}ms" data-trpick="${esc(t)}"><span class="pm-dot" style="background:#F3ECFF;color:#3A2D8F">${esc(t[0])}</span>${esc(t)}</button>`).join('')||(custom?'':'<div class="pm-none">Nada encontrado</div>')); };
+    function paintTraits(){
+      const box2=$('#pmTraits'); if(!box2) return;
+      const full=S.traits.length>=TR_MAX;
+      box2.innerHTML=S.traits.map((t,i)=>`<span class="pm-tr">${esc(t)}<button type="button" data-trrm="${i}" aria-label="Remover ${esc(t)}">×</button></span>`).join('')+
+        (full?'':`<div class="pm-sel pm-tradd-w${S.trOpen?' open':''}"><button type="button" class="pm-tradd" data-tradd aria-haspopup="listbox" aria-expanded="${S.trOpen}">+ Adicionar traço</button>${S.trOpen?`<div class="pm-menu" role="listbox"><label class="pm-srch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="text" placeholder="Buscar ou escrever um traço" data-trq autocomplete="off"></label><div class="pm-ops" id="pmTrOps">${trOps('')}</div></div>`:''}</div>`)+
+        '';
+      if(S.trOpen){ const qi=box2.querySelector('[data-trq]'); if(qi) setTimeout(()=>qi.focus({preventScroll:true}),30);
+        const m=box2.querySelector('.pm-menu'), sc=$('#pmForm'); if(m&&sc){ const mb=m.getBoundingClientRect(), sb=sc.getBoundingClientRect(); if(mb.bottom>sb.bottom) m.scrollIntoView({block:'nearest'}); } }
+    }
+    box.addEventListener('input',e=>{ if(e.target.matches('[data-trq]')){ const o=$('#pmTrOps'); if(o) o.innerHTML=trOps(e.target.value); } });
+    box.addEventListener('keydown',e=>{ if(e.key==='Enter'&&e.target.matches('[data-trq]')){ e.preventDefault(); e.stopPropagation(); const b=$('#pmTrOps .pm-op'); if(b) b.click(); } if(e.key==='Escape'&&S.trOpen){ e.stopPropagation(); S.trOpen=false; paintTraits(); } },true);
+    box.addEventListener('click',e=>{
+      if(S.trOpen&&!e.target.closest('#pmTraits')){ S.trOpen=false; paintTraits(); return; }
+      const b=e.target.closest('[data-tradd],[data-trrm],[data-trpick]'); if(!b) return;
+      if(b.dataset.tradd!==undefined){ S.trOpen=!S.trOpen; paintTraits(); return; }
+      if(b.dataset.trrm!==undefined){ S.traits.splice(+b.dataset.trrm,1); paintTraits(); return; }
+      if(b.dataset.trpick!==undefined){ const v=b.dataset.trpick.trim().slice(0,40); if(v&&!S.traits.includes(v)&&S.traits.length<TR_MAX) S.traits.push(v); S.trOpen=false; paintTraits(); }
+    });
     $('#pmCnt').textContent=S.bio.length+'/300';
-    paintCard(); paintSeg(); paintPhases(); paintSels();
+    paintCard(); paintSeg(); paintPhases(); paintSels(); paintTraits();
     $('#pmFn').oninput=e=>{ S.first=e.target.value; paintCard(); };
     $('#pmLn').oninput=e=>{ S.last=e.target.value; paintCard(); };
     $('#pmBio').oninput=e=>{ S.bio=e.target.value; $('#pmCnt').textContent=S.bio.length+'/300'; };
@@ -3927,7 +3962,7 @@ function personForm(p,preset){
       if(birth===null){ toast('Use o nascimento no formato dd/mm/aaaa.'); return; }
       if(death===null){ toast('Use o falecimento no formato dd/mm/aaaa.'); return; }
       if(birth&&death&&death<birth){ toast('A data de falecimento é anterior ao nascimento.'); return; }
-      const data={first,last:S.last.trim(),avatar:'',gender:S.gender,status:S.vivo?'Vivo':'Falecido',stage:S.stage,birthDate:birth,deathDate:S.vivo?'':death,causeOfDeath:S.vivo?'':(S.cause==='Outra'&&S.causeTxt.trim()?S.causeTxt.trim():(S.cause||'')),bio:S.bio.trim(),traits:v.traits,aspiration:v.aspiration||'',career:S.career,skills:v.skills,world:S.world,occult:S.occult,photo:S.photo};
+      const data={first,last:S.last.trim(),avatar:'',gender:S.gender,status:S.vivo?'Vivo':'Falecido',stage:S.stage,birthDate:birth,deathDate:S.vivo?'':death,causeOfDeath:S.vivo?'':(S.cause==='Outra'&&S.causeTxt.trim()?S.causeTxt.trim():(S.cause||'')),bio:S.bio.trim(),traits:S.traits.slice(),aspiration:v.aspiration||'',career:S.career,skills:v.skills,world:S.world,occult:S.occult,photo:S.photo};
       if(p){ Object.assign(p,data); ui.selected=p.id; closeModal(); commit(); toast('Alterações salvas.'); return; }
       const np={id:uid(),familyId:db.activeFamily,...data};
       db.people.push(np);
@@ -4249,6 +4284,7 @@ TS4.extract=async function(buf){
     if(!hasGen) rep.semGenealogia++;
     try{ s.career=TS4.careerOf(F[30],sx,rep); }catch(e){ s.career=''; }
     try{ const d=TS4.deathOf(F[30]); if(d){ s.dead=true; s.cause=d.cause; rep.falecidos=(rep.falecidos||0)+1; } }catch(e){}
+    try{ const t=TS4.traitsOf(F[30],sx); s.traits=t.traits; s.occult=t.occult; if(t.traits.length) rep.comTracos=(rep.comTracos||0)+1; }catch(e){ s.traits=[]; s.occult=''; }
     sims.set(id,s);
   }
   return {sims,rep,hhNames,topFields:[...new Set(top.map(x=>x.f))].length};
@@ -4302,6 +4338,27 @@ TS4.deathOf=function(attrs){
     }
   }
   return null;
+};
+
+/* --- traços de personalidade e ocultismo ---
+   Mesma lista de traços (campo 30 → 10 → 1). TRAITS = traços do tipo "personalidade" do jogo (inclui os de bebês,
+   crianças pequenas e pets), com o nome em português; OCCULT = traço que marca o ocultismo → valor do campo do app. */
+TS4.TRAITS={"9322":"Alegre","9332":"{M0.Soturno}{F0.Soturna}","9337":"Pateta","9599":"{M0.Preguiçoso}{F0.Preguiçosa}","9602":"{M0.Solitário}{F0.Solitária}","9604":"Amante da Música","9617":"Perfeccionista","9620":"Esnobe","16823":"{M0.Ambicioso}{F0.Ambiciosa}","16824":"{M0.Seguro}{F0.Segura} de Si","16826":"{M0.Chegado}{F0.Chegada}","16830":"Infantil","16832":"{M0.Desajeitado}{F0.Desajeitada}","16833":"{M0.Evasivo}{F0.Evasiva}","16836":"{M0.Maligno}{F0.Maligna}","16838":"Familiar","16841":"Geek","16843":"{M0.Glutão}{F0.Glutona}","16844":"Odeia Crianças","16845":"Cabeça-quente","16848":"{M0.Errático}{F0.Errática}","16850":"{M0.Criativo}{F0.Criativa}","16857":"{M0.Maldoso}{F0.Maldosa}","16858":"{M0.Asseado}{F0.Asseada}","16860":"{M0.Relaxado}{F0.Relaxada}","27176":"{M0.Gastrônomo}{F0.Gastrônoma}","27419":"{M0.Ativo}{F0.Ativa}","27454":"{M0.Romântico}{F0.Romântica}","27913":"Materialista","27914":"Adora o Ar Livre","27915":"{M0.Bondoso}{F0.Bondosa}","27916":"Devorador{F0.a} de Livros","27917":"Genial","27918":"Amante da Arte","29571":"{M0.Extrovertido}{F0.Extrovertida}","102336":"{M0.Nauseento}{F0.Nauseenta}","124879":"Ciument{M0.o}{F0.a}","125437":"Engajad{M0.o}{F0.a}","126088":"Máquina de Dança","131783":"{M0.Cleptomaníaco}{F0.Cleptomaníaca}","132589":"Não Paquerador{F0.a}","132627":"Vegetarian{M0.o}{F0.a}","140739":"Irritável","140740":"Angelical","140741":"Incansável","140742":"{M0.Encantador}{F0.Encantadora}","140743":"{M0.Bobo}{F0.Boba}","140744":"{M0.Grudento}{F0.Grudenta}","140745":"{M0.Curioso}{F0.Curiosa}","140746":"Independente","157978":"Amante de Gatos","157979":"Amante de Cães","158201":"Animad{M0.o}{F0.a}","158202":"Preguiços{M0.o}{F0.a}","158210":"Mimad{M0.o}{F0.a}","158211":"Curios{M0.o}{F0.a}","158693":"Espírito Livre","158765":"Amigável","158766":"Arisc{M0.o}{F0.a}","158767":"Falado{M0.r}{F0.ra}","158768":"Territorial","158769":"Espert{M0.o}{F0.a}","158770":"{M0.Arredio}{F0.Arredia}","158771":"Carinhos{M0.o}{F0.a}","158772":"Felpud{M0.o}{F0.a}","159972":"Gatun{M0.o}{F0.a}","159976":"Travess{M0.o}{F0.a}","159977":"Glut{M0.ão}{F0.ona}","164046":"Brincalh{M0.ão}{F0.ona}","171597":"Aventureir{M0.o}{F0.a}","171598":"Conversado{M0.r}{F0.ra}","171599":"Teimos{M0.o}{F0.a}","171600":"Inteligente","171601":"Arisc{M0.o}{F0.a}","171602":"Brincalh{M0.ão}{F0.ona}","171603":"Encrenqueir{M0.o}{F0.a}","171604":"Leal","171605":"Independente","171606":"Náufrag{M0.o}{F0.a} do Sofá","171607":"Caçador{F0.a}","171608":"Pelud{M0.o}{F0.a}","171609":"Glut{M0.ão}{F0.ona}","171610":"Amigável","171611":"Investigador{F0.a}","171612":"Agressiv{M0.o}{F0.a}","171613":"Ativ{M0.o}{F0.a}","199561":"Egocêntric{M0.o}{F0.a}","203542":"Paranoic{M0.o}{F0.a}","204492":"Filh{M0.o}{F0.a} da Ilha","204493":"Filh{M0.o}{F0.a} do Oceano","230745":"Criador{F0.a}","231699":"Amig{M0.o}{F0.a} da Natureza","232692":"{M0.Reciclador}{F0.Recicladora}","234414":"Freegan{M0.o}{F0.a}","251970":"Respeitos{M0.o}{F0.a}","252085":"Aventureir{M0.o}{F0.a}","257365":"Fã de Animais","257367":"Intolerante à Lactose","272336":"Exigente","272629":"Socialmente Desconfortável","273755":"{M0.Calmo}{F0.Calma}","273756":"Cautelos{M0.o}{F0.a}","273757":"Intens{M0.o}{F0.a}","273758":"Sensível","273759":"Vibrante","273760":"Agitad{M0.o}{F0.a}","284112":"Grande {M0.Festeiro}{F0.Festeira}","284113":"Além das Expectativas","311267":"Leal","320965":"Amante de Cavalos","320988":"Rancheir{M0.o}{F0.a}","322830":"Valente","322834":"Medros{M0.o}{F0.a}","322836":"Amigável","322878":"Elétric{M0.o}{F0.a}","322880":"Tranquil{M0.o}{F0.a}","322882":"Inteligente","323821":"Rebelde","323822":"Espírito Livre","323823":"Independente","323824":"Agressiv{M0.o}{F0.a}","327817":"Grudent{M0.o}{F0.a}","341150":"Xereta","341151":"Sagaz","341152":"Benevolente","341153":"Sem Noção","341881":"Provincian{M0.o}{F0.a}","361564":"Romanticamente Reservad{M0.o}{F0.a}","362090":"Sentimental","368744":"A Prática Leva à Perfeição","379635":"Macabr{M0.o}{F0.a}","383203":"Cétic{M0.o}{F0.a}","384182":"Perseguid{M0.o}{F0.a} pela Morte","396064":"Desonest{M0.o}{F0.a}","424535":"Idealista","427231":"Ranheta","433147":"Inconveniente","433541":"{M0.Místico}{F0.Mística}","443222":"Competitiv{M0.o}{F0.a}","453551":"Amante de Plantas","460574":"Imaginação Ativa","501609":"Livro Aberto"};
+TS4.OCCULT={"149527":"Vampiro","289780":"Lobisomem","213050":"Feiticeiro","213061":"Feiticeiro","199043":"Sereia","381402":"Fantasma","102785":"Alienígena","218444":"Robô","433287":"Fada","162668":"Sim Planta"};
+/* códigos de todos os traços do Sim */
+TS4.traitIds=function(attrs){
+  const ids=[]; if(!attrs||attrs.w!==2) return ids;
+  for(const a of TS4.pb(attrs.v)){
+    if(a.f!==10||a.w!==2) continue;
+    for(const t of TS4.pb(a.v)){ if(t.f!==1||t.w!==2) continue; let i=0; while(i<t.v.length){ let v; [v,i]=TS4.vi(t.v,i); ids.push(v.toString()); } }
+  }
+  return ids;
+};
+TS4.traitsOf=function(attrs,sexo){
+  const ids=TS4.traitIds(attrs);
+  const traits=[...new Set(ids.filter(i=>TS4.TRAITS[i]).map(i=>TS4.genderName(TS4.TRAITS[i],sexo)))];
+  const occult=ids.map(i=>TS4.OCCULT[i]).find(Boolean)||'';
+  return {traits,occult};
 };
 
 /* --- reconstrução: placeholders, vínculos, casas --- */
@@ -4419,6 +4476,8 @@ TS4.commit=function(model,groups){
       p.gender=TS4.GENDER[n.sexo]||'Não definido';
       if(n.career) p.career=n.career;
       if(n.dead){ p.status='Falecido'; if(n.cause) p.causeOfDeath=n.cause; }
+      if(n.traits&&n.traits.length) p.traits=n.traits.slice();
+      if(n.occult) p.occult=n.occult;
       if(!n.placeholder&&TS4.AGE[n.idade]) p.stage=TS4.AGE[n.idade];
       p.ts4Id=sid;
       if(n.placeholder){ p.ts4Placeholder=true; p.bio='Sim que não está mais no save; só o vínculo familiar foi preservado.'; }
@@ -4537,7 +4596,7 @@ function importModal(){
       <label class="imp-opt"><input type="checkbox" id="impRel" class="imp-chk" checked><span>Trazer também os parentes diretos de outras casas (pais, avós, filhos, irmãos e cônjuges), para a árvore ficar completa</span></label>
       <div class="imp-list" id="impList"></div>
       ${ph?`<p class="imp-note">${ph===1?'1 Sim citado como pai ou mãe não está mais no save. Entra':`${ph} Sims citados como pai ou mãe não estão mais no save. Entram`} como <b>“Sim desconhecido”</b> só para manter o vínculo.</p>`:''}
-      <p class="imp-note">A <b>carreira</b>, quem é <b>falecido</b> e a <b>causa da morte</b> vêm do save, com os nomes usados no jogo (carreiras de mods ficam em branco). O save não traz <b>datas</b> nem <b>foto</b>: você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
+      <p class="imp-note">A <b>carreira</b>, os <b>traços</b>, o <b>ocultismo</b>, quem é <b>falecido</b> e a <b>causa da morte</b> vêm do save, com os nomes usados no jogo (carreiras de mods ficam em branco). O save não traz <b>datas</b> nem <b>foto</b>: você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
       <details class="imp-rep"><summary>Relatório técnico (sem nomes)</summary><pre id="impRep"></pre><button type="button" class="mm-link" id="impCopy">Copiar relatório</button></details>`,
       foot:`<span class="mm-hint" id="impSel"></span><button type="button" class="mm-btn out" data-close>Cancelar</button><button type="button" class="mm-btn lime" id="impGo">Importar selecionadas</button>`});
     box.querySelector('#impRep').textContent=reportTxt;
