@@ -4247,9 +4247,61 @@ TS4.extract=async function(buf){
       }
     }catch(e){ rep.erros++; }
     if(!hasGen) rep.semGenealogia++;
+    try{ s.career=TS4.careerOf(F[30],sx,rep); }catch(e){ s.career=''; }
+    try{ const d=TS4.deathOf(F[30]); if(d){ s.dead=true; s.cause=d.cause; rep.falecidos=(rep.falecidos||0)+1; } }catch(e){}
     sims.set(id,s);
   }
   return {sims,rep,hhNames,topFields:[...new Set(top.map(x=>x.f))].length};
+};
+
+/* --- carreira ---
+   Nos atributos do Sim (campo 30), o campo 12 lista as carreiras: cada item tem 1 = carreira, 2 = ramo, 4 = nível.
+   A tabela abaixo foi gerada a partir dos arquivos do jogo em português (pacote base + expansões, de jogo e kits):
+   t = ramo → nome no jogo; s = carreira → ramo inicial; k = tipo da carreira (s = escola, n = trabalho de NPC).
+   Nomes com {M0.x}{F0.y} mudam conforme o sexo do Sim. Carreiras de mods não estão na tabela e ficam em branco. */
+TS4.CAREERS={"t":{"9233":"Culinária","9546":"{M0.Aluno}{F0.Aluna} do Ensino Médio","10104":"Chef","10105":"{M0.Mixólogo}{F0.Mixóloga}","12897":"Astronauta","12898":"{M0.Patrulheiro}{F0.Patrulheira} Espacial","12899":"Contrabandista Espacial","12900":"{M0.Aluno}{F0.Aluna} do Ensino Fundamental","29425":"{M0.Criminoso}{F0.Criminosa}","29426":"Chefe","29427":"Oráculo","29960":"{M0.Escritor}{F0.Escritora}","29961":"Autor{F0.a}","29962":"Jornalista","30292":"Entretenimento","30296":"Musicista","30298":"Comediante","30503":"{M0.Pintor}{F0.Pintora}","30524":"{M0.Mestre}{F0.Mestra} do Realismo","30525":"{M0.Patrono}{F0.Patrona} das Artes","31724":"Agente {M0.Secreto}{F0.Secreta}","31725":"{M0.Vilão}{F0.Vilã}","31726":"Agente Diamante","32475":"Guru da Tecnologia","32476":"Esportista {M0.Eletrônico}{F0.Eletrônica}","32477":"Empresári{M0.o}{F0.a} de Start-up","35171":"{M0.Funcionário}{F0.Funcionária} de Fast Food","35226":"{M0.Trabalhador}{F0.Trabalhadora} Manual","35227":"{M0.Comerciário}{F0.Comerciária}","35228":"Barista","35229":"Babá","106135":"Detetive","106464":"Fisiculturista","106465":"Atleta","106466":"Atleta Profissional","106467":"Investidor{F0.a}","106468":"Negócios","106469":"Gerência","107229":"{M0.Médico}{F0.Médica}","107258":"Cientista","109460":"{M0.Mixólogo}{F0.Mixóloga}","109461":"Diarista","109462":"{M0.Carteiro}{F0.Carteira}","110002":"{M0.Desempregado}{F0.Desempregada}","110045":"Entregador{F0.a} de Pizza","110058":"Assistente de Vendas","110327":"Coletora de Almas","112031":"Treinador{F0.a}","112033":"{M0.Bibliotecário}{F0.Bibliotecária}","112086":"{M0.Jardineiro}{F0.Jardineira} da Comunidade","112092":"Pescador{F0.a}","112105":"Guarda-florestal","112484":"{M0.Aposentado}{F0.Aposentada}","113297":"Do Lar","115665":"Polinizadora","118553":"Massagista Terapêutic{M0.o}{F0.a}","118614":"Instrutor{F0.a} de Yoga","119507":"Reflexologista","119667":"Massagista Terapêutic{M0.o}{F0.a}","122271":"Barista","122656":"Cliente Habitual do Bar","122819":"DJ da Casa","129470":"Especialista de Manutenção","130528":"Jardineiro Profissional","130840":"Chef","135203":"{M0.Político}{F0.Política}","135204":"{M0.Político}{F0.Política}","135205":"Organizador{F0.a} de Eventos de Caridade","135365":"Mídias Sociais","135366":"Relações-Públicas","135367":"Personalidade da Internet","136117":"Crític{M0.o}{F0.a}","136118":"Crític{M0.o}{F0.a} de Comida","136119":"Crític{M0.o}{F0.a} de Arte","136213":"Chef","136214":"Anfitriã{M0.o}","136215":"Garço{M0.m}{F0.nete}","139563":"Crític{M0.o}{F0.a} de Restaurante","139890":"Palhaço Trágico","141902":"Babá","143329":"Vendedor","143656":"Senhori{M0.o}{F0.a}","147719":"{M0.Mordomo}{F0.Governanta}","168570":"Veterinári{M0.o}{F0.a}","175925":"Agente de Adoção","183372":"Papai Inverno","186177":"Jardineir{M0.o}{F0.a}","186178":"Designer Floral","186179":"Botânic{M0.o}{F0.a}","186501":"{M0.Escoteiro}{F0.Escoteira}","189131":"{M0.Ator}{F0.Atriz}","193205":"Influenciad{M0.or}{F0.ora} de Estilo","193206":"Criador{F0.a} de Tendências","193207":"Estilista","195957":"Artista de Maquiagem","195958":"Figurinista","196557":"Operador de Efeitos Especiais","196614":"Produtor{F0.a}","196615":"Operador{F0.a} de Câmera Móvel","197297":"Paparazzi","199278":"Clube de Dramaturgia","202485":"Militar","202486":"Oficial","202487":"Agente Secret{M0.o}{F0.a}","204820":"Conservacionista","204821":"Gerente Ambiental","204822":"Biólog{M0.o}{F0.a} Marinh{M0.o}{F0.a}","205661":"Salva-vidas","205688":"Artista Autônom{M0.o}{F0.a}","205708":"Cientista de StrangerVille","205709":"[CENSURADO]","206660":"Dono da Loja de Lembranças","206792":"Autônom{M0.o}{F0.a}","207005":"Trabalhos Avulsos","207569":"Programad{M0.or}{F0.ora} Autônom{M0.o}{F0.a}","207580":"{M0.Escritor Autônomo}{F0.Escritora Autônoma}","207622":"Pescador{F0.a}","208408":"Mergulhador{F0.a}","208725":"Babá","208740":"Barista","208765":"{M0.Funcionário}{F0.Funcionária} de Fast Food","208784":"{M0.Trabalhador}{F0.Trabalhadora} Manual","208876":"{M0.Comerciário}{F0.Comerciária}","208885":"Salva-vidas","214783":"Fotógraf{M0.o}{F0.a} Autônom{M0.o}{F0.a} de Moda","217102":"Competidor{F0.a} de Esportes Eletrônicos","217876":"Engenheir{M0.o}{F0.a}","217877":"Engenheir{M0.o}{F0.a} da Computação","217878":"Engenheir{M0.o}{F0.a} Mecânic{M0.o}{F0.a}","219598":"Educador{F0.a}","219600":"Professor{F0.a}","219601":"Administrador{F0.a}","220924":"Jogador{F0.a} de Futebol","223300":"Advogad{M0.o}{F0.a}","223301":"{M0.Juiz}{F0.Juíza}","223302":"Consultor{F0.a} Jurídic{M0.o}{F0.a}","224747":"Professor{F0.a}","224748":"Professor{F0.a}","231100":"Batuu","232769":"Projetista Civil","232770":"Técnic{M0.o}{F0.a} Verde","232771":"Planejador{F0.a} Cívic{M0.o}{F0.a}","232810":"Criador{F0.a} Autônom{M0.o}{F0.a}","237781":"Bombeir{M0.o}{F0.a}","242363":"Serviço de Inspeção Ecológica","248173":"Assalariad{M0.o}{F0.a}","248175":"Especialista","248186":"Supervisor{F0.a}","252594":"Investigador{F0.a} Paranormal","256926":"Diarista Macabra","257936":"Decorado{M0.r}{F0.ra} de Interiores","260397":"Responsável pela Loja de Jardinagem","260398":"Responsável pela Mercearia","260399":"Entrega de Mantimentos","260400":"{M0.Prefeito}{F0.Prefeita} da Vila","260401":"Gerente do Pub","260901":"Tarefas da Vila","262370":"{M0.Entregador}{F0.Entregadora} de Comida do Zum-Zum","274003":"Streamer de Videogames","274004":"Streamer de Videogames","276609":"Integrante da Equipe de Xadrez","276610":"Integrante do Time de Futebol Americano","276611":"Integrante da Equipe de Computação","276612":"Integrante da Equipe de Líderes de Torcida","277683":"Simfluenciador{F0.a}","277684":"Simfluenciador{F0.a}","280583":"Vendedor{F0.a}","294304":"{M0.Mixólogo}{F0.Mixóloga}","296394":"Professor{F0.a} do Ensino Médio","353304":"Faz-tudo","373514":"Atendente de Barraca de Confeitaria","383090":"Comerciante de Doces","383091":"Comerciante de Cerâmica","400291":"Pequeno Negócio","400749":"Vendedor{F0.a}","404171":"{M0.Tatuador}{F0.Tatuadora}","421752":"Policial","463273":"Nobre","498238":"Cliente Habitual do Bar"},"s":{"9231":"9233","9541":"9546","12893":"12897","12895":"12900","27927":"29425","27929":"30292","27930":"30503","27931":"31724","27932":"32475","27933":"29960","35157":"35171","35218":"35226","35219":"35227","35220":"35228","35221":"35229","106458":"106465","106460":"106468","107230":"107229","107255":"107258","109456":"109461","109457":"109462","109458":"109460","110043":"110045","110057":"110058","110326":"110327","112014":"112031","112015":"112033","112083":"112086","112090":"112092","112104":"112105","115639":"115665","118550":"118553","118612":"118614","119506":"119507","119666":"119667","122270":"122271","122658":"122656","122818":"122819","129471":"129470","130529":"130528","130590":"109460","135201":"135203","135363":"135365","136115":"136117","136208":"136214","136209":"136213","136210":"136215","139565":"139563","139889":"139890","140900":"130840","141901":"141902","143285":"143329","143653":"143656","147718":"147719","168569":"168570","175923":"175925","183371":"183372","186159":"186177","186513":"186501","189135":"189131","193202":"193205","195951":"195957","195952":"195958","196558":"196557","196625":"196615","196627":"196614","197295":"197297","199274":"199278","202483":"202485","204960":"204820","205662":"205661","205686":"205688","205705":"205708","205712":"205709","206662":"206660","206791":"206792","207004":"207005","207568":"207569","207579":"207580","207607":"207622","208405":"208408","208723":"208725","208737":"208740","208761":"208765","208779":"208784","208874":"208876","208881":"208885","214782":"214783","217092":"217102","217872":"217876","219591":"219598","220913":"220924","223298":"223300","224750":"224747","224751":"224748","231099":"231100","232767":"232769","232809":"232810","237780":"237781","242362":"242363","248315":"248173","252593":"252594","256924":"256926","257934":"257936","262368":"262370","273911":"274003","273912":"274004","276602":"276609","276603":"276611","276604":"276612","276605":"276610","277662":"277684","277663":"277683","296393":"296394","353302":"353304","400748":"400749","402986":"373514","402987":"383090","402988":"383091","404169":"404171","421754":"421752","483360":"143329","498236":"498238"},"k":{"9541":"s","12895":"s","109456":"n","109457":"n","109458":"n","110043":"n","110057":"n","110326":"n","112014":"n","112015":"n","112083":"n","112090":"n","112104":"n","115639":"n","118550":"n","118612":"n","119506":"n","119666":"n","122270":"n","122658":"n","122818":"n","129471":"n","130529":"n","130590":"n","136208":"n","136209":"n","136210":"n","139565":"n","139889":"n","140900":"n","141901":"n","143285":"n","143653":"n","147718":"n","168569":"n","175923":"n","183371":"n","195951":"n","195952":"n","196558":"n","196625":"n","196627":"n","197295":"n","205705":"n","205712":"n","206662":"n","224750":"n","224751":"n","237780":"n","242362":"n","256924":"n","296393":"n","400748":"n","402986":"n","402987":"n","402988":"n","404169":"n","421754":"n","498236":"n"},"skipT":["9546","12900","110002"]};
+/* troca {M0.x}/{F0.x} pela forma certa: sexo 8192 = feminino; os outros usam a forma masculina */
+TS4.genderName=function(s,sexo){ const fem=sexo===8192; return s.replace(/\{([MF])0\.([^}]*)\}/g,(m,g,txt)=>(g==='F')===fem?txt:'').replace(/\s+/g,' ').trim(); };
+/* escolhe a carreira principal do Sim: primeiro um trabalho de verdade, depois um de NPC; escola e "desempregado" não contam */
+TS4.careerOf=function(attrs,sexo,rep){
+  if(!attrs||attrs.w!==2) return '';
+  const C=TS4.CAREERS; let real='', npc='', found=false;
+  for(const a of TS4.pb(attrs.v)){
+    if(a.f!==12||a.w!==2) continue;
+    for(const it of TS4.pb(a.v)){
+      if(it.f!==1||it.w!==2) continue;
+      const m={}; for(const x of TS4.pb(it.v)) if(!(x.f in m)) m[x.f]=x.v.toString();
+      const car=m[1]||'', tr=m[2]||''; if(!car&&!tr) continue;
+      found=true;
+      if(C.k[car]==='s'||C.skipT.includes(tr)) continue;
+      const raw=C.t[tr]||C.t[C.s[car]];
+      if(!raw){ if(rep) rep.carreiraDesconhecida=(rep.carreiraDesconhecida||0)+1; continue; }
+      const name=TS4.genderName(raw,sexo);
+      if(C.k[car]==='n'){ if(!npc) npc=name; } else if(!real) real=name;
+    }
+  }
+  const out=real||npc;
+  if(out&&rep) rep.comCarreira=(rep.comCarreira||0)+1;
+  return out;
+};
+
+/* --- morte ---
+   Quem morre no jogo ganha um traço de fantasma que diz o tipo de morte. Os traços ficam nos atributos do Sim
+   (campo 30 → 10 → 1, lista compactada). Códigos tirados dos arquivos do jogo; o texto é o da lista de causas do app
+   (ou um texto próprio, que o app mostra como "Outra"). trait_IsGhost sozinho = falecido sem causa conhecida. */
+TS4.GHOST={"101676":"Incêndio","101679":"Raiva","101680":"Esforço excessivo","101681":"Eletrocussão","101682":"Vergonha","101683":"Fome","101684":"Histeria","101685":"Velhice","101704":"Planta-vaca","103599":"Afogamento","119951":"Vapor","137461":"Baiacu","151547":"Luz solar","176264":"Veneno","181918":"Febre dos roedores raivosos","182185":"Congelamento","184951":"Superaquecimento","186331":"Raio","190748":"Arranjo de flores","204157":"Planta-Mãe","214409":"Falha na poção da imortalidade","216314":"Maldição do Perseguidor Noturno","216974":"Sobrecarga de magia","228335":"Cama embutida (Murphy)","234848":"Moscas","235995":"Suco de besouro","249747":"Máquina de vendas","250224":"Queda de grandes alturas","255360":"Sobrenatural","258168":"Coelho assassino","267992":"Galinha assassina","284363":"Mito urbano","285905":"Mito urbano","284364":"Cápsula de mau cheiro","294292":"Meteorito","343869":"Mofo","375452":"Ataque de corvos","379066":"Coração partido","444624":"Fome emocional","475485":"Passagem secreta","381402":""};
+TS4.deathOf=function(attrs){
+  if(!attrs||attrs.w!==2) return null;
+  for(const a of TS4.pb(attrs.v)){
+    if(a.f!==10||a.w!==2) continue;
+    for(const t of TS4.pb(a.v)){
+      if(t.f!==1||t.w!==2) continue;
+      let i=0, cause=null; const b=t.v;
+      while(i<b.length){ let v; [v,i]=TS4.vi(b,i); const k=v.toString(); if(k in TS4.GHOST){ if(TS4.GHOST[k]) return {cause:TS4.GHOST[k]}; cause=''; } }
+      if(cause!==null) return {cause:''};
+    }
+  }
+  return null;
 };
 
 /* --- reconstrução: placeholders, vínculos, casas --- */
@@ -4365,6 +4417,8 @@ TS4.commit=function(model,groups){
       const p={id:uid(),familyId:fam.id,first:n.first,last:n.last};
       for(const k in PERSON_DEFAULTS) p[k]=Array.isArray(PERSON_DEFAULTS[k])?[]:PERSON_DEFAULTS[k];
       p.gender=TS4.GENDER[n.sexo]||'Não definido';
+      if(n.career) p.career=n.career;
+      if(n.dead){ p.status='Falecido'; if(n.cause) p.causeOfDeath=n.cause; }
       if(!n.placeholder&&TS4.AGE[n.idade]) p.stage=TS4.AGE[n.idade];
       p.ts4Id=sid;
       if(n.placeholder){ p.ts4Placeholder=true; p.bio='Sim que não está mais no save; só o vínculo familiar foi preservado.'; }
@@ -4483,7 +4537,7 @@ function importModal(){
       <label class="imp-opt"><input type="checkbox" id="impRel" class="imp-chk" checked><span>Trazer também os parentes diretos de outras casas (pais, avós, filhos, irmãos e cônjuges), para a árvore ficar completa</span></label>
       <div class="imp-list" id="impList"></div>
       ${ph?`<p class="imp-note">${ph===1?'1 Sim citado como pai ou mãe não está mais no save. Entra':`${ph} Sims citados como pai ou mãe não estão mais no save. Entram`} como <b>“Sim desconhecido”</b> só para manter o vínculo.</p>`:''}
-      <p class="imp-note">O save não traz <b>data de nascimento</b>, <b>vivo/falecido</b> nem <b>foto</b>. Todos entram como “Vivo” e você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
+      <p class="imp-note">A <b>carreira</b>, quem é <b>falecido</b> e a <b>causa da morte</b> vêm do save, com os nomes usados no jogo (carreiras de mods ficam em branco). O save não traz <b>datas</b> nem <b>foto</b>: você ajusta depois. Sims já importados antes (${dupExisting}) não duplicam.</p>
       <details class="imp-rep"><summary>Relatório técnico (sem nomes)</summary><pre id="impRep"></pre><button type="button" class="mm-link" id="impCopy">Copiar relatório</button></details>`,
       foot:`<span class="mm-hint" id="impSel"></span><button type="button" class="mm-btn out" data-close>Cancelar</button><button type="button" class="mm-btn lime" id="impGo">Importar selecionadas</button>`});
     box.querySelector('#impRep').textContent=reportTxt;
